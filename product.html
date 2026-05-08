@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product — Qomp</title>
+<meta name="description" content="How Qomp works: live HRIS sync, Salary.com market data, TSG advisory. Six dashboard modules answering the questions HR teams actually ask.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --cream: #F5F1EA;
+    --cream-2: #EDE8DD;
+    --paper: #FBF8F2;
+    --ink: #0F1419;
+    --ink-2: #2A3038;
+    --ink-3: #5C6470;
+    --rule: #D9D3C5;
+    --rule-soft: #E5DFD0;
+    --mint: #0D5942;
+    --mint-2: #0A4734;
+    --mint-light: #E8EFE9;
+    --sienna: #C8623B;
+    --sienna-light: #F5E5DD;
+
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Inter Tight', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  body {
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.55;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+  /* TICKER */
+  .top-strip {
+    background: var(--ink);
+    color: var(--cream);
+    border-bottom: 1px solid var(--ink-2);
+    overflow: hidden;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+  .ticker {
+    display: flex;
+    gap: 48px;
+    white-space: nowrap;
+    animation: tickerScroll 44s linear infinite;
+    padding-left: 100%;
+  }
+  @keyframes tickerScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .ticker-item { color: rgba(245, 241, 234, 0.7); }
+  .ticker-item strong { color: var(--cream); font-weight: 500; }
+  .ticker-dot { color: #5DCAA5; font-weight: 700; }
+
+  /* NAV */
+  nav {
+    border-bottom: 1px solid var(--rule);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(20px);
+    background: rgba(245, 241, 234, 0.92);
+  }
+  .nav-inner {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 18px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo { display: flex; align-items: baseline; gap: 8px; }
+  .logo-mark {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 28px;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    font-style: italic;
+  }
+  .logo-mark::after { content: '.'; color: var(--mint); }
+  .logo-meta {
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-3);
+  }
+  .nav-links { display: flex; gap: 36px; align-items: center; }
+  .nav-link {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink-2);
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-link:hover { color: var(--mint); }
+  .nav-link.current { color: var(--ink); }
+  .nav-link.current::after {
+    content: '';
+    position: absolute;
+    bottom: -22px;
+    left: 0; right: 0;
+    height: 2px;
+    background: var(--mint);
+  }
+  .nav-actions { display: flex; gap: 12px; align-items: center; }
+  .btn {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 14px;
+    padding: 10px 18px;
+    border-radius: 2px;
+    transition: all 0.18s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+  .btn-ghost { color: var(--ink); border: 1px solid var(--rule); }
+  .btn-ghost:hover { border-color: var(--ink); background: var(--ink); color: var(--cream); }
+  .btn-primary { background: var(--ink); color: var(--cream); border: 1px solid var(--ink); }
+  .btn-primary:hover { background: var(--mint); border-color: var(--mint); }
+  .btn-mint { background: var(--mint); color: var(--cream); border: 1px solid var(--mint); }
+  .btn-mint:hover { background: var(--mint-2); border-color: var(--mint-2); }
+  .btn-cream { background: var(--cream); color: var(--ink); border: 1px solid var(--cream); }
+  .btn-cream:hover { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+  .btn-outline { color: var(--cream); border: 1px solid rgba(245, 241, 234, 0.4); }
+  .btn-outline:hover { border-color: var(--cream); background: rgba(245, 241, 234, 0.08); }
+
+  .container {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--ink-3);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .section-label::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--ink);
+  }
+
+  /* PAGE HEADER */
+  .page-header {
+    padding: 64px 0 72px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .page-header-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 80px;
+    align-items: end;
+  }
+  .page-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--mint);
+    margin-bottom: 24px;
+  }
+  h1.page-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(48px, 5.5vw, 76px);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    margin-bottom: 28px;
+    font-variation-settings: "opsz" 144;
+  }
+  h1.page-title em { font-style: italic; color: var(--mint); }
+  .page-lede {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    max-width: 580px;
+  }
+  .page-lede strong { color: var(--ink); font-weight: 600; }
+
+  /* THREE SOURCES BLOCK */
+  .sources-section {
+    padding: 84px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .sources-headline {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(40px, 4.5vw, 56px);
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin-bottom: 16px;
+    max-width: 880px;
+    font-variation-settings: "opsz" 144;
+  }
+  .sources-headline em { font-style: italic; color: var(--mint); }
+
+  .sources-intro {
+    font-size: 16px;
+    color: var(--ink-2);
+    line-height: 1.6;
+    max-width: 720px;
+    margin-bottom: 56px;
+  }
+
+  .source-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .source-cell {
+    padding: 36px 32px 36px 0;
+    border-right: 1px solid var(--rule);
+    position: relative;
+  }
+  .source-cell:last-child { border-right: none; padding-right: 0; }
+  .source-cell:not(:first-child) { padding-left: 32px; }
+
+  .source-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--mint);
+    letter-spacing: 0.2em;
+    margin-bottom: 18px;
+    font-weight: 500;
+  }
+  .source-title {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  .source-title em { font-style: italic; color: var(--mint); }
+  .source-body {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--ink-2);
+    margin-bottom: 18px;
+  }
+  .source-meta {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-3);
+    padding-top: 14px;
+    border-top: 1px solid var(--rule);
+  }
+
+  /* DATA FLOW DIAGRAM */
+  .flow-band {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 56px 40px;
+    margin: 56px 0 0;
+  }
+  .flow-band-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+  .flow-band-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: rgba(245, 241, 234, 0.5);
+    margin-bottom: 20px;
+  }
+  .flow-band-headline {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 28px;
+    color: var(--cream);
+    margin-bottom: 32px;
+    letter-spacing: -0.01em;
+  }
+
+  .flow-diagram {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    gap: 24px;
+    align-items: center;
+  }
+  .flow-node {
+    background: rgba(245, 241, 234, 0.04);
+    border: 1px solid var(--ink-2);
+    padding: 20px;
+    border-radius: 2px;
+  }
+  .flow-node-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: rgba(245, 241, 234, 0.55);
+    margin-bottom: 8px;
+  }
+  .flow-node-title {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 18px;
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+  .flow-node-detail {
+    font-size: 12px;
+    color: rgba(245, 241, 234, 0.7);
+    line-height: 1.5;
+  }
+  .flow-arrow {
+    font-family: var(--mono);
+    font-size: 18px;
+    color: var(--mint);
+    text-align: center;
+  }
+
+  /* MODULES SECTION */
+  .modules-section {
+    padding: 84px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .modules-header {
+    margin-bottom: 56px;
+    max-width: 880px;
+  }
+  .modules-headline {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(40px, 4.5vw, 56px);
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin-bottom: 20px;
+    font-variation-settings: "opsz" 144;
+  }
+  .modules-headline em { font-style: italic; color: var(--mint); }
+  .modules-intro {
+    font-size: 16px;
+    color: var(--ink-2);
+    line-height: 1.6;
+    max-width: 720px;
+  }
+
+  .module-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    border-left: 1px solid var(--rule);
+  }
+  .module {
+    padding: 32px;
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper);
+    transition: background 0.2s;
+  }
+  .module:hover { background: var(--cream-2); }
+  .module-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--mint);
+    letter-spacing: 0.2em;
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  .module-title {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .module-body {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--ink-2);
+    margin-bottom: 18px;
+  }
+  .module-questions {
+    border-top: 1px solid var(--rule);
+    padding-top: 14px;
+  }
+  .module-questions-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-3);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .module-questions ul {
+    list-style: none;
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.6;
+  }
+  .module-questions li {
+    padding: 4px 0;
+    padding-left: 14px;
+    position: relative;
+  }
+  .module-questions li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--mint);
+    font-family: var(--mono);
+  }
+
+  /* INTEGRATIONS */
+  .integrations-section {
+    padding: 84px 0;
+    border-bottom: 1px solid var(--rule);
+    background: var(--cream-2);
+  }
+  .integrations-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: end;
+    margin-bottom: 48px;
+  }
+  .integrations-headline {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(40px, 4.5vw, 56px);
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    font-variation-settings: "opsz" 144;
+  }
+  .integrations-headline em { font-style: italic; color: var(--mint); }
+  .integrations-intro {
+    font-size: 16px;
+    color: var(--ink-2);
+    line-height: 1.6;
+  }
+
+  .integration-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+  .integration-card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 24px;
+    position: relative;
+  }
+  .integration-name {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .integration-status {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-bottom: 14px;
+  }
+  .integration-status.live { color: var(--mint); }
+  .integration-status.live::before {
+    content: '● ';
+  }
+  .integration-status.soon { color: var(--ink-3); }
+  .integration-status.soon::before {
+    content: '○ ';
+  }
+  .integration-detail {
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+
+  /* SYNC TABLE */
+  .sync-table {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    overflow: hidden;
+  }
+  .sync-row {
+    display: grid;
+    grid-template-columns: 200px 1fr 140px;
+    gap: 24px;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--rule);
+    align-items: center;
+  }
+  .sync-row:last-child { border-bottom: none; }
+  .sync-row.header {
+    background: var(--ink);
+    color: var(--cream);
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+  }
+  .sync-field {
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .sync-detail {
+    font-size: 14px;
+    color: var(--ink-2);
+  }
+  .sync-cadence {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--mint);
+    font-weight: 600;
+    text-align: right;
+  }
+
+  /* CTA */
+  .cta-section {
+    padding: 84px 0 96px;
+    background: var(--mint);
+    color: var(--cream);
+  }
+  .cta-section .section-label { color: rgba(245, 241, 234, 0.6); }
+  .cta-section .section-label::before { background: var(--cream); }
+
+  .cta-headline {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(40px, 5vw, 64px);
+    line-height: 1.0;
+    letter-spacing: -0.035em;
+    color: var(--cream);
+    margin-bottom: 32px;
+    max-width: 900px;
+    font-variation-settings: "opsz" 144;
+  }
+  .cta-headline em { font-style: italic; color: rgba(245, 241, 234, 0.7); }
+  .cta-row {
+    display: flex;
+    gap: 12px;
+  }
+  .cta-row .btn { padding: 14px 24px; font-size: 15px; }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 64px 0 32px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--ink-2);
+  }
+  .footer-brand .logo-mark { color: var(--cream); font-size: 32px; }
+  .footer-tagline {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 15px;
+    color: rgba(245, 241, 234, 0.7);
+    margin-top: 12px;
+    margin-bottom: 24px;
+    max-width: 320px;
+    line-height: 1.5;
+  }
+  .footer-attribution {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: rgba(245, 241, 234, 0.4);
+    line-height: 1.7;
+  }
+  .footer-attribution strong { color: rgba(245, 241, 234, 0.7); font-weight: 500; }
+  .footer-col h4 {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: rgba(245, 241, 234, 0.5);
+    margin-bottom: 18px;
+    font-weight: 500;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 10px; }
+  .footer-col a {
+    font-size: 14px;
+    color: rgba(245, 241, 234, 0.85);
+    transition: color 0.2s;
+  }
+  .footer-col a:hover { color: var(--cream); }
+  .footer-base {
+    padding-top: 28px;
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: rgba(245, 241, 234, 0.4);
+    letter-spacing: 0.04em;
+  }
+
+  /* REVEAL */
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* RESPONSIVE */
+  @media (max-width: 980px) {
+    .container { padding: 0 24px; }
+    .nav-inner { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .page-header-grid, .integrations-header, .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    .source-grid { grid-template-columns: 1fr; }
+    .source-cell { border-right: none; border-bottom: 1px solid var(--rule); padding: 28px 0; }
+    .source-cell:not(:first-child) { padding-left: 0; }
+    .source-cell:last-child { border-bottom: none; }
+    .module-grid { grid-template-columns: 1fr; }
+    .integration-grid { grid-template-columns: 1fr 1fr; }
+    .flow-diagram { grid-template-columns: 1fr; gap: 16px; }
+    .flow-arrow { transform: rotate(90deg); }
+    .sync-row { grid-template-columns: 1fr; gap: 6px; padding: 16px 18px; }
+    .sync-cadence { text-align: left; }
+    .sync-row.header { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="top-strip">
+  <div class="ticker">
+    <span class="ticker-item"><span class="ticker-dot">●</span> Live data feed</span>
+    <span class="ticker-item"><strong>8,712</strong> companies in dataset</span>
+    <span class="ticker-item"><strong>247,431</strong> roles benchmarked this quarter</span>
+    <span class="ticker-item"><strong>$4.2B</strong> aggregate payroll under analysis</span>
+    <span class="ticker-item">Market data refreshed <strong>2 hours ago</strong></span>
+    <span class="ticker-item">Powered by <strong>Salary.com CAMD</strong></span>
+    <span class="ticker-item"><strong>11</strong> countries · <strong>340</strong> US cities</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> Live data feed</span>
+    <span class="ticker-item"><strong>8,712</strong> companies in dataset</span>
+    <span class="ticker-item"><strong>247,431</strong> roles benchmarked this quarter</span>
+    <span class="ticker-item"><strong>$4.2B</strong> aggregate payroll under analysis</span>
+    <span class="ticker-item">Market data refreshed <strong>2 hours ago</strong></span>
+    <span class="ticker-item">Powered by <strong>Salary.com CAMD</strong></span>
+    <span class="ticker-item"><strong>11</strong> countries · <strong>340</strong> US cities</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-mark">qomp</span>
+      <span class="logo-meta">No. 001 · Phoenix</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="product.html" class="nav-link current">Product</a>
+      <a href="pricing.html" class="nav-link">Pricing</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <a href="qomp-dashboard.html" target="_blank" class="btn btn-ghost">Client login</a>
+      <a href="contact.html" class="btn btn-primary">Request demo →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<section class="page-header">
+  <div class="container">
+    <div class="page-header-grid">
+      <div>
+        <div class="page-eyebrow">§ Product</div>
+        <h1 class="page-title">
+          One platform.<br>
+          Three sources of <em>truth</em>.
+        </h1>
+      </div>
+      <p class="page-lede">
+        Qomp combines your <strong>HRIS data</strong>, <strong>Salary.com market intelligence</strong>,
+        and <strong>TSG advisory expertise</strong> into a single dashboard. Connected once,
+        updated continuously, interpreted quarterly. Below: how it actually works.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- THREE SOURCES -->
+<section class="sources-section">
+  <div class="container">
+    <div class="section-label">§ 01 — The data architecture</div>
+
+    <h2 class="sources-headline">
+      What goes <em>in</em>. What comes <em>out</em>.
+    </h2>
+    <p class="sources-intro">
+      Most comp tools force you to choose: free crowdsourced data with no advisor, or a $30K
+      enterprise engagement. Qomp connects three streams that traditionally lived in
+      different vendor relationships — and unifies them in one dashboard.
+    </p>
+
+    <div class="source-grid">
+      <div class="source-cell">
+        <div class="source-num">Source 01 · Internal</div>
+        <div class="source-title">Your HRIS, <em>connected</em>.</div>
+        <div class="source-body">
+          A live API connection to BambooHR, Rippling, or ADP. Your full employee roster —
+          names, titles, locations, base salaries, hire dates — syncs nightly without your team
+          touching a spreadsheet.
+        </div>
+        <div class="source-meta">Nightly sync · No CSV uploads</div>
+      </div>
+
+      <div class="source-cell">
+        <div class="source-num">Source 02 · Market</div>
+        <div class="source-title">Salary.com <em>CAMD</em>.</div>
+        <div class="source-body">
+          The same dataset Fortune 500 comp teams use. 8,712 companies, 247K+ benchmarked
+          roles, refreshed monthly. HR-reported and validated — not crowdsourced from
+          anonymous employees with an axe to grind.
+        </div>
+        <div class="source-meta">Monthly refresh · City-level precision</div>
+      </div>
+
+      <div class="source-cell">
+        <div class="source-num">Source 03 · Advisory</div>
+        <div class="source-title">TSG, <em>interpreting</em>.</div>
+        <div class="source-body">
+          Every Qomp plan includes a TSG compensation advisor. Quarterly written reports.
+          Direct access for ad-hoc questions. The interpretation layer that data alone
+          cannot provide.
+        </div>
+        <div class="source-meta">Quarterly review · Direct access</div>
+      </div>
+    </div>
+
+    <!-- DATA FLOW DIAGRAM -->
+    <div class="flow-band">
+      <div class="flow-band-inner">
+        <div class="flow-band-label">§ The flow</div>
+        <div class="flow-band-headline">From three sources, one decision-ready dashboard.</div>
+
+        <div class="flow-diagram">
+          <div class="flow-node">
+            <div class="flow-node-label">In</div>
+            <div class="flow-node-title">HRIS</div>
+            <div class="flow-node-detail">Roster, titles, salaries, locations — synced nightly</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">
+            <div class="flow-node-label">In</div>
+            <div class="flow-node-title">Salary.com</div>
+            <div class="flow-node-detail">P10–P90 market percentiles, monthly refresh</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">
+            <div class="flow-node-label">Out</div>
+            <div class="flow-node-title">Qomp dashboard</div>
+            <div class="flow-node-detail">Live position, risk, pay equity — reviewed quarterly by TSG</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULES -->
+<section class="modules-section">
+  <div class="container">
+    <div class="section-label">§ 02 — Six modules</div>
+
+    <div class="modules-header">
+      <h2 class="modules-headline">
+        Built around the questions HR teams <em>actually</em> ask.
+      </h2>
+      <p class="modules-intro">
+        Six dashboard modules, each designed around a real conversation that happens in HR
+        offices every week. No filler. No vanity metrics. Each module exists because clients
+        asked us to build it.
+      </p>
+    </div>
+
+    <div class="module-grid">
+
+      <div class="module">
+        <div class="module-num">Module 01</div>
+        <div class="module-title">Pay positioning overview.</div>
+        <div class="module-body">
+          A single-screen view of where every role sits against market — P10 through P90,
+          with at-risk roles flagged automatically. The first thing you see when you log in.
+        </div>
+        <div class="module-questions">
+          <div class="module-questions-label">Answers</div>
+          <ul>
+            <li>Who's paid below market right now?</li>
+            <li>Which divisions need attention this quarter?</li>
+            <li>How does our average compa-ratio compare?</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="module">
+        <div class="module-num">Module 02</div>
+        <div class="module-title">Role explorer.</div>
+        <div class="module-body">
+          Search, filter, and drill into every individual position. See market range,
+          current pay, percentile placement, and proposed adjustment — for every employee.
+        </div>
+        <div class="module-questions">
+          <div class="module-questions-label">Answers</div>
+          <ul>
+            <li>Where exactly does Sarah's base land vs market?</li>
+            <li>What would it cost to bring her to P50?</li>
+            <li>Who else holds her title across the company?</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="module">
+        <div class="module-num">Module 03</div>
+        <div class="module-title">Geographic analysis.</div>
+        <div class="module-body">
+          Pay positioning by metro area and country. Critical for hybrid companies and
+          multi-location employers — Phoenix doesn't pay Boise rates, and your data should
+          reflect that.
+        </div>
+        <div class="module-questions">
+          <div class="module-questions-label">Answers</div>
+          <ul>
+            <li>Are our remote hires paid correctly for their cities?</li>
+            <li>Which offices have the most pay risk?</li>
+            <li>What's our international compa by country?</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="module">
+        <div class="module-num">Module 04</div>
+        <div class="module-title">Pay equity diagnostics.</div>
+        <div class="module-body">
+          Comp ratios sliced by division, function, and tenure. Identifies gaps that need
+          attention — without making demographic claims you don't have data to support.
+        </div>
+        <div class="module-questions">
+          <div class="module-questions-label">Answers</div>
+          <ul>
+            <li>Where are our largest internal pay gaps?</li>
+            <li>Are there functions systematically underpaid?</li>
+            <li>What would closing the gaps cost?</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="module">
+        <div class="module-num">Module 05</div>
+        <div class="module-title">Flight risk modeling.</div>
+        <div class="module-body">
+          Combines compa-ratio, tenure, and role criticality to surface the employees most
+          likely to receive competitive offers. Not a guess — a triangulated estimate based
+          on three data points.
+        </div>
+        <div class="module-questions">
+          <div class="module-questions-label">Answers</div>
+          <ul>
+            <li>Who's most at risk of leaving for pay?</li>
+            <li>What's the cost of a retention adjustment?</li>
+            <li>Who deserves a pre-emptive raise?</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="module">
+        <div class="module-num">Module 06</div>
+        <div class="module-title">TSG insights.</div>
+        <div class="module-body">
+          The quarterly written interpretation from TSG's advisors. Findings, prioritized
+          actions, and recommendations specific to your dataset. Numbers are easy. Decisions
+          are hard.
+        </div>
+        <div class="module-questions">
+          <div class="module-questions-label">Answers</div>
+          <ul>
+            <li>What does this data actually mean for us?</li>
+            <li>What should we do before merit cycle?</li>
+            <li>What would an outside expert recommend?</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- INTEGRATIONS -->
+<section class="integrations-section">
+  <div class="container">
+    <div class="section-label">§ 03 — HRIS integrations</div>
+
+    <div class="integrations-header">
+      <h2 class="integrations-headline">
+        Connected in <em>minutes</em>, not months.
+      </h2>
+      <p class="integrations-intro">
+        No spreadsheets. No quarterly imports. No IT tickets. Generate an API key in your
+        HRIS, paste it into Qomp, and your roster syncs automatically — every night, forever.
+      </p>
+    </div>
+
+    <div class="integration-grid">
+      <div class="integration-card">
+        <div class="integration-name">BambooHR</div>
+        <div class="integration-status live">Live</div>
+        <div class="integration-detail">
+          Full bidirectional sync. Setup in under 10 minutes.
+        </div>
+      </div>
+
+      <div class="integration-card">
+        <div class="integration-name">Rippling</div>
+        <div class="integration-status live">Live</div>
+        <div class="integration-detail">
+          Connects via OAuth. Live within the hour.
+        </div>
+      </div>
+
+      <div class="integration-card">
+        <div class="integration-name">ADP</div>
+        <div class="integration-status soon">Q3 2026</div>
+        <div class="integration-detail">
+          Workforce Now and RUN integrations in development.
+        </div>
+      </div>
+
+      <div class="integration-card">
+        <div class="integration-name">Paylocity</div>
+        <div class="integration-status soon">Q4 2026</div>
+        <div class="integration-detail">
+          Coming after ADP. Tell us if you need it sooner.
+        </div>
+      </div>
+    </div>
+
+    <div class="sync-table">
+      <div class="sync-row header">
+        <div>Field synced</div>
+        <div>What it powers</div>
+        <div>Cadence</div>
+      </div>
+      <div class="sync-row">
+        <div class="sync-field">Employee roster</div>
+        <div class="sync-detail">Names, IDs, hire dates, employment status</div>
+        <div class="sync-cadence">Nightly</div>
+      </div>
+      <div class="sync-row">
+        <div class="sync-field">Job titles & codes</div>
+        <div class="sync-detail">Mapped to Salary.com CAMD job library</div>
+        <div class="sync-cadence">Nightly</div>
+      </div>
+      <div class="sync-row">
+        <div class="sync-field">Base compensation</div>
+        <div class="sync-detail">Powers compa-ratio and percentile calculations</div>
+        <div class="sync-cadence">Nightly</div>
+      </div>
+      <div class="sync-row">
+        <div class="sync-field">Work location</div>
+        <div class="sync-detail">City-level data drives geographic benchmarks</div>
+        <div class="sync-cadence">Nightly</div>
+      </div>
+      <div class="sync-row">
+        <div class="sync-field">Department & manager</div>
+        <div class="sync-detail">Enables division-level rollups and hierarchies</div>
+        <div class="sync-cadence">Nightly</div>
+      </div>
+      <div class="sync-row">
+        <div class="sync-field">Market percentiles</div>
+        <div class="sync-detail">P10–P90 by role, geography, and industry</div>
+        <div class="sync-cadence">Monthly</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <div class="section-label">§ Ready when you are</div>
+
+    <h1 class="cta-headline">
+      See the dashboard with <em>your</em> data.
+    </h1>
+
+    <div class="cta-row">
+      <a href="contact.html" class="btn btn-cream">Request a demo →</a>
+      <a href="pricing.html" class="btn btn-outline">View pricing</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="logo-mark">qomp</span>
+        <p class="footer-tagline">
+          Compensation intelligence for mid-size employers — built by TSG.
+        </p>
+        <div class="footer-attribution">
+          Data sources: <strong>Salary.com CAMD</strong><br>
+          Last refreshed: <strong>May 8, 2026</strong><br>
+          Methodology · Built by TSG
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="product.html">How it works</a></li>
+          <li><a href="product.html">Features</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="contact.html">Request demo</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Qomp</a></li>
+          <li><a href="about.html">TSG advisory</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy policy</a></li>
+          <li><a href="#">Terms of service</a></li>
+          <li><a href="#">Data processing</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-base">
+      <div>© 2026 TSG Executive Search & Compensation</div>
+      <div>Phoenix, Arizona · est. 2021</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  var revealObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.source-cell, .module, .integration-card, .sync-row').forEach(function(el) {
+    el.classList.add('reveal');
+    revealObs.observe(el);
+  });
+</script>
+
+</body>
+</html>

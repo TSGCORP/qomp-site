@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Qomp</title>
+<meta name="description" content="Request a Qomp demo, join the waitlist, or talk to a TSG comp advisor. Phoenix-based, mid-size focused.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --cream: #F5F1EA; --cream-2: #EDE8DD; --paper: #FBF8F2;
+    --ink: #0F1419; --ink-2: #2A3038; --ink-3: #5C6470;
+    --rule: #D9D3C5; --rule-soft: #E5DFD0;
+    --mint: #0D5942; --mint-2: #0A4734; --mint-light: #E8EFE9;
+    --sienna: #C8623B;
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Inter Tight', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  body { font-family: var(--sans); background: var(--cream); color: var(--ink); font-size: 16px; line-height: 1.55; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+  .top-strip { background: var(--ink); color: var(--cream); border-bottom: 1px solid var(--ink-2); overflow: hidden; height: 32px; display: flex; align-items: center; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; }
+  .ticker { display: flex; gap: 48px; white-space: nowrap; animation: tickerScroll 44s linear infinite; padding-left: 100%; }
+  @keyframes tickerScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .ticker-item { color: rgba(245, 241, 234, 0.7); }
+  .ticker-item strong { color: var(--cream); font-weight: 500; }
+  .ticker-dot { color: #5DCAA5; font-weight: 700; }
+
+  nav { border-bottom: 1px solid var(--rule); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(20px); background: rgba(245, 241, 234, 0.92); }
+  .nav-inner { max-width: 1320px; margin: 0 auto; padding: 18px 40px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { display: flex; align-items: baseline; gap: 8px; }
+  .logo-mark { font-family: var(--serif); font-weight: 600; font-size: 28px; letter-spacing: -0.04em; color: var(--ink); font-style: italic; }
+  .logo-mark::after { content: '.'; color: var(--mint); }
+  .logo-meta { font-family: var(--mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--ink-3); }
+  .nav-links { display: flex; gap: 36px; align-items: center; }
+  .nav-link { font-size: 14px; font-weight: 500; color: var(--ink-2); transition: color 0.2s; position: relative; }
+  .nav-link:hover { color: var(--mint); }
+  .nav-link.current { color: var(--ink); }
+  .nav-link.current::after { content: ''; position: absolute; bottom: -22px; left: 0; right: 0; height: 2px; background: var(--mint); }
+  .nav-actions { display: flex; gap: 12px; align-items: center; }
+  .btn { font-family: var(--sans); font-weight: 500; font-size: 14px; padding: 10px 18px; border-radius: 2px; transition: all 0.18s; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+  .btn-ghost { color: var(--ink); border: 1px solid var(--rule); }
+  .btn-ghost:hover { border-color: var(--ink); background: var(--ink); color: var(--cream); }
+  .btn-primary { background: var(--ink); color: var(--cream); border: 1px solid var(--ink); }
+  .btn-primary:hover { background: var(--mint); border-color: var(--mint); }
+
+  .container { max-width: 1320px; margin: 0 auto; padding: 0 40px; }
+
+  /* PAGE */
+  .contact-section {
+    padding: 64px 0 96px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  /* LEFT: HEADER + FORM */
+  .page-eyebrow { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--mint); margin-bottom: 24px; }
+  h1.page-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(48px, 5.5vw, 76px);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    margin-bottom: 28px;
+    font-variation-settings: "opsz" 144;
+  }
+  h1.page-title em { font-style: italic; color: var(--mint); }
+  .page-lede {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    margin-bottom: 48px;
+    max-width: 560px;
+  }
+  .page-lede strong { color: var(--ink); font-weight: 600; }
+
+  /* TABS */
+  .form-tabs {
+    display: flex;
+    border-bottom: 2px solid var(--ink);
+    margin-bottom: 32px;
+  }
+  .form-tab {
+    padding: 14px 24px;
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-3);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.2s;
+    font-weight: 500;
+  }
+  .form-tab:hover { color: var(--ink); }
+  .form-tab.active {
+    color: var(--cream);
+    background: var(--ink);
+  }
+  .form-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--mint);
+  }
+
+  /* FORM */
+  .form-section {
+    display: none;
+  }
+  .form-section.active {
+    display: block;
+  }
+
+  .form-intro {
+    font-size: 15px;
+    color: var(--ink-2);
+    line-height: 1.6;
+    margin-bottom: 32px;
+    max-width: 560px;
+  }
+
+  .form-row {
+    margin-bottom: 24px;
+  }
+  .form-row.row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .form-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-3);
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .form-label .req { color: var(--sienna); }
+
+  .form-input, .form-select, .form-textarea {
+    width: 100%;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 14px 16px;
+    font-family: var(--sans);
+    font-size: 15px;
+    color: var(--ink);
+    border-radius: 2px;
+    transition: border-color 0.18s, background 0.18s;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    outline: none;
+    border-color: var(--ink);
+    background: var(--cream);
+  }
+  .form-textarea {
+    min-height: 100px;
+    resize: vertical;
+    font-family: var(--sans);
+  }
+  .form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%235C6470' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 44px;
+  }
+
+  .form-submit {
+    margin-top: 16px;
+  }
+  .form-submit button {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 16px 32px;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.18s;
+    font-family: var(--sans);
+  }
+  .form-submit button:hover {
+    background: var(--mint);
+  }
+
+  .form-fineprint {
+    margin-top: 18px;
+    font-size: 13px;
+    color: var(--ink-3);
+    line-height: 1.5;
+  }
+  .form-fineprint a { color: var(--mint); text-decoration: underline; }
+
+  /* SUCCESS MESSAGE */
+  .success-message {
+    display: none;
+    background: var(--mint);
+    color: var(--cream);
+    padding: 36px;
+    border-radius: 2px;
+  }
+  .success-message.active { display: block; }
+  .success-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: rgba(245, 241, 234, 0.7);
+    margin-bottom: 18px;
+  }
+  .success-title {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 32px;
+    line-height: 1.15;
+    color: var(--cream);
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+  .success-body {
+    font-size: 16px;
+    line-height: 1.6;
+    color: rgba(245, 241, 234, 0.9);
+  }
+
+  /* RIGHT: CONTACT CARD */
+  .contact-aside {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 36px;
+  }
+
+  .aside-section {
+    padding-bottom: 28px;
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .aside-section:last-child {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-bottom: none;
+  }
+
+  .aside-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--mint);
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  .aside-headline {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .aside-headline em { font-style: italic; color: var(--mint); }
+  .aside-body {
+    font-size: 14px;
+    color: var(--ink-2);
+    line-height: 1.6;
+  }
+
+  .aside-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    color: var(--ink);
+    transition: color 0.2s;
+  }
+  .aside-link:hover { color: var(--mint); }
+  .aside-link-icon {
+    font-family: var(--mono);
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: var(--mint);
+    flex-shrink: 0;
+  }
+  .aside-link-label {
+    font-size: 13px;
+    color: var(--ink-3);
+    font-family: var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-bottom: 2px;
+  }
+  .aside-link-value {
+    font-size: 15px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* TRUST STRIP */
+  .trust-section {
+    padding: 64px 0;
+    border-bottom: 1px solid var(--rule);
+    background: var(--cream-2);
+  }
+  .trust-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--ink);
+  }
+  .trust-cell {
+    padding: 32px 32px 32px 0;
+    border-right: 1px solid var(--rule);
+  }
+  .trust-cell:last-child { border-right: none; padding-right: 0; }
+  .trust-cell:not(:first-child) { padding-left: 32px; }
+  .trust-num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 36px;
+    color: var(--mint);
+    margin-bottom: 8px;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .trust-label {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  .trust-body {
+    font-size: 14px;
+    color: var(--ink-2);
+    line-height: 1.55;
+  }
+
+  /* FOOTER */
+  footer { background: var(--ink); color: var(--cream); padding: 64px 0 32px; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; padding-bottom: 48px; border-bottom: 1px solid var(--ink-2); }
+  .footer-brand .logo-mark { color: var(--cream); font-size: 32px; }
+  .footer-tagline { font-family: var(--serif); font-style: italic; font-size: 15px; color: rgba(245, 241, 234, 0.7); margin-top: 12px; margin-bottom: 24px; max-width: 320px; line-height: 1.5; }
+  .footer-attribution { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: rgba(245, 241, 234, 0.4); line-height: 1.7; }
+  .footer-attribution strong { color: rgba(245, 241, 234, 0.7); font-weight: 500; }
+  .footer-col h4 { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(245, 241, 234, 0.5); margin-bottom: 18px; font-weight: 500; }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 10px; }
+  .footer-col a { font-size: 14px; color: rgba(245, 241, 234, 0.85); transition: color 0.2s; }
+  .footer-col a:hover { color: var(--cream); }
+  .footer-base { padding-top: 28px; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: rgba(245, 241, 234, 0.4); letter-spacing: 0.04em; }
+
+  @media (max-width: 980px) {
+    .container { padding: 0 24px; }
+    .nav-inner { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .contact-grid, .footer-grid { grid-template-columns: 1fr; gap: 48px; }
+    .form-row.row-2 { grid-template-columns: 1fr; gap: 0; }
+    .form-row.row-2 .form-row { margin-bottom: 24px; }
+    .trust-grid { grid-template-columns: 1fr; }
+    .trust-cell, .trust-cell:not(:first-child) {
+      padding: 28px 0; border-right: none; border-bottom: 1px solid var(--rule); padding-left: 0;
+    }
+    .trust-cell:last-child { border-bottom: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="top-strip">
+  <div class="ticker">
+    <span class="ticker-item"><span class="ticker-dot">●</span> Live data feed</span>
+    <span class="ticker-item"><strong>8,712</strong> companies in dataset</span>
+    <span class="ticker-item"><strong>247,431</strong> roles benchmarked this quarter</span>
+    <span class="ticker-item"><strong>$4.2B</strong> aggregate payroll under analysis</span>
+    <span class="ticker-item">Market data refreshed <strong>2 hours ago</strong></span>
+    <span class="ticker-item">Powered by <strong>Salary.com CAMD</strong></span>
+    <span class="ticker-item"><strong>11</strong> countries · <strong>340</strong> US cities</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> Live data feed</span>
+    <span class="ticker-item"><strong>8,712</strong> companies in dataset</span>
+    <span class="ticker-item"><strong>247,431</strong> roles benchmarked this quarter</span>
+    <span class="ticker-item"><strong>$4.2B</strong> aggregate payroll under analysis</span>
+    <span class="ticker-item">Market data refreshed <strong>2 hours ago</strong></span>
+    <span class="ticker-item">Powered by <strong>Salary.com CAMD</strong></span>
+    <span class="ticker-item"><strong>11</strong> countries · <strong>340</strong> US cities</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-mark">qomp</span>
+      <span class="logo-meta">No. 001 · Phoenix</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="product.html" class="nav-link">Product</a>
+      <a href="pricing.html" class="nav-link">Pricing</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="contact.html" class="nav-link current">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <a href="qomp-dashboard.html" target="_blank" class="btn btn-ghost">Client login</a>
+      <a href="contact.html" class="btn btn-primary">Request demo →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- CONTACT -->
+<section class="contact-section">
+  <div class="container">
+    <div class="contact-grid">
+
+      <!-- LEFT: FORM -->
+      <div>
+        <div class="page-eyebrow">§ Contact</div>
+        <h1 class="page-title">
+          Let's <em>talk</em>.
+        </h1>
+        <p class="page-lede">
+          Request a demo with your data, join the launch waitlist, or just ask a question.
+          <strong>We respond personally</strong> within one business day — no SDRs, no auto-replies.
+        </p>
+
+        <div class="form-tabs">
+          <button class="form-tab active" id="tab-demo" onclick="setTab('demo')">Request demo</button>
+          <button class="form-tab" id="tab-waitlist" onclick="setTab('waitlist')">Join waitlist</button>
+          <button class="form-tab" id="tab-question" onclick="setTab('question')">Ask a question</button>
+        </div>
+
+        <!-- DEMO FORM -->
+        <div class="form-section active" id="form-demo">
+          <p class="form-intro">
+            We'll set up a 30-minute demo using your actual employee data. You'll see exactly
+            what Qomp would look like for your company before signing anything.
+          </p>
+
+          <div class="form-row row-2">
+            <div>
+              <label class="form-label">First name <span class="req">*</span></label>
+              <input class="form-input" type="text" required>
+            </div>
+            <div>
+              <label class="form-label">Last name <span class="req">*</span></label>
+              <input class="form-input" type="text" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label class="form-label">Work email <span class="req">*</span></label>
+            <input class="form-input" type="email" required>
+          </div>
+
+          <div class="form-row row-2">
+            <div>
+              <label class="form-label">Company <span class="req">*</span></label>
+              <input class="form-input" type="text" required>
+            </div>
+            <div>
+              <label class="form-label">Your role</label>
+              <input class="form-input" type="text" placeholder="e.g. VP HR, CHRO">
+            </div>
+          </div>
+
+          <div class="form-row row-2">
+            <div>
+              <label class="form-label">Employees</label>
+              <select class="form-select">
+                <option>Under 100</option>
+                <option selected>100–500</option>
+                <option>500–1,000</option>
+                <option>1,000–2,500</option>
+                <option>Over 2,500</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label">HRIS</label>
+              <select class="form-select">
+                <option>BambooHR</option>
+                <option>Rippling</option>
+                <option>ADP</option>
+                <option>Paylocity</option>
+                <option>Paycom</option>
+                <option>Workday</option>
+                <option>Other</option>
+                <option>Not sure</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label class="form-label">Anything we should know?</label>
+            <textarea class="form-textarea" placeholder="Specific questions, current pain points, timing..."></textarea>
+          </div>
+
+          <div class="form-submit">
+            <button onclick="submitForm('demo')">Request demo →</button>
+          </div>
+
+          <p class="form-fineprint">
+            We'll respond within one business day. Your information is kept confidential and
+            never shared. <a href="#">Privacy policy</a>.
+          </p>
+        </div>
+
+        <!-- WAITLIST FORM -->
+        <div class="form-section" id="form-waitlist">
+          <p class="form-intro">
+            Not ready for a demo yet? Join the waitlist and we'll let you know when we
+            open the next cohort. No spam, no salespeople, just one note when it's time.
+          </p>
+
+          <div class="form-row row-2">
+            <div>
+              <label class="form-label">First name <span class="req">*</span></label>
+              <input class="form-input" type="text" required>
+            </div>
+            <div>
+              <label class="form-label">Last name <span class="req">*</span></label>
+              <input class="form-input" type="text" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label class="form-label">Work email <span class="req">*</span></label>
+            <input class="form-input" type="email" required>
+          </div>
+
+          <div class="form-row">
+            <label class="form-label">Company <span class="req">*</span></label>
+            <input class="form-input" type="text" required>
+          </div>
+
+          <div class="form-row">
+            <label class="form-label">When are you looking to evaluate?</label>
+            <select class="form-select">
+              <option selected>Just exploring</option>
+              <option>Within 30 days</option>
+              <option>Q3 2026</option>
+              <option>Q4 2026</option>
+              <option>2027</option>
+            </select>
+          </div>
+
+          <div class="form-submit">
+            <button onclick="submitForm('waitlist')">Join the waitlist →</button>
+          </div>
+
+          <p class="form-fineprint">
+            We'll send one note when your timeframe approaches. That's it.
+          </p>
+        </div>
+
+        <!-- QUESTION FORM -->
+        <div class="form-section" id="form-question">
+          <p class="form-intro">
+            Have a question that doesn't quite fit a demo or a sales call? We read
+            every message himself.
+          </p>
+
+          <div class="form-row row-2">
+            <div>
+              <label class="form-label">Name <span class="req">*</span></label>
+              <input class="form-input" type="text" required>
+            </div>
+            <div>
+              <label class="form-label">Work email <span class="req">*</span></label>
+              <input class="form-input" type="email" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label class="form-label">Company</label>
+            <input class="form-input" type="text">
+          </div>
+
+          <div class="form-row">
+            <label class="form-label">Your question <span class="req">*</span></label>
+            <textarea class="form-textarea" required placeholder="Ask anything about Qomp, TSG, pricing, the pilot, or compensation generally..."></textarea>
+          </div>
+
+          <div class="form-submit">
+            <button onclick="submitForm('question')">Send question →</button>
+          </div>
+
+          <p class="form-fineprint">
+            We respond personally within one business day.
+          </p>
+        </div>
+
+        <!-- SUCCESS -->
+        <div class="success-message" id="success-msg">
+          <div class="success-eyebrow">§ Received</div>
+          <div class="success-title" id="success-title">Thanks — we got it.</div>
+          <div class="success-body" id="success-body">
+            We will reach out within one business day. In the meantime, feel free to
+            poke around the site.
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: CONTACT ASIDE -->
+      <aside class="contact-aside">
+        <div class="aside-section">
+          <div class="aside-label">§ Direct</div>
+          <div class="aside-headline">
+            Skip the form. <em>Email us directly</em>.
+          </div>
+          <div class="aside-body" style="margin-top: 16px;">
+            <a href="mailto:info@qomp.ai" class="aside-link">
+              <div class="aside-link-icon">@</div>
+              <div>
+                <div class="aside-link-label">Email</div>
+                <div class="aside-link-value">info@qomp.ai</div>
+              </div>
+            </a>
+            <a href="tel:+16026135800" class="aside-link">
+              <div class="aside-link-icon">→</div>
+              <div>
+                <div class="aside-link-label">Phone</div>
+                <div class="aside-link-value">(602) 613-5800</div>
+              </div>
+            </a>
+            <a href="https://linkedin.com" target="_blank" class="aside-link">
+              <div class="aside-link-icon">in</div>
+              <div>
+                <div class="aside-link-label">LinkedIn</div>
+                <div class="aside-link-value">/in/stuartreeves</div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="aside-section">
+          <div class="aside-label">§ Office</div>
+          <div class="aside-headline">
+            <em>Phoenix</em>, Arizona.
+          </div>
+          <div class="aside-body" style="margin-top: 12px;">
+            TSG headquarters · Founded 2021<br>
+            Mountain Time (UTC−7)<br>
+            Mon–Fri, 8am–6pm
+          </div>
+        </div>
+
+        <div class="aside-section">
+          <div class="aside-label">§ TSG advisory</div>
+          <div class="aside-headline">
+            Need <em>strategy</em>, not software?
+          </div>
+          <div class="aside-body" style="margin-top: 12px;">
+            For traditional comp consulting, exec search, or HR advisory — talk to TSG
+            directly. We've been doing this work for decades.
+          </div>
+          <a href="https://tsg-corp.com" target="_blank" style="display: inline-block; margin-top: 14px; font-size: 13px; color: var(--mint); font-weight: 600; text-decoration: underline;">
+            tsg-corp.com →
+          </a>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<section class="trust-section">
+  <div class="container">
+    <div class="trust-grid">
+      <div class="trust-cell">
+        <div class="trust-num">01</div>
+        <div class="trust-label">Real responses, not auto-replies.</div>
+        <div class="trust-body">
+          Every form submission goes directly to a real person. No marketing automation, no SDR
+          chase, no drip campaigns. One human reading what you wrote.
+        </div>
+      </div>
+      <div class="trust-cell">
+        <div class="trust-num">02</div>
+        <div class="trust-label">Demos use your actual data.</div>
+        <div class="trust-body">
+          We don't show generic dashboards. We connect to your HRIS (or use a CSV) and
+          demo Qomp with your real company. You see exactly what you'd be buying.
+        </div>
+      </div>
+      <div class="trust-cell">
+        <div class="trust-num">03</div>
+        <div class="trust-label">No long sales cycle.</div>
+        <div class="trust-body">
+          Demo. Question. Decision. Live in 48 hours after signing. We're not selling a
+          three-month enterprise deployment — we're selling software that works.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="logo-mark">qomp</span>
+        <p class="footer-tagline">
+          Compensation intelligence for mid-size employers — built by TSG.
+        </p>
+        <div class="footer-attribution">
+          Data sources: <strong>Salary.com CAMD</strong><br>
+          Last refreshed: <strong>May 8, 2026</strong><br>
+          Methodology · Built by TSG
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="product.html">How it works</a></li>
+          <li><a href="product.html">Features</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="contact.html">Request demo</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Qomp</a></li>
+          <li><a href="about.html">TSG advisory</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy policy</a></li>
+          <li><a href="#">Terms of service</a></li>
+          <li><a href="#">Data processing</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-base">
+      <div>© 2026 TSG Executive Search & Compensation</div>
+      <div>Phoenix, Arizona · est. 2021</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function setTab(tab) {
+    document.querySelectorAll('.form-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.form-section').forEach(function(s) { s.classList.remove('active'); });
+    document.getElementById('tab-' + tab).classList.add('active');
+    document.getElementById('form-' + tab).classList.add('active');
+    document.getElementById('success-msg').classList.remove('active');
+  }
+
+  function submitForm(type) {
+    var titles = {
+      demo: "Demo request received.",
+      waitlist: "You're on the list.",
+      question: "Question received."
+    };
+    var bodies = {
+      demo: "We will reach out within one business day to schedule your demo. We'll come prepared with questions about your data and current setup.",
+      waitlist: "We'll send one note when we're ready to schedule your demo. No spam in between.",
+      question: "We read every message personally. Expect a thoughtful response within one business day."
+    };
+    document.querySelectorAll('.form-section').forEach(function(s) { s.classList.remove('active'); });
+    document.getElementById('success-title').textContent = titles[type];
+    document.getElementById('success-body').textContent = bodies[type];
+    document.getElementById('success-msg').classList.add('active');
+  }
+</script>
+
+</body>
+</html>

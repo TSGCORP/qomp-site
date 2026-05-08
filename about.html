@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Qomp</title>
+<meta name="description" content="Qomp is built by TSG Executive Search & Compensation in Phoenix, Arizona. Decades of executive search and compensation experience, packaged into software for mid-size employers.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --cream: #F5F1EA; --cream-2: #EDE8DD; --paper: #FBF8F2;
+    --ink: #0F1419; --ink-2: #2A3038; --ink-3: #5C6470;
+    --rule: #D9D3C5; --rule-soft: #E5DFD0;
+    --mint: #0D5942; --mint-2: #0A4734; --mint-light: #E8EFE9;
+    --sienna: #C8623B;
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Inter Tight', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  body { font-family: var(--sans); background: var(--cream); color: var(--ink); font-size: 16px; line-height: 1.55; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+  /* TICKER + NAV */
+  .top-strip { background: var(--ink); color: var(--cream); border-bottom: 1px solid var(--ink-2); overflow: hidden; height: 32px; display: flex; align-items: center; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; }
+  .ticker { display: flex; gap: 48px; white-space: nowrap; animation: tickerScroll 44s linear infinite; padding-left: 100%; }
+  @keyframes tickerScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .ticker-item { color: rgba(245, 241, 234, 0.7); }
+  .ticker-item strong { color: var(--cream); font-weight: 500; }
+  .ticker-dot { color: #5DCAA5; font-weight: 700; }
+
+  nav { border-bottom: 1px solid var(--rule); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(20px); background: rgba(245, 241, 234, 0.92); }
+  .nav-inner { max-width: 1320px; margin: 0 auto; padding: 18px 40px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { display: flex; align-items: baseline; gap: 8px; }
+  .logo-mark { font-family: var(--serif); font-weight: 600; font-size: 28px; letter-spacing: -0.04em; color: var(--ink); font-style: italic; }
+  .logo-mark::after { content: '.'; color: var(--mint); }
+  .logo-meta { font-family: var(--mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--ink-3); }
+  .nav-links { display: flex; gap: 36px; align-items: center; }
+  .nav-link { font-size: 14px; font-weight: 500; color: var(--ink-2); transition: color 0.2s; position: relative; }
+  .nav-link:hover { color: var(--mint); }
+  .nav-link.current { color: var(--ink); }
+  .nav-link.current::after { content: ''; position: absolute; bottom: -22px; left: 0; right: 0; height: 2px; background: var(--mint); }
+  .nav-actions { display: flex; gap: 12px; align-items: center; }
+  .btn { font-family: var(--sans); font-weight: 500; font-size: 14px; padding: 10px 18px; border-radius: 2px; transition: all 0.18s; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+  .btn-ghost { color: var(--ink); border: 1px solid var(--rule); }
+  .btn-ghost:hover { border-color: var(--ink); background: var(--ink); color: var(--cream); }
+  .btn-primary { background: var(--ink); color: var(--cream); border: 1px solid var(--ink); }
+  .btn-primary:hover { background: var(--mint); border-color: var(--mint); }
+  .btn-mint { background: var(--mint); color: var(--cream); border: 1px solid var(--mint); }
+  .btn-mint:hover { background: var(--mint-2); border-color: var(--mint-2); }
+  .btn-cream { background: var(--cream); color: var(--ink); border: 1px solid var(--cream); }
+  .btn-cream:hover { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+  .btn-outline { color: var(--cream); border: 1px solid rgba(245, 241, 234, 0.4); }
+  .btn-outline:hover { border-color: var(--cream); background: rgba(245, 241, 234, 0.08); }
+
+  .container { max-width: 1320px; margin: 0 auto; padding: 0 40px; }
+
+  .section-label { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.22em; color: var(--ink-3); display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
+  .section-label::before { content: ''; width: 32px; height: 1px; background: var(--ink); }
+
+  /* PAGE HEADER */
+  .page-header {
+    padding: 64px 0 80px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .page-header-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .page-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--mint);
+    margin-bottom: 24px;
+  }
+  h1.page-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(48px, 5.5vw, 76px);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    margin-bottom: 24px;
+    font-variation-settings: "opsz" 144;
+  }
+  h1.page-title em { font-style: italic; color: var(--mint); }
+  .page-lede {
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--ink-2);
+    max-width: 580px;
+    padding-top: 56px;
+  }
+  .page-lede strong { color: var(--ink); font-weight: 600; }
+
+  /* THE WHY — pull-quote feature */
+  .why-section {
+    padding: 96px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .why-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .why-side {
+    position: sticky;
+    top: 120px;
+  }
+  .why-side .section-label { margin-bottom: 16px; }
+  .why-side h2 {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 1.15;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .why-side h2 em { color: var(--mint); }
+
+  .why-prose {
+    max-width: 680px;
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--ink-2);
+  }
+  .why-prose p { margin-bottom: 24px; }
+  .why-prose p:last-child { margin-bottom: 0; }
+  .why-prose strong { color: var(--ink); font-weight: 600; }
+  .why-prose .pullquote {
+    font-family: var(--serif);
+    font-size: 32px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    border-left: 3px solid var(--mint);
+    padding-left: 28px;
+    margin: 36px 0;
+    font-variation-settings: "opsz" 144;
+  }
+  .why-prose .pullquote em { color: var(--mint); }
+
+  /* PRINCIPLES */
+  .principles-section {
+    padding: 96px 0;
+    border-bottom: 1px solid var(--rule);
+    background: var(--cream-2);
+  }
+  .principles-headline {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(40px, 4.5vw, 56px);
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin-bottom: 16px;
+    max-width: 720px;
+    font-variation-settings: "opsz" 144;
+  }
+  .principles-headline em { font-style: italic; color: var(--mint); }
+  .principles-intro {
+    font-size: 16px;
+    color: var(--ink-2);
+    line-height: 1.6;
+    max-width: 680px;
+    margin-bottom: 56px;
+  }
+
+  .principle-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--ink);
+  }
+
+  .principle {
+    padding: 36px 36px 36px 0;
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  .principle:nth-child(2n) { padding-right: 0; padding-left: 36px; border-right: none; }
+  .principle:nth-last-child(-n+2) { border-bottom: none; }
+
+  .principle-num {
+    font-family: var(--serif);
+    font-style: normal;
+    font-size: 44px;
+    font-weight: 500;
+    color: var(--mint);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    font-variation-settings: "opsz" 144;
+  }
+
+  .principle-title {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+  }
+  .principle-body {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--ink-2);
+  }
+
+  /* TSG STORY BAND */
+  .tsg-band {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 96px 0;
+    border-bottom: 1px solid var(--ink);
+  }
+  .tsg-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .tsg-band .section-label { color: rgba(245, 241, 234, 0.6); }
+  .tsg-band .section-label::before { background: var(--cream); }
+
+  .tsg-headline {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(40px, 4.5vw, 60px);
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    color: var(--cream);
+    margin-bottom: 28px;
+    font-variation-settings: "opsz" 144;
+  }
+  .tsg-headline em { font-style: italic; color: rgba(245, 241, 234, 0.7); }
+
+  .tsg-prose {
+    font-size: 16px;
+    line-height: 1.65;
+    color: rgba(245, 241, 234, 0.85);
+  }
+  .tsg-prose p { margin-bottom: 18px; }
+  .tsg-prose strong { color: var(--cream); font-weight: 600; }
+
+  .tsg-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  .tsg-stat {
+    padding: 28px 28px 28px 0;
+    border-right: 1px solid var(--ink-2);
+    border-bottom: 1px solid var(--ink-2);
+  }
+  .tsg-stat:nth-child(2n) { border-right: none; padding-right: 0; padding-left: 28px; }
+  .tsg-stat:nth-last-child(-n+2) { border-bottom: none; }
+
+  .tsg-stat-num {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 64px;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    color: var(--cream);
+    margin-bottom: 12px;
+    font-variation-settings: "opsz" 144;
+  }
+  .tsg-stat-num small {
+    font-size: 28px;
+    color: rgba(245, 241, 234, 0.55);
+  }
+  .tsg-stat-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: rgba(245, 241, 234, 0.6);
+    margin-bottom: 8px;
+  }
+  .tsg-stat-detail {
+    font-size: 13px;
+    color: rgba(245, 241, 234, 0.75);
+    line-height: 1.5;
+  }
+
+  /* FOUNDER */
+  .founder-section {
+    padding: 96px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .founder-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .founder-card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 28px;
+    text-align: center;
+  }
+  .founder-mono {
+    width: 88px;
+    height: 88px;
+    border: 1.5px solid var(--ink);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 32px;
+    color: var(--ink);
+    margin: 0 auto 18px;
+    font-weight: 500;
+  }
+  .founder-name {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  .founder-role {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--mint);
+    margin-bottom: 18px;
+  }
+  .founder-bio {
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.55;
+    text-align: left;
+    border-top: 1px solid var(--rule);
+    padding-top: 16px;
+  }
+
+  .founder-quote {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(28px, 3vw, 40px);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 32px;
+    font-variation-settings: "opsz" 144;
+  }
+  .founder-quote em { color: var(--mint); }
+  .founder-quote::before {
+    content: '"';
+    color: var(--mint);
+    margin-right: 4px;
+    font-size: 1em;
+  }
+  .founder-quote::after {
+    content: '"';
+    color: var(--mint);
+    margin-left: 4px;
+    font-size: 1em;
+  }
+
+  .founder-prose {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--ink-2);
+    max-width: 640px;
+  }
+  .founder-prose p { margin-bottom: 18px; }
+  .founder-prose strong { color: var(--ink); font-weight: 600; }
+
+  /* CTA */
+  .cta-section { padding: 84px 0 96px; background: var(--mint); color: var(--cream); }
+  .cta-section .section-label { color: rgba(245, 241, 234, 0.6); }
+  .cta-section .section-label::before { background: var(--cream); }
+  .cta-headline { font-family: var(--serif); font-weight: 400; font-size: clamp(40px, 5vw, 64px); line-height: 1.0; letter-spacing: -0.035em; color: var(--cream); margin-bottom: 32px; max-width: 900px; font-variation-settings: "opsz" 144; }
+  .cta-headline em { font-style: italic; color: rgba(245, 241, 234, 0.7); }
+  .cta-row { display: flex; gap: 12px; }
+  .cta-row .btn { padding: 14px 24px; font-size: 15px; }
+
+  /* FOOTER */
+  footer { background: var(--ink); color: var(--cream); padding: 64px 0 32px; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; padding-bottom: 48px; border-bottom: 1px solid var(--ink-2); }
+  .footer-brand .logo-mark { color: var(--cream); font-size: 32px; }
+  .footer-tagline { font-family: var(--serif); font-style: italic; font-size: 15px; color: rgba(245, 241, 234, 0.7); margin-top: 12px; margin-bottom: 24px; max-width: 320px; line-height: 1.5; }
+  .footer-attribution { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: rgba(245, 241, 234, 0.4); line-height: 1.7; }
+  .footer-attribution strong { color: rgba(245, 241, 234, 0.7); font-weight: 500; }
+  .footer-col h4 { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(245, 241, 234, 0.5); margin-bottom: 18px; font-weight: 500; }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 10px; }
+  .footer-col a { font-size: 14px; color: rgba(245, 241, 234, 0.85); transition: color 0.2s; }
+  .footer-col a:hover { color: var(--cream); }
+  .footer-base { padding-top: 28px; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: rgba(245, 241, 234, 0.4); letter-spacing: 0.04em; }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 980px) {
+    .container { padding: 0 24px; }
+    .nav-inner { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .page-header-grid, .why-grid, .tsg-grid, .founder-grid, .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .why-side, .founder-card { position: relative; top: 0; }
+    .principle-grid { grid-template-columns: 1fr; }
+    .principle, .principle:nth-child(2n) { padding: 28px 0; border-right: none; padding-left: 0; padding-right: 0; }
+    .principle { grid-template-columns: 48px 1fr; gap: 16px; }
+    .principle-num { font-size: 32px; }
+    .tsg-stats { grid-template-columns: 1fr; }
+    .tsg-stat, .tsg-stat:nth-child(2n) { padding: 24px 0; border-right: none; padding-left: 0; }
+    .why-prose .pullquote { font-size: 22px; padding-left: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="top-strip">
+  <div class="ticker">
+    <span class="ticker-item"><span class="ticker-dot">●</span> Live data feed</span>
+    <span class="ticker-item"><strong>8,712</strong> companies in dataset</span>
+    <span class="ticker-item"><strong>247,431</strong> roles benchmarked this quarter</span>
+    <span class="ticker-item"><strong>$4.2B</strong> aggregate payroll under analysis</span>
+    <span class="ticker-item">Market data refreshed <strong>2 hours ago</strong></span>
+    <span class="ticker-item">Powered by <strong>Salary.com CAMD</strong></span>
+    <span class="ticker-item"><strong>11</strong> countries · <strong>340</strong> US cities</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> Live data feed</span>
+    <span class="ticker-item"><strong>8,712</strong> companies in dataset</span>
+    <span class="ticker-item"><strong>247,431</strong> roles benchmarked this quarter</span>
+    <span class="ticker-item"><strong>$4.2B</strong> aggregate payroll under analysis</span>
+    <span class="ticker-item">Market data refreshed <strong>2 hours ago</strong></span>
+    <span class="ticker-item">Powered by <strong>Salary.com CAMD</strong></span>
+    <span class="ticker-item"><strong>11</strong> countries · <strong>340</strong> US cities</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-mark">qomp</span>
+      <span class="logo-meta">No. 001 · Phoenix</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="product.html" class="nav-link">Product</a>
+      <a href="pricing.html" class="nav-link">Pricing</a>
+      <a href="about.html" class="nav-link current">About</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <a href="qomp-dashboard.html" target="_blank" class="btn btn-ghost">Client login</a>
+      <a href="contact.html" class="btn btn-primary">Request demo →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<section class="page-header">
+  <div class="container">
+    <div class="page-header-grid">
+      <div>
+        <div class="page-eyebrow">§ About</div>
+        <h1 class="page-title">
+          Built by people<br>
+          who do <em>this</em><br>
+          for a living.
+        </h1>
+      </div>
+      <p class="page-lede">
+        Qomp is the software arm of <strong>TSG Executive Search & Compensation</strong> — an
+        independent comp consulting firm based in Phoenix. Founded in 2021 and built on
+        <strong>more than 30 years</strong> of executive search and compensation experience,
+        TSG has spent the last few years helping mid-size employers run pay correctly.
+        Qomp is what happens when decades of advisory expertise gets put into a dashboard.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="why-section">
+  <div class="container">
+    <div class="why-grid">
+      <div class="why-side">
+        <div class="section-label">§ 01 — The reason</div>
+        <h2>
+          Why we built Qomp — and <em>why now</em>.
+        </h2>
+      </div>
+
+      <div class="why-prose">
+        <p>
+          With more than three decades in executive search and compensation consulting,
+          we've watched mid-size employers struggle with the same problem for years:
+          they need real compensation data and expert interpretation, but the industry
+          that provides those things is built for the Fortune 500. Mercer engagements
+          start at $30K. Radford requires survey participation and complex contracts.
+          Pave is built for venture-backed tech.
+        </p>
+
+        <div class="pullquote">
+          The companies who needed comp clarity the most — <em>healthcare, financial
+          services, professional services in the 100–1,500 employee range</em> — were the
+          ones being ignored.
+        </div>
+
+        <p>
+          So they made do. They Googled salary ranges. They asked their network. They
+          guessed. They lost good people to better offers they didn't know existed. They
+          overpaid in some places and underpaid in others, with no way to tell which was
+          which until it was too late.
+        </p>
+
+        <p>
+          When TSG was founded in 2021, the goal was to bring senior-level executive search
+          and compensation expertise directly to mid-size employers — without the bureaucracy
+          of the big firms. <strong>Then in 2024, Salary.com opened their CAMD dataset to
+          partners. That changed everything.</strong> For the first time, the same data Fortune
+          500 comp teams use could power a product priced for the mid-market.
+        </p>
+
+        <p>
+          Qomp launches in 2026 because the conditions are finally right. The data is
+          accessible. The HRIS APIs are mature enough. And the mid-size employers who've
+          been ignored by the industry deserve the same intelligence everyone else has
+          had for decades.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRINCIPLES -->
+<section class="principles-section">
+  <div class="container">
+    <div class="section-label">§ 02 — Principles</div>
+
+    <h2 class="principles-headline">
+      What we <em>believe</em> about compensation.
+    </h2>
+    <p class="principles-intro">
+      These aren't marketing values. They're operating commitments. Every product
+      decision, pricing call, and advisory recommendation runs through these.
+    </p>
+
+    <div class="principle-grid">
+      <div class="principle">
+        <div class="principle-num">01</div>
+        <div>
+          <div class="principle-title">Data without interpretation is malpractice.</div>
+          <div class="principle-body">
+            Comp software that hands you a dashboard and walks away has done half the job.
+            The numbers don't tell you what to do. Every Qomp plan includes TSG advisors
+            because reading a chart is easy; deciding what action to take is hard.
+          </div>
+        </div>
+      </div>
+
+      <div class="principle">
+        <div class="principle-num">02</div>
+        <div>
+          <div class="principle-title">Mid-size companies aren't smaller enterprises.</div>
+          <div class="principle-body">
+            They have different problems, different budgets, and different timelines than
+            Fortune 500 companies. We refuse to build watered-down enterprise software.
+            Qomp is designed from the ground up for HR teams of three to ten.
+          </div>
+        </div>
+      </div>
+
+      <div class="principle">
+        <div class="principle-num">03</div>
+        <div>
+          <div class="principle-title">Crowdsourced data is for cocktail parties.</div>
+          <div class="principle-body">
+            Self-reported salary data from anonymous internet users is fine for water-cooler
+            curiosity. It's malpractice to make compensation decisions from it. Qomp uses
+            HR-reported, validated data from 8,712 companies — and nothing else.
+          </div>
+        </div>
+      </div>
+
+      <div class="principle">
+        <div class="principle-num">04</div>
+        <div>
+          <div class="principle-title">Transparency builds trust faster than mystery.</div>
+          <div class="principle-body">
+            We publish our pricing. We disclose our data sources. We tell you what's
+            included and what isn't. Pricing pages that say "contact us for a quote" are
+            usually hiding something. Ours doesn't.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TSG BAND -->
+<section class="tsg-band">
+  <div class="container">
+    <div class="tsg-grid">
+      <div>
+        <div class="section-label">§ 03 — The parent firm</div>
+        <h2 class="tsg-headline">
+          Decades of experience.<br>
+          Built for <em>this</em> moment.
+        </h2>
+        <div class="tsg-prose">
+          <p>
+            TSG Executive Search & Compensation is an independent advisory firm based in
+            Phoenix. While the firm itself was founded in 2021, it draws on more than
+            <strong>thirty years of personal experience</strong> in executive search, HR consulting,
+            and compensation strategy across mid-size and enterprise employers.
+          </p>
+          <p>
+            We provide <strong>executive search, HR consulting, and compensation consulting</strong>
+            to mid-size employers across the US — healthcare systems, financial services
+            firms, and professional service organizations. Qomp is what happens when those
+            decades of advisory work get packaged into software.
+          </p>
+          <p>
+            Every Qomp client gets the same advisory rigor TSG delivers to its consulting
+            clients — just at a fraction of the cost, because the dashboard does the
+            mechanical work.
+          </p>
+        </div>
+      </div>
+
+      <div class="tsg-stats">
+        <div class="tsg-stat">
+          <div class="tsg-stat-num">30<small>+</small></div>
+          <div class="tsg-stat-label">Years</div>
+          <div class="tsg-stat-detail">In comp & search practice</div>
+        </div>
+        <div class="tsg-stat">
+          <div class="tsg-stat-num">2021</div>
+          <div class="tsg-stat-label">Founded</div>
+          <div class="tsg-stat-detail">TSG independent advisory</div>
+        </div>
+        <div class="tsg-stat">
+          <div class="tsg-stat-num">3</div>
+          <div class="tsg-stat-label">Practices</div>
+          <div class="tsg-stat-detail">Search, HR, compensation</div>
+        </div>
+        <div class="tsg-stat">
+          <div class="tsg-stat-num">1</div>
+          <div class="tsg-stat-label">Mission</div>
+          <div class="tsg-stat-detail">Serve the mid-market well</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section class="founder-section">
+  <div class="container">
+    <div class="section-label">§ 04 — Founder</div>
+
+    <div class="founder-grid">
+      <div class="founder-card">
+        <div class="founder-mono">SR</div>
+        <div class="founder-name">Stuart Reeves</div>
+        <div class="founder-role">Founder & Principal</div>
+        <div class="founder-bio">
+          More than 30 years of experience in executive search, HR consulting, and
+          compensation strategy. Founded TSG in 2021 to bring senior-level advisory
+          expertise directly to mid-size employers. Based in Phoenix. Building Qomp
+          because the mid-market deserves better.
+        </div>
+      </div>
+
+      <div>
+        <div class="founder-quote">
+          For three decades I've watched HR leaders at <em>real companies</em> get treated
+          like an afterthought by the comp industry. Qomp is my answer.
+        </div>
+        <div class="founder-prose">
+          <p>
+            I started TSG in 2021 because I wanted to do executive search and compensation
+            consulting the way I thought it should be done — directly, without the
+            bureaucracy of the big firms, and priced so mid-size companies could actually
+            afford it. By that point I'd already spent three decades in the field, and
+            I knew exactly what was missing.
+          </p>
+          <p>
+            What I learned over those decades is that the work isn't the bottleneck. The
+            <strong>data is the bottleneck.</strong> Without real benchmarks, comp advisors spend
+            half their engagement just gathering market data — when they could be spending
+            that time on actual interpretation and recommendations.
+          </p>
+          <p>
+            Qomp closes that gap. Live data flowing in automatically means our advisors
+            can do the work they were trained to do — interpret, recommend, and guide
+            decisions — instead of running surveys. That's why every Qomp plan includes
+            TSG advisory time. The software handles the mechanics; the humans handle
+            the judgment.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <div class="section-label">§ Get in touch</div>
+
+    <h1 class="cta-headline">
+      Want to see what we built?<br>
+      <em>Spend 30 minutes with us.</em>
+    </h1>
+
+    <div class="cta-row">
+      <a href="contact.html" class="btn btn-cream">Request a demo →</a>
+      <a href="contact.html" class="btn btn-outline">Talk to TSG</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="logo-mark">qomp</span>
+        <p class="footer-tagline">
+          Compensation intelligence for mid-size employers — built by TSG.
+        </p>
+        <div class="footer-attribution">
+          Data sources: <strong>Salary.com CAMD</strong><br>
+          Last refreshed: <strong>May 8, 2026</strong><br>
+          Methodology · Built by TSG
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="product.html">How it works</a></li>
+          <li><a href="product.html">Features</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="contact.html">Request demo</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Qomp</a></li>
+          <li><a href="about.html">TSG advisory</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy policy</a></li>
+          <li><a href="#">Terms of service</a></li>
+          <li><a href="#">Data processing</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-base">
+      <div>© 2026 TSG Executive Search & Compensation</div>
+      <div>Phoenix, Arizona · est. 2021</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  var revealObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.principle, .tsg-stat, .founder-card').forEach(function(el) {
+    el.classList.add('reveal');
+    revealObs.observe(el);
+  });
+</script>
+
+</body>
+</html>

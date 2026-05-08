@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing — Qomp</title>
+<meta name="description" content="Transparent pricing for compensation intelligence. Three tiers from $999/month. No hidden fees, no annual contracts required.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --cream: #F5F1EA;
+    --cream-2: #EDE8DD;
+    --paper: #FBF8F2;
+    --ink: #0F1419;
+    --ink-2: #2A3038;
+    --ink-3: #5C6470;
+    --rule: #D9D3C5;
+    --rule-soft: #E5DFD0;
+    --mint: #0D5942;
+    --mint-2: #0A4734;
+    --mint-light: #E8EFE9;
+    --sienna: #C8623B;
+
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Inter Tight', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  body {
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.55;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+  /* TICKER */
+  .top-strip { background: var(--ink); color: var(--cream); border-bottom: 1px solid var(--ink-2); overflow: hidden; height: 32px; display: flex; align-items: center; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; }
+  .ticker { display: flex; gap: 48px; white-space: nowrap; animation: tickerScroll 44s linear infinite; padding-left: 100%; }
+  @keyframes tickerScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .ticker-item { color: rgba(245, 241, 234, 0.7); }
+  .ticker-item strong { color: var(--cream); font-weight: 500; }
+  .ticker-dot { color: #5DCAA5; font-weight: 700; }
+
+  /* NAV */
+  nav { border-bottom: 1px solid var(--rule); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(20px); background: rgba(245, 241, 234, 0.92); }
+  .nav-inner { max-width: 1320px; margin: 0 auto; padding: 18px 40px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { display: flex; align-items: baseline; gap: 8px; }
+  .logo-mark { font-family: var(--serif); font-weight: 600; font-size: 28px; letter-spacing: -0.04em; color: var(--ink); font-style: italic; }
+  .logo-mark::after { content: '.'; color: var(--mint); }
+  .logo-meta { font-family: var(--mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--ink-3); }
+  .nav-links { display: flex; gap: 36px; align-items: center; }
+  .nav-link { font-size: 14px; font-weight: 500; color: var(--ink-2); transition: color 0.2s; position: relative; }
+  .nav-link:hover { color: var(--mint); }
+  .nav-link.current { color: var(--ink); }
+  .nav-link.current::after { content: ''; position: absolute; bottom: -22px; left: 0; right: 0; height: 2px; background: var(--mint); }
+  .nav-actions { display: flex; gap: 12px; align-items: center; }
+  .btn { font-family: var(--sans); font-weight: 500; font-size: 14px; padding: 10px 18px; border-radius: 2px; transition: all 0.18s; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+  .btn-ghost { color: var(--ink); border: 1px solid var(--rule); }
+  .btn-ghost:hover { border-color: var(--ink); background: var(--ink); color: var(--cream); }
+  .btn-primary { background: var(--ink); color: var(--cream); border: 1px solid var(--ink); }
+  .btn-primary:hover { background: var(--mint); border-color: var(--mint); }
+  .btn-mint { background: var(--mint); color: var(--cream); border: 1px solid var(--mint); }
+  .btn-mint:hover { background: var(--mint-2); border-color: var(--mint-2); }
+  .btn-cream { background: var(--cream); color: var(--ink); border: 1px solid var(--cream); }
+  .btn-cream:hover { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+  .btn-outline { color: var(--cream); border: 1px solid rgba(245, 241, 234, 0.4); }
+  .btn-outline:hover { border-color: var(--cream); background: rgba(245, 241, 234, 0.08); }
+
+  .container { max-width: 1320px; margin: 0 auto; padding: 0 40px; }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--ink-3);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .section-label::before { content: ''; width: 32px; height: 1px; background: var(--ink); }
+
+  /* PAGE HEADER */
+  .page-header {
+    padding: 64px 0 56px;
+    border-bottom: 1px solid var(--rule);
+    text-align: center;
+  }
+  .page-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--mint);
+    margin-bottom: 24px;
+  }
+  h1.page-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(48px, 5.5vw, 76px);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    margin-bottom: 24px;
+    font-variation-settings: "opsz" 144;
+  }
+  h1.page-title em { font-style: italic; color: var(--mint); }
+  .page-lede {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    max-width: 640px;
+    margin: 0 auto 32px;
+  }
+  .page-lede strong { color: var(--ink); font-weight: 600; }
+
+  /* BILLING TOGGLE */
+  .billing-toggle {
+    display: inline-flex;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 4px;
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+  .billing-toggle button {
+    padding: 10px 18px;
+    border-radius: 2px;
+    color: var(--ink-3);
+    transition: all 0.18s;
+    font-weight: 500;
+    font-family: var(--mono);
+    letter-spacing: 0.14em;
+  }
+  .billing-toggle button.active {
+    background: var(--ink);
+    color: var(--cream);
+  }
+  .billing-toggle .save-badge {
+    margin-left: 6px;
+    color: var(--mint);
+    font-weight: 600;
+  }
+  .billing-toggle button.active .save-badge {
+    color: #5DCAA5;
+  }
+
+  /* PRICING TIERS */
+  .pricing-section {
+    padding: 64px 0 80px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .tier-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 2px solid var(--ink);
+  }
+
+  .tier {
+    padding: 40px 36px 36px;
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .tier:last-child { border-right: none; }
+  .tier.featured {
+    background: var(--ink);
+    color: var(--cream);
+  }
+  .tier.featured .tier-name,
+  .tier.featured .tier-price-num,
+  .tier.featured .tier-price-period,
+  .tier.featured .tier-feature { color: var(--cream); }
+  .tier.featured .tier-tagline,
+  .tier.featured .tier-billing,
+  .tier.featured .tier-features-label { color: rgba(245, 241, 234, 0.6); }
+  .tier.featured .tier-features { border-top-color: var(--ink-2); }
+  .tier.featured .tier-feature::before { color: #5DCAA5; }
+  .tier.featured .tier-feature { border-bottom-color: var(--ink-2); }
+
+  .tier-flag {
+    position: absolute;
+    top: -1px;
+    left: 32px;
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--cream);
+    background: var(--mint);
+    padding: 6px 12px;
+    font-weight: 500;
+  }
+
+  .tier-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--mint);
+    letter-spacing: 0.2em;
+    margin-bottom: 18px;
+    font-weight: 500;
+  }
+  .tier.featured .tier-num { color: #5DCAA5; }
+
+  .tier-name {
+    font-family: var(--serif);
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+  .tier-name em { font-style: italic; }
+
+  .tier-tagline {
+    font-size: 14px;
+    color: var(--ink-3);
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+
+  .tier-price {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .tier-price-num {
+    font-family: var(--serif);
+    font-size: 64px;
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    font-variation-settings: "opsz" 144;
+  }
+  .tier-price-period {
+    font-size: 15px;
+    color: var(--ink-3);
+    font-weight: 500;
+  }
+  .tier-billing {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-3);
+    margin-bottom: 28px;
+    min-height: 16px;
+  }
+
+  .tier-cta {
+    margin-bottom: 32px;
+  }
+  .tier-cta .btn {
+    width: 100%;
+    justify-content: center;
+    padding: 13px 20px;
+    font-size: 14px;
+  }
+  .tier.featured .btn-primary {
+    background: var(--cream);
+    color: var(--ink);
+    border-color: var(--cream);
+  }
+  .tier.featured .btn-primary:hover {
+    background: var(--mint);
+    color: var(--cream);
+    border-color: var(--mint);
+  }
+
+  .tier-features-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-3);
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+
+  .tier-features {
+    list-style: none;
+    border-top: 1px solid var(--rule);
+    flex-grow: 1;
+  }
+  .tier-feature {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 14px;
+    color: var(--ink-2);
+    line-height: 1.4;
+    padding-left: 22px;
+    position: relative;
+  }
+  .tier-feature:last-child { border-bottom: none; }
+  .tier-feature::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--mint);
+    font-weight: 600;
+    font-size: 13px;
+  }
+  .tier-feature strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .tier.featured .tier-feature strong { color: var(--cream); }
+
+  /* PILOT BAND */
+  .pilot-band {
+    background: var(--mint);
+    color: var(--cream);
+    padding: 56px 0;
+    border-bottom: 1px solid var(--mint);
+  }
+  .pilot-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .pilot-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: rgba(245, 241, 234, 0.6);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .pilot-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--cream); }
+
+  .pilot-headline {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(36px, 4vw, 52px);
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    color: var(--cream);
+    margin-bottom: 20px;
+    font-variation-settings: "opsz" 144;
+  }
+  .pilot-headline em {
+    font-style: italic;
+    color: rgba(245, 241, 234, 0.7);
+  }
+
+  .pilot-body {
+    font-size: 16px;
+    color: rgba(245, 241, 234, 0.9);
+    line-height: 1.6;
+  }
+  .pilot-body strong { color: var(--cream); font-weight: 600; }
+
+  .pilot-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    padding-left: 48px;
+    border-left: 1px solid rgba(245, 241, 234, 0.2);
+  }
+  .pilot-stat-num {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 56px;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--cream);
+    margin-bottom: 8px;
+    font-variation-settings: "opsz" 144;
+  }
+  .pilot-stat-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: rgba(245, 241, 234, 0.7);
+  }
+
+  /* COMPARISON TABLE */
+  .comparison-section {
+    padding: 84px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .comparison-header {
+    margin-bottom: 48px;
+    max-width: 760px;
+  }
+  .comparison-headline {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(36px, 4vw, 52px);
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin-bottom: 16px;
+    font-variation-settings: "opsz" 144;
+  }
+  .comparison-headline em { font-style: italic; color: var(--mint); }
+  .comparison-intro {
+    font-size: 16px;
+    color: var(--ink-2);
+    line-height: 1.6;
+  }
+
+  .comparison-table {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    overflow: hidden;
+  }
+
+  .comp-row {
+    display: grid;
+    grid-template-columns: 2fr 1.3fr 1fr 1fr;
+    gap: 24px;
+    padding: 18px 28px;
+    border-bottom: 1px solid var(--rule);
+    align-items: center;
+  }
+  .comp-row:last-child { border-bottom: none; }
+  .comp-row.header {
+    background: var(--ink);
+    color: var(--cream);
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    padding: 16px 28px;
+  }
+  .comp-row.header > div {
+    text-align: center;
+  }
+  .comp-row.header > div:first-child {
+    text-align: left;
+  }
+  .comp-row.header strong { color: var(--cream); font-family: var(--serif); font-style: italic; font-size: 16px; font-weight: 500; text-transform: none; letter-spacing: -0.01em; }
+  .comp-row .comp-feature {
+    font-size: 15px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .comp-row .comp-feature small {
+    display: block;
+    font-size: 12px;
+    color: var(--ink-3);
+    font-weight: 400;
+    margin-top: 2px;
+    line-height: 1.4;
+  }
+  .comp-cell {
+    font-size: 14px;
+    color: var(--ink-2);
+    text-align: center;
+  }
+  .comp-cell.qomp {
+    font-weight: 600;
+    color: var(--mint);
+  }
+  .comp-check {
+    color: var(--mint);
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .comp-x {
+    color: var(--ink-3);
+    font-size: 16px;
+  }
+
+  /* FAQ */
+  .faq-section {
+    padding: 84px 0;
+    border-bottom: 1px solid var(--rule);
+    background: var(--cream-2);
+  }
+  .faq-header {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .faq-side {
+    position: sticky;
+    top: 120px;
+  }
+  .faq-headline {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 44px;
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 16px;
+    font-variation-settings: "opsz" 144;
+  }
+  .faq-headline em { font-style: italic; color: var(--mint); }
+  .faq-side p {
+    font-size: 15px;
+    color: var(--ink-3);
+    line-height: 1.6;
+  }
+
+  .faq-items {
+    display: flex;
+    flex-direction: column;
+  }
+  .faq-item {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .faq-item:first-child { padding-top: 0; }
+  .faq-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .faq-q {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    margin-bottom: 12px;
+  }
+  .faq-q em { font-style: italic; color: var(--mint); }
+  .faq-a {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--ink-2);
+    max-width: 580px;
+  }
+
+  /* CTA */
+  .cta-section {
+    padding: 84px 0 96px;
+    background: var(--ink);
+    color: var(--cream);
+  }
+  .cta-section .section-label { color: rgba(245, 241, 234, 0.6); }
+  .cta-section .section-label::before { background: var(--cream); }
+  .cta-headline {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(40px, 5vw, 64px);
+    line-height: 1.0;
+    letter-spacing: -0.035em;
+    color: var(--cream);
+    margin-bottom: 32px;
+    max-width: 900px;
+    font-variation-settings: "opsz" 144;
+  }
+  .cta-headline em { font-style: italic; color: rgba(245, 241, 234, 0.6); }
+  .cta-row { display: flex; gap: 12px; }
+  .cta-row .btn { padding: 14px 24px; font-size: 15px; }
+
+  /* FOOTER */
+  footer { background: var(--ink); color: var(--cream); padding: 64px 0 32px; border-top: 1px solid var(--ink-2); }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; padding-bottom: 48px; border-bottom: 1px solid var(--ink-2); }
+  .footer-brand .logo-mark { color: var(--cream); font-size: 32px; }
+  .footer-tagline { font-family: var(--serif); font-style: italic; font-size: 15px; color: rgba(245, 241, 234, 0.7); margin-top: 12px; margin-bottom: 24px; max-width: 320px; line-height: 1.5; }
+  .footer-attribution { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: rgba(245, 241, 234, 0.4); line-height: 1.7; }
+  .footer-attribution strong { color: rgba(245, 241, 234, 0.7); font-weight: 500; }
+  .footer-col h4 { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(245, 241, 234, 0.5); margin-bottom: 18px; font-weight: 500; }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 10px; }
+  .footer-col a { font-size: 14px; color: rgba(245, 241, 234, 0.85); transition: color 0.2s; }
+  .footer-col a:hover { color: var(--cream); }
+  .footer-base { padding-top: 28px; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: rgba(245, 241, 234, 0.4); letter-spacing: 0.04em; }
+
+  /* REVEAL */
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* RESPONSIVE */
+  @media (max-width: 980px) {
+    .container { padding: 0 24px; }
+    .nav-inner { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .tier-grid { grid-template-columns: 1fr; border-top: none; }
+    .tier { border-right: none; border-top: 2px solid var(--ink); }
+    .pilot-grid, .faq-header, .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+    .faq-side { position: relative; top: 0; }
+    .pilot-stats { padding-left: 0; border-left: none; padding-top: 28px; border-top: 1px solid rgba(245, 241, 234, 0.2); }
+    .comp-row { grid-template-columns: 1fr; gap: 6px; padding: 14px 18px; }
+    .comp-row.header { display: none; }
+    .comp-cell { text-align: left; }
+    .comp-cell::before {
+      content: attr(data-label) ': ';
+      font-family: var(--mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--ink-3);
+      margin-right: 8px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="top-strip">
+  <div class="ticker">
+    <span class="ticker-item"><span class="ticker-dot">●</span> Live data feed</span>
+    <span class="ticker-item"><strong>8,712</strong> companies in dataset</span>
+    <span class="ticker-item"><strong>247,431</strong> roles benchmarked this quarter</span>
+    <span class="ticker-item"><strong>$4.2B</strong> aggregate payroll under analysis</span>
+    <span class="ticker-item">Market data refreshed <strong>2 hours ago</strong></span>
+    <span class="ticker-item">Powered by <strong>Salary.com CAMD</strong></span>
+    <span class="ticker-item"><strong>11</strong> countries · <strong>340</strong> US cities</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> Live data feed</span>
+    <span class="ticker-item"><strong>8,712</strong> companies in dataset</span>
+    <span class="ticker-item"><strong>247,431</strong> roles benchmarked this quarter</span>
+    <span class="ticker-item"><strong>$4.2B</strong> aggregate payroll under analysis</span>
+    <span class="ticker-item">Market data refreshed <strong>2 hours ago</strong></span>
+    <span class="ticker-item">Powered by <strong>Salary.com CAMD</strong></span>
+    <span class="ticker-item"><strong>11</strong> countries · <strong>340</strong> US cities</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-mark">qomp</span>
+      <span class="logo-meta">No. 001 · Phoenix</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="product.html" class="nav-link">Product</a>
+      <a href="pricing.html" class="nav-link current">Pricing</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <a href="qomp-dashboard.html" target="_blank" class="btn btn-ghost">Client login</a>
+      <a href="contact.html" class="btn btn-primary">Request demo →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<section class="page-header">
+  <div class="container">
+    <div class="page-eyebrow">§ Pricing</div>
+    <h1 class="page-title">
+      Transparent pricing.<br>
+      <em>No surprises.</em>
+    </h1>
+    <p class="page-lede">
+      Mercer engagements start at $30K. Radford requires survey participation.
+      <strong>Qomp starts at $999/month — flat.</strong> Dashboard, data, and TSG advisory included
+      in every plan. No setup fees. No hidden costs. Cancel anytime.
+    </p>
+
+    <div class="billing-toggle">
+      <button id="tog-monthly" class="active" onclick="setBilling('monthly')">Monthly</button>
+      <button id="tog-annual" onclick="setBilling('annual')">Annual <span class="save-badge">save 15%</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING TIERS -->
+<section class="pricing-section">
+  <div class="container">
+    <div class="tier-grid">
+
+      <!-- TIER 1: CORE -->
+      <div class="tier">
+        <div class="tier-num">Tier 01</div>
+        <div class="tier-name">Core</div>
+        <div class="tier-tagline">Compensation visibility for HR teams just getting started.</div>
+
+        <div class="tier-price">
+          <span class="tier-price-num" id="price-core">$999</span>
+          <span class="tier-price-period">/ month</span>
+        </div>
+        <div class="tier-billing" id="billing-core">Billed monthly</div>
+
+        <div class="tier-cta">
+          <a href="contact.html" class="btn btn-primary">Start with Core →</a>
+        </div>
+
+        <div class="tier-features-label">What's included</div>
+        <ul class="tier-features">
+          <li class="tier-feature">Up to <strong>250 employees</strong></li>
+          <li class="tier-feature"><strong>Salary.com CAMD</strong> market data, refreshed quarterly</li>
+          <li class="tier-feature">Pay positioning + role explorer modules</li>
+          <li class="tier-feature">HRIS integration <strong>(BambooHR, Rippling)</strong></li>
+          <li class="tier-feature"><strong>1-hour</strong> TSG advisory consultation per quarter</li>
+          <li class="tier-feature">Email support, 24-hour response</li>
+        </ul>
+      </div>
+
+      <!-- TIER 2: INTELLIGENCE (FEATURED) -->
+      <div class="tier featured">
+        <div class="tier-flag">Most popular</div>
+        <div class="tier-num">Tier 02</div>
+        <div class="tier-name">Intelligence</div>
+        <div class="tier-tagline">For HR teams running comp like a strategic discipline.</div>
+
+        <div class="tier-price">
+          <span class="tier-price-num" id="price-intel">$1,899</span>
+          <span class="tier-price-period">/ month</span>
+        </div>
+        <div class="tier-billing" id="billing-intel">Billed monthly</div>
+
+        <div class="tier-cta">
+          <a href="contact.html" class="btn btn-primary">Choose Intelligence →</a>
+        </div>
+
+        <div class="tier-features-label">Everything in Core, plus</div>
+        <ul class="tier-features">
+          <li class="tier-feature">Up to <strong>750 employees</strong></li>
+          <li class="tier-feature">Market data refreshed <strong>monthly</strong></li>
+          <li class="tier-feature"><strong>All six modules</strong> including pay equity, flight risk, geographic analysis</li>
+          <li class="tier-feature">All HRIS integrations including <strong>ADP, Paylocity</strong></li>
+          <li class="tier-feature"><strong>Quarterly written report</strong> from TSG advisor</li>
+          <li class="tier-feature"><strong>Direct advisor access</strong> via email & Slack</li>
+          <li class="tier-feature">Priority support, 4-hour response</li>
+        </ul>
+      </div>
+
+      <!-- TIER 3: ENTERPRISE -->
+      <div class="tier">
+        <div class="tier-num">Tier 03</div>
+        <div class="tier-name">Enterprise</div>
+        <div class="tier-tagline">For growing companies with comp committees and board oversight.</div>
+
+        <div class="tier-price">
+          <span class="tier-price-num" id="price-ent">$2,999</span>
+          <span class="tier-price-period">/ month</span>
+        </div>
+        <div class="tier-billing" id="billing-ent">Billed monthly</div>
+
+        <div class="tier-cta">
+          <a href="contact.html" class="btn btn-primary">Talk to us →</a>
+        </div>
+
+        <div class="tier-features-label">Everything in Intelligence, plus</div>
+        <ul class="tier-features">
+          <li class="tier-feature">Up to <strong>2,500 employees</strong></li>
+          <li class="tier-feature">Custom job code mapping & <strong>industry overlays</strong></li>
+          <li class="tier-feature"><strong>Board-ready</strong> presentation templates</li>
+          <li class="tier-feature">Dedicated <strong>TSG advisor</strong> assigned to your account</li>
+          <li class="tier-feature">Monthly executive briefing call</li>
+          <li class="tier-feature"><strong>Annual on-site</strong> compensation review</li>
+          <li class="tier-feature">SSO, SCIM, and audit logs</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PILOT BAND -->
+<section class="pilot-band">
+  <div class="container">
+    <div class="pilot-grid">
+      <div>
+        <div class="pilot-eyebrow">§ Founding pilot — limited spots</div>
+        <h2 class="pilot-headline">
+          Lock in <em>$750/month</em><br>
+          forever.
+        </h2>
+        <p class="pilot-body">
+          We're selecting <strong>five founding clients</strong> from the TSG network for our pilot
+          cohort. You get the Intelligence tier for $750/month — locked in for the lifetime
+          of your subscription. In exchange, your feedback shapes the roadmap.
+        </p>
+      </div>
+
+      <div class="pilot-stats">
+        <div>
+          <div class="pilot-stat-num">$750</div>
+          <div class="pilot-stat-label">Per month, locked forever</div>
+        </div>
+        <div>
+          <div class="pilot-stat-num">5</div>
+          <div class="pilot-stat-label">Spots in pilot cohort</div>
+        </div>
+        <div>
+          <div class="pilot-stat-num">60%</div>
+          <div class="pilot-stat-label">Off Intelligence pricing</div>
+        </div>
+        <div>
+          <div class="pilot-stat-num">90d</div>
+          <div class="pilot-stat-label">Launch window — closing</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section class="comparison-section">
+  <div class="container">
+    <div class="section-label">§ How we compare</div>
+
+    <div class="comparison-header">
+      <h2 class="comparison-headline">
+        The market, <em>honestly</em>.
+      </h2>
+      <p class="comparison-intro">
+        We don't bash competitors. They serve different segments, and they serve them well.
+        But for mid-size employers — 100 to 1,500 employees — here's the practical comparison.
+      </p>
+    </div>
+
+    <div class="comparison-table">
+      <div class="comp-row header">
+        <div></div>
+        <div><strong>Qomp</strong></div>
+        <div>Mercer / Radford</div>
+        <div>Payscale</div>
+      </div>
+      <div class="comp-row">
+        <div class="comp-feature">
+          Starting price
+          <small>For a 400-person company</small>
+        </div>
+        <div class="comp-cell qomp" data-label="Qomp">$999/mo</div>
+        <div class="comp-cell" data-label="Mercer">$30K+/yr</div>
+        <div class="comp-cell" data-label="Payscale">$1,500/mo</div>
+      </div>
+      <div class="comp-row">
+        <div class="comp-feature">
+          Data source
+          <small>Where the benchmarks come from</small>
+        </div>
+        <div class="comp-cell qomp" data-label="Qomp">Salary.com CAMD</div>
+        <div class="comp-cell" data-label="Mercer">Proprietary surveys</div>
+        <div class="comp-cell" data-label="Payscale">Crowdsourced</div>
+      </div>
+      <div class="comp-row">
+        <div class="comp-feature">
+          Refresh cadence
+          <small>How often market data updates</small>
+        </div>
+        <div class="comp-cell qomp" data-label="Qomp">Monthly</div>
+        <div class="comp-cell" data-label="Mercer">Annual surveys</div>
+        <div class="comp-cell" data-label="Payscale">Continuous</div>
+      </div>
+      <div class="comp-row">
+        <div class="comp-feature">
+          HRIS integration
+          <small>Direct API or manual uploads</small>
+        </div>
+        <div class="comp-cell qomp" data-label="Qomp"><span class="comp-check">✓</span></div>
+        <div class="comp-cell" data-label="Mercer"><span class="comp-x">—</span></div>
+        <div class="comp-cell" data-label="Payscale">Limited</div>
+      </div>
+      <div class="comp-row">
+        <div class="comp-feature">
+          Advisory included
+          <small>Human comp expert reviewing your data</small>
+        </div>
+        <div class="comp-cell qomp" data-label="Qomp"><span class="comp-check">✓</span></div>
+        <div class="comp-cell" data-label="Mercer">Billed separately</div>
+        <div class="comp-cell" data-label="Payscale"><span class="comp-x">—</span></div>
+      </div>
+      <div class="comp-row">
+        <div class="comp-feature">
+          Setup time
+          <small>From contract to live dashboard</small>
+        </div>
+        <div class="comp-cell qomp" data-label="Qomp">48 hours</div>
+        <div class="comp-cell" data-label="Mercer">3–6 months</div>
+        <div class="comp-cell" data-label="Payscale">2–4 weeks</div>
+      </div>
+      <div class="comp-row">
+        <div class="comp-feature">
+          Contract minimum
+          <small>Long-term commitment required?</small>
+        </div>
+        <div class="comp-cell qomp" data-label="Qomp">Month-to-month</div>
+        <div class="comp-cell" data-label="Mercer">Annual</div>
+        <div class="comp-cell" data-label="Payscale">Annual</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="container">
+    <div class="faq-header">
+      <div class="faq-side">
+        <h2 class="faq-headline">
+          Questions, <em>answered</em>.
+        </h2>
+        <p>
+          The questions HR leaders ask before signing. Don't see yours?
+          <a href="contact.html" style="color: var(--mint); text-decoration: underline;">Just ask.</a>
+        </p>
+      </div>
+
+      <div class="faq-items">
+        <div class="faq-item">
+          <div class="faq-q">What if my company grows past my tier limit?</div>
+          <div class="faq-a">
+            We move you to the next tier prorated to the day. No penalties, no awkward
+            renegotiations. We'd rather you grow with us than feel boxed in.
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">How does the TSG advisory actually work?</div>
+          <div class="faq-a">
+            Every quarter, your assigned TSG advisor reviews your dashboard and writes a
+            short report — what's changed, where the risks are, what to do before your next
+            merit cycle. Intelligence and Enterprise tiers also include direct email and
+            Slack access for ad-hoc questions.
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Can I cancel anytime?</div>
+          <div class="faq-a">
+            Yes. Monthly plans cancel with 30 days notice. Annual plans don't auto-renew —
+            we earn the renewal every twelve months. We don't believe in handcuffs.
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">What if my HRIS isn't on your integration list?</div>
+          <div class="faq-a">
+            We can ingest a CSV export weekly while we build your specific integration —
+            usually within 30 days. Tell us what you use and we'll prioritize it.
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Is this just a Salary.com reseller?</div>
+          <div class="faq-a">
+            No. We're a Salary.com partner with full CAMD data access — but the platform,
+            the dashboard logic, the role matching engine, and the advisory layer are all
+            built by us. Salary.com powers the data; Qomp is the product.
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">How is my employee data secured?</div>
+          <div class="faq-a">
+            All data is encrypted in transit and at rest. We're SOC 2 Type II in progress
+            (audit completing Q3 2026). Your data is never sold, never shared with other
+            clients, and never used to train external models.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <div class="section-label">§ Get started</div>
+
+    <h1 class="cta-headline">
+      Try it before you buy it.<br>
+      <em>30-minute demo, your data.</em>
+    </h1>
+
+    <div class="cta-row">
+      <a href="contact.html" class="btn btn-cream">Request a demo →</a>
+      <a href="contact.html" class="btn btn-outline">Talk to TSG first</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="logo-mark">qomp</span>
+        <p class="footer-tagline">
+          Compensation intelligence for mid-size employers — built by TSG.
+        </p>
+        <div class="footer-attribution">
+          Data sources: <strong>Salary.com CAMD</strong><br>
+          Last refreshed: <strong>May 8, 2026</strong><br>
+          Methodology · Built by TSG
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="product.html">How it works</a></li>
+          <li><a href="product.html">Features</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="contact.html">Request demo</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Qomp</a></li>
+          <li><a href="about.html">TSG advisory</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy policy</a></li>
+          <li><a href="#">Terms of service</a></li>
+          <li><a href="#">Data processing</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-base">
+      <div>© 2026 TSG Executive Search & Compensation</div>
+      <div>Phoenix, Arizona · est. 2021</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  var prices = {
+    monthly: { core: '$999', intel: '$1,899', ent: '$2,999' },
+    annual:  { core: '$849', intel: '$1,614', ent: '$2,549' }
+  };
+  var billings = {
+    monthly: { core: 'Billed monthly', intel: 'Billed monthly', ent: 'Billed monthly' },
+    annual:  { core: '$10,188/yr · save $1,800', intel: '$19,368/yr · save $3,420', ent: '$30,588/yr · save $5,400' }
+  };
+
+  function setBilling(mode) {
+    document.getElementById('tog-monthly').classList.toggle('active', mode === 'monthly');
+    document.getElementById('tog-annual').classList.toggle('active', mode === 'annual');
+    ['core','intel','ent'].forEach(function(t) {
+      document.getElementById('price-' + t).textContent = prices[mode][t];
+      document.getElementById('billing-' + t).textContent = billings[mode][t];
+    });
+  }
+
+  // Reveal
+  var revealObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.tier, .comp-row, .faq-item').forEach(function(el) {
+    el.classList.add('reveal');
+    revealObs.observe(el);
+  });
+</script>
+
+</body>
+</html>
