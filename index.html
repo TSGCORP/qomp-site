@@ -1,2945 +1,1394 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Qomp — Comp clarity. Finally.</title>
-  <meta name="description" content="Real-time compensation intelligence for mid-size employers.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-
-    :root {
-      --midnight: #07111E;
-      --deep:     #0C1E35;
-      --navy:     #0C3D6E;
-      --blue:     #1560A8;
-      --sky:      #3B82C4;
-      --teal:     #0D9373;
-      --mint:     #10C48A;
-      --mint-l:   #5DCAA5;
-      --cream:    #F5F3EE;
-      --warm:     #EDE9E1;
-      --border-d: rgba(255,255,255,.07);
-      --border-l: #E2DDD5;
-      --text-d:   rgba(255,255,255,.5);
-      --text-dd:  rgba(255,255,255,.25);
-      --sans: 'Manrope', system-ui, sans-serif;
-      --display: 'Libre Baskerville', Georgia, serif;
-      --mono: 'DM Mono', monospace;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; font-size: 16px; }
-    body {
-      font-family: var(--sans);
-      background: var(--midnight);
-      color: white;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
-
-    /* ── PAGE SYSTEM ─────────────────────────────── */
-    .page { display: none; }
-    .page.active { display: block; padding-top: 68px; }
-    #page-home.active { padding-top: 0; }
-
-    /* ── NAV ─────────────────────────────────────── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 1000;
-      height: 68px;
-      border-bottom: .5px solid transparent;
-      transition: background .3s, border-color .3s;
-    }
-
-    .nav-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 48px;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    nav.scrolled {
-      background: rgba(7,17,30,.96);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-color: var(--border-d);
-    }
-
-    /* Nav always visible — no content bleed on scroll */
-    section, .proof, .hero { position: relative; z-index: 1; }
-    nav { z-index: 1000; background: rgba(7,17,30,.95); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: .5px solid var(--border-d); }
-
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    .nav-bars {
-      display: flex;
-      align-items: flex-end;
-      gap: 3px;
-      height: 26px;
-    }
-
-    .nav-bar {
-      border-radius: 2px;
-      transition: height .3s;
-    }
-
-    .logo-word {
-      font-family: var(--sans);
-      font-size: 20px;
-      font-weight: 800;
-      color: white;
-      letter-spacing: -.3px;
-    }
-
-    .logo-tag {
-      font-size: 9px;
-      font-weight: 500;
-      color: var(--mint-l);
-      letter-spacing: .1em;
-      text-transform: uppercase;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 32px;
-    }
-
-    .nav-link {
-      font-size: 13.5px;
-      font-weight: 600;
-      color: rgba(255,255,255,.82);
-      cursor: pointer;
-      transition: color .2s;
-      letter-spacing: -.01em;
-    }
-    .nav-link:hover { color: white; }
-    .nav-link.active {
-      color: var(--mint);
-    }
-
-    .nav-btns {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .btn-ghost-sm {
-      font-family: var(--sans);
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text-d);
-      background: transparent;
-      border: 1px solid var(--border-d);
-      padding: 8px 18px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: color .2s, border-color .2s;
-    }
-    .btn-ghost-sm:hover { color: white; border-color: rgba(255,255,255,.2); }
-
-    .btn-primary-sm {
-      font-family: var(--sans);
-      font-size: 13px;
-      font-weight: 600;
-      color: white;
-      background: var(--teal);
-      border: none;
-      padding: 9px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background .2s, transform .1s;
-      letter-spacing: -.01em;
-    }
-    .btn-primary-sm:hover { background: #0a7d62; transform: translateY(-1px); }
-
-    /* ── HERO ─────────────────────────────────────── */
-    /* ── HERO LAYOUT ── */
-    .hero {
-      padding: 120px 48px 64px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Two-column inner wrapper — this is what creates the layout */
-    .hero-inner {
-      position: relative;
-      z-index: 2;
-      display: grid;
-      grid-template-columns: 55% 1fr;
-      gap: 48px;
-      align-items: center;
-      width: 100%;
-      max-width: 1280px;
-      margin: 0 auto;
-    }
-
-    /* All decorative bg elements are absolutely positioned inside .hero */
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-    }
-
-    /* Gradient orbs */
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      pointer-events: none;
-    }
-    .orb-1 {
-      width: 700px; height: 700px;
-      background: radial-gradient(circle, rgba(13,147,115,.18) 0%, transparent 70%);
-      top: -150px; left: -150px;
-      animation: float 8s ease-in-out infinite;
-    }
-    .orb-2 {
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(21,96,168,.14) 0%, transparent 70%);
-      top: 30%; right: -80px;
-      animation: float 10s ease-in-out infinite reverse;
-    }
-    .orb-3 {
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(16,196,138,.1) 0%, transparent 70%);
-      bottom: -50px; left: 35%;
-      animation: float 12s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-30px) scale(1.05); }
-    }
-
-    /* Grid lines */
-    .grid-lines {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
-      background-size: 80px 80px;
-      mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 0%, transparent 100%);
-      pointer-events: none;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-    }
-
-    .hero-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(16,196,138,.08);
-      border: 1px solid rgba(16,196,138,.2);
-      padding: 6px 16px;
-      border-radius: 100px;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--mint-l);
-      letter-spacing: .04em;
-      margin-bottom: 32px;
-      animation: fadeUp .6s both;
-    }
-
-    .pill-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--mint);
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: .4; transform: scale(.75); }
-    }
-
-    .hero-h1 {
-      font-family: var(--display);
-      font-size: clamp(44px, 5vw, 64px);
-      font-weight: 700;
-      line-height: 1.1;
-      letter-spacing: -1px;
-      margin-bottom: 28px;
-      animation: fadeUp .6s .1s both;
-    }
-
-    .hero-h1 em {
-      font-style: italic;
-      color: var(--mint);
-      display: block;
-    }
-
-    .hero-sub {
-      font-size: 16px;
-      line-height: 1.75;
-      color: var(--text-d);
-      max-width: 520px;
-      margin-bottom: 40px;
-      font-weight: 400;
-      animation: fadeUp .6s .2s both;
-    }
-
-    .hero-sub strong { color: rgba(255,255,255,.85); font-weight: 600; }
-
-    .hero-actions {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      margin-bottom: 64px;
-      animation: fadeUp .6s .3s both;
-    }
-
-    .btn-hero {
-      font-family: var(--sans);
-      font-size: 14.5px;
-      font-weight: 600;
-      color: white;
-      background: var(--teal);
-      border: none;
-      padding: 14px 28px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background .2s, transform .15s, box-shadow .2s;
-      letter-spacing: -.02em;
-    }
-    .btn-hero:hover {
-      background: #0a7d62;
-      transform: translateY(-2px);
-      box-shadow: 0 12px 32px rgba(13,147,115,.3);
-    }
-
-    .btn-outline {
-      font-family: var(--sans);
-      font-size: 14.5px;
-      font-weight: 500;
-      color: var(--text-d);
-      background: transparent;
-      border: 1px solid var(--border-d);
-      padding: 14px 24px;
-      border-radius: 10px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: color .2s, border-color .2s;
-    }
-    .btn-outline:hover { color: white; border-color: rgba(255,255,255,.25); }
-
-    .hero-stats {
-      display: flex;
-      gap: 0;
-      animation: fadeUp .6s .4s both;
-    }
-
-    .stat {
-      padding-right: 32px;
-      margin-right: 32px;
-      border-right: 1px solid var(--border-d);
-    }
-    .stat:last-child { border: none; margin: 0; padding: 0; }
-
-    .stat-val {
-      font-family: var(--sans);
-      font-size: 24px;
-      font-weight: 800;
-      color: white;
-      letter-spacing: -.5px;
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-
-    .stat-lbl {
-      font-size: 12px;
-      color: var(--text-dd);
-      font-weight: 400;
-      letter-spacing: .01em;
-    }
-
-    /* Dashboard float */
-    .hero-dash {
-      position: relative;
-      width: 100%;
-      z-index: 2;
-      animation: riseIn .8s .4s both;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-    }
-
-    .hero-dash .dash-window {
-      width: 100%;
-      max-width: 520px;
-    }
-
-    @keyframes riseIn {
-      from { opacity: 0; transform: translateY(32px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .dash-window {
-      background: rgba(12,30,53,.8);
-      border: 1px solid var(--border-d);
-      border-radius: 16px;
-      overflow: hidden;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 40px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.04);
-    }
-
-    .dash-titlebar {
-      padding: 14px 20px;
-      border-bottom: .5px solid var(--border-d);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .dash-dot { width: 8px; height: 8px; border-radius: 50%; }
-
-    .dash-title {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-d);
-      margin-left: 4px;
-      letter-spacing: .04em;
-    }
-
-    .dash-live {
-      margin-left: auto;
-      font-size: 9px;
-      font-weight: 600;
-      color: var(--mint);
-      background: rgba(16,196,138,.1);
-      padding: 2px 8px;
-      border-radius: 100px;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .dash-body { padding: 20px; }
-
-    .dash-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-dd);
-      text-transform: uppercase;
-      letter-spacing: .1em;
-      margin-bottom: 14px;
-    }
-
-    .dash-bars {
-      display: flex;
-      align-items: flex-end;
-      gap: 6px;
-      height: 80px;
-      margin-bottom: 16px;
-    }
-
-    .dash-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; }
-    .dash-bar { width: 100%; border-radius: 4px 4px 2px 2px; transition: opacity .2s; }
-    .dash-bar-col:hover .dash-bar { opacity: .7; }
-    .dash-bar-lbl { font-size: 9px; color: var(--text-dd); font-family: var(--mono); }
-
-    .dash-metrics {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .dash-metric {
-      background: rgba(255,255,255,.03);
-      border: .5px solid var(--border-d);
-      border-radius: 8px;
-      padding: 14px 16px;
-    }
-
-    .dm-val {
-      font-family: var(--sans);
-      font-size: 20px;
-      font-weight: 700;
-      color: white;
-      letter-spacing: -.5px;
-      line-height: 1;
-      margin-bottom: 3px;
-    }
-
-    .dm-lbl { font-size: 9px; color: var(--text-dd); letter-spacing: .04em; }
-
-    .dash-alert {
-      background: rgba(234,179,8,.06);
-      border: .5px solid rgba(234,179,8,.15);
-      border-radius: 8px;
-      padding: 12px 14px;
-      display: flex;
-      gap: 8px;
-      align-items: flex-start;
-    }
-
-    .alert-dot { width: 6px; height: 6px; border-radius: 50%; background: #EAB308; flex-shrink: 0; margin-top: 3px; }
-    .alert-text { font-size: 12px; color: rgba(234,179,8,.8); line-height: 1.5; }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── PROOF STRIP ──────────────────────────────── */
-    .proof {
-      padding: 20px 48px;
-      border-top: .5px solid var(--border-d);
-      border-bottom: .5px solid var(--border-d);
-      background: rgba(255,255,255,.015);
-    }
-
-    .proof-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      gap: 24px;
-    }
-
-    .proof-label {
-      font-size: 10px;
-      font-weight: 600;
-      color: var(--text-dd);
-      text-transform: uppercase;
-      letter-spacing: .1em;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .proof-sep { width: 1px; height: 20px; background: var(--border-d); flex-shrink: 0; }
-
-    .proof-logos {
-      display: flex;
-      gap: 32px;
-      align-items: center;
-      overflow: hidden;
-    }
-
-    .proof-logo {
-      font-family: var(--display);
-      font-size: 12px;
-      font-weight: 700;
-      color: rgba(255,255,255,.18);
-      white-space: nowrap;
-      letter-spacing: .04em;
-      text-transform: uppercase;
-    }
-
-    .proof-powered {
-      margin-left: auto;
-      font-size: 10px;
-      color: var(--text-dd);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-
-    .proof-powered strong { color: rgba(255,255,255,.4); }
-
-    /* ── SECTIONS ─────────────────────────────────── */
-    section { padding: 100px 48px; }
-
-    .section-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-    }
-
-    .section-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--mint);
-      text-transform: uppercase;
-      letter-spacing: .14em;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .section-label::before {
-      content: '';
-      width: 20px;
-      height: 1px;
-      background: var(--mint);
-      display: inline-block;
-    }
-
-    .section-h2 {
-      font-family: var(--display);
-      font-size: clamp(28px, 3.5vw, 42px);
-      font-weight: 700;
-      letter-spacing: -.5px;
-      line-height: 1.15;
-      margin-bottom: 16px;
-    }
-
-    .section-sub {
-      font-size: 15px;
-      color: var(--text-d);
-      line-height: 1.75;
-      max-width: 520px;
-      font-weight: 400;
-    }
-
-    /* ── FEATURES ─────────────────────────────────── */
-    .features { background: var(--deep); }
-
-    .features-header {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: end;
-      margin-bottom: 64px;
-    }
-
-    .feat-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--border-d);
-      border: 1px solid var(--border-d);
-      border-radius: 16px;
-      overflow: hidden;
-    }
-
-    .feat-card {
-      background: var(--deep);
-      padding: 32px;
-      transition: background .2s;
-      position: relative;
-    }
-
-    .feat-card:hover { background: rgba(255,255,255,.02); }
-
-    .feat-card::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 32px;
-      right: 32px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--mint), transparent);
-      opacity: 0;
-      transition: opacity .3s;
-    }
-
-    .feat-card:hover::after { opacity: 1; }
-
-    .feat-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      gap: 3px;
-      padding-bottom: 8px;
-      margin-bottom: 20px;
-    }
-
-    .fi-b { border-radius: 2px; }
-
-    .feat-title {
-      font-family: var(--sans);
-      font-size: 15px;
-      font-weight: 700;
-      color: white;
-      letter-spacing: -.01em;
-      margin-bottom: 8px;
-    }
-
-    .feat-body {
-      font-size: 13.5px;
-      color: var(--text-d);
-      line-height: 1.7;
-      font-weight: 400;
-    }
-
-    /* ── HOW IT WORKS ─────────────────────────────── */
-    .how { background: var(--midnight); }
-
-    .how-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-    }
-
-    .steps { display: flex; flex-direction: column; gap: 0; }
-
-    .step {
-      display: flex;
-      gap: 20px;
-      padding: 28px 0;
-      border-bottom: .5px solid var(--border-d);
-      cursor: pointer;
-      transition: all .2s;
-    }
-
-    .step:last-child { border-bottom: none; }
-    .step:hover .step-title { color: white; }
-    .step:hover .step-num { color: var(--mint); border-color: rgba(16,196,138,.4); }
-
-    .step-num {
-      font-family: var(--mono);
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--text-dd);
-      width: 32px;
-      height: 32px;
-      border: 1px solid var(--border-d);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-top: 2px;
-      transition: all .2s;
-    }
-
-    .step-content { flex: 1; }
-
-    .step-title {
-      font-family: var(--sans);
-      font-size: 16px;
-      font-weight: 700;
-      color: rgba(255,255,255,.7);
-      letter-spacing: -.01em;
-      margin-bottom: 6px;
-      transition: color .2s;
-    }
-
-    .step-body {
-      font-size: 13.5px;
-      color: var(--text-dd);
-      line-height: 1.7;
-      font-weight: 400;
-    }
-
-    /* Visual panel */
-    .how-visual {
-      position: relative;
-    }
-
-    .visual-card {
-      background: rgba(12,30,53,.6);
-      border: 1px solid var(--border-d);
-      border-radius: 16px;
-      overflow: hidden;
-      backdrop-filter: blur(20px);
-    }
-
-    .vc-header {
-      padding: 14px 20px;
-      border-bottom: .5px solid var(--border-d);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .vc-tab {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-dd);
-      padding: 4px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all .2s;
-    }
-
-    .vc-tab.active {
-      background: rgba(16,196,138,.1);
-      color: var(--mint-l);
-    }
-
-    .vc-body { padding: 20px; }
-
-    .comp-row-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 12px;
-      background: rgba(255,255,255,.02);
-      border: .5px solid var(--border-d);
-      border-radius: 8px;
-      margin-bottom: 6px;
-      gap: 12px;
-    }
-
-    .cr-title { font-size: 12px; font-weight: 500; color: rgba(255,255,255,.7); min-width: 120px; }
-    .cr-bar-wrap { flex: 1; display: flex; flex-direction: column; gap: 3px; }
-    .cr-bar-track { height: 4px; background: rgba(255,255,255,.06); border-radius: 2px; position: relative; }
-    .cr-bar-fill { height: 100%; border-radius: 2px; position: absolute; left: 0; top: 0; }
-    .cr-compa { font-family: var(--mono); font-size: 11px; font-weight: 500; }
-
-    /* ── TESTIMONIALS / SOCIAL PROOF ──────────────── */
-    .social { background: var(--deep); }
-
-    .testimonial-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-top: 56px;
-    }
-
-    .testimonial {
-      background: rgba(255,255,255,.02);
-      border: .5px solid var(--border-d);
-      border-radius: 14px;
-      padding: 28px;
-      position: relative;
-    }
-
-    .quote-mark {
-      font-family: var(--display);
-      font-size: 48px;
-      color: var(--teal);
-      opacity: .3;
-      line-height: 1;
-      margin-bottom: 12px;
-    }
-
-    .quote-text {
-      font-size: 14.5px;
-      color: rgba(255,255,255,.7);
-      line-height: 1.7;
-      font-weight: 400;
-      margin-bottom: 20px;
-      font-style: italic;
-    }
-
-    .quote-author {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .author-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--sans);
-      font-size: 14px;
-      font-weight: 700;
-      color: white;
-      flex-shrink: 0;
-    }
-
-    .author-name { font-size: 13px; font-weight: 600; color: white; }
-    .author-role { font-size: 11.5px; color: var(--text-dd); margin-top: 1px; }
-
-    /* ── PRICING PAGE ─────────────────────────────── */
-    .pricing-hero {
-      padding: 40px 48px 60px;
-      text-align: center;
-    }
-
-    .pricing-toggle {
-      display: inline-flex;
-      background: rgba(255,255,255,.04);
-      border: 1px solid var(--border-d);
-      border-radius: 10px;
-      padding: 4px;
-      margin: 32px auto 56px;
-      gap: 4px;
-    }
-
-    .toggle-opt {
-      font-size: 13px;
-      font-weight: 500;
-      padding: 8px 20px;
-      border-radius: 7px;
-      cursor: pointer;
-      color: var(--text-d);
-      transition: all .2s;
-    }
-
-    .toggle-opt.active {
-      background: var(--teal);
-      color: white;
-    }
-
-    .save-tag {
-      font-size: 10px;
-      background: rgba(16,196,138,.15);
-      color: var(--mint-l);
-      padding: 2px 8px;
-      border-radius: 100px;
-      font-weight: 600;
-      margin-left: 4px;
-      vertical-align: middle;
-    }
-
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      max-width: 1100px;
-      margin: 0 auto 80px;
-      padding: 0 48px;
-    }
-
-    .pricing-card {
-      background: rgba(12,30,53,.6);
-      border: 1px solid var(--border-d);
-      border-radius: 16px;
-      overflow: hidden;
-      position: relative;
-      transition: transform .2s, box-shadow .2s;
-    }
-
-    .pricing-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 24px 48px rgba(0,0,0,.3);
-    }
-
-    .pricing-card.featured {
-      border-color: rgba(16,196,138,.4);
-      box-shadow: 0 0 0 1px rgba(16,196,138,.1), 0 24px 48px rgba(13,147,115,.1);
-    }
-
-    .pc-badge {
-      position: absolute;
-      top: -1px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 10px;
-      font-weight: 700;
-      background: var(--mint);
-      color: var(--midnight);
-      padding: 4px 14px;
-      border-radius: 0 0 8px 8px;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-    }
-
-    .pc-head { padding: 32px 28px 20px; border-bottom: .5px solid var(--border-d); }
-
-    .pc-tier {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-dd);
-      text-transform: uppercase;
-      letter-spacing: .1em;
-      margin-bottom: 8px;
-    }
-
-    .pc-name {
-      font-family: var(--sans);
-      font-size: 20px;
-      font-weight: 700;
-      color: white;
-      letter-spacing: -.3px;
-      margin-bottom: 4px;
-    }
-
-    .pc-seg { font-size: 12.5px; color: var(--text-dd); font-weight: 400; }
-
-    .pc-price-wrap { padding: 20px 28px; border-bottom: .5px solid var(--border-d); }
-
-    .pc-price {
-      display: flex;
-      align-items: baseline;
-      gap: 4px;
-      margin-bottom: 4px;
-    }
-
-    .pc-num {
-      font-family: var(--sans);
-      font-size: 36px;
-      font-weight: 800;
-      color: white;
-      letter-spacing: -1px;
-      line-height: 1;
-    }
-
-    .pc-unit { font-size: 13px; color: var(--text-dd); }
-    .pc-annual { font-size: 11px; color: var(--mint-l); font-weight: 500; }
-
-    .pc-cta {
-      padding: 20px 28px;
-      border-bottom: .5px solid var(--border-d);
-    }
-
-    .btn-pc-primary {
-      width: 100%;
-      font-family: var(--sans);
-      font-size: 14px;
-      font-weight: 600;
-      color: white;
-      background: var(--teal);
-      border: none;
-      padding: 13px;
-      border-radius: 9px;
-      cursor: pointer;
-      transition: background .2s;
-      letter-spacing: -.01em;
-    }
-    .btn-pc-primary:hover { background: #0a7d62; }
-
-    .btn-pc-ghost {
-      width: 100%;
-      font-family: var(--sans);
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text-d);
-      background: transparent;
-      border: 1px solid var(--border-d);
-      padding: 13px;
-      border-radius: 9px;
-      cursor: pointer;
-      transition: all .2s;
-    }
-    .btn-pc-ghost:hover { color: white; border-color: rgba(255,255,255,.2); }
-
-    .pc-features { padding: 20px 28px; }
-
-    .pc-feat {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 7px 0;
-      border-bottom: .5px solid rgba(255,255,255,.03);
-      font-size: 13px;
-      color: rgba(255,255,255,.65);
-      line-height: 1.45;
-    }
-
-    .pc-feat:last-child { border-bottom: none; }
-
-    .feat-check {
-      width: 16px;
-      height: 16px;
-      flex-shrink: 0;
-      margin-top: 1px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* Addons section */
-    .addons {
-      max-width: 1100px;
-      margin: 0 auto 80px;
-      padding: 0 48px;
-    }
-
-    .addon-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 32px;
-    }
-
-    .addon-card {
-      background: rgba(255,255,255,.02);
-      border: .5px solid var(--border-d);
-      border-radius: 12px;
-      padding: 20px 22px;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
-      transition: background .2s;
-    }
-
-    .addon-card:hover { background: rgba(255,255,255,.04); }
-    .addon-name { font-size: 13.5px; font-weight: 600; color: white; margin-bottom: 4px; }
-    .addon-desc { font-size: 12px; color: var(--text-dd); line-height: 1.45; }
-    .addon-price { font-family: var(--sans); font-size: 16px; font-weight: 700; color: var(--mint-l); white-space: nowrap; }
-
-    /* Pilot banner */
-    .pilot-banner-section {
-      max-width: 1100px;
-      margin: 0 auto 80px;
-      padding: 0 48px;
-    }
-
-    .pilot-inner {
-      background: linear-gradient(135deg, rgba(13,147,115,.12) 0%, rgba(21,96,168,.08) 100%);
-      border: 1px solid rgba(16,196,138,.2);
-      border-radius: 20px;
-      padding: 40px 48px;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 40px;
-      align-items: center;
-    }
-
-    .pilot-title {
-      font-family: var(--sans);
-      font-size: 22px;
-      font-weight: 700;
-      color: white;
-      letter-spacing: -.3px;
-      margin-bottom: 10px;
-    }
-
-    .pilot-body { font-size: 14px; color: var(--text-d); line-height: 1.7; max-width: 480px; font-weight: 400; }
-
-    .pilot-price-block { text-align: center; }
-
-    .pilot-was { font-size: 12px; color: var(--text-dd); text-decoration: line-through; margin-bottom: 4px; }
-    .pilot-num {
-      font-family: var(--sans);
-      font-size: 48px;
-      font-weight: 800;
-      color: var(--mint);
-      letter-spacing: -1.5px;
-      line-height: 1;
-    }
-    .pilot-unit { font-size: 13px; color: var(--text-d); margin-bottom: 12px; font-weight: 400; }
-
-    /* ── ABOUT PAGE ───────────────────────────────── */
-    .about-hero {
-      padding: 40px 48px 60px;
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
-      max-width: 1100px;
-    }
-
-    .about-photo-wrap {
-      position: relative;
-    }
-
-    .about-photo-placeholder {
-      width: 100%;
-      aspect-ratio: 4/5;
-      background: linear-gradient(135deg, rgba(13,147,115,.15), rgba(21,96,168,.1));
-      border: 1px solid var(--border-d);
-      border-radius: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-    }
-
-    .photo-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: rgba(16,196,138,.1);
-      border: 1px solid rgba(16,196,138,.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .photo-label {
-      font-size: 12px;
-      color: var(--text-dd);
-      text-align: center;
-    }
-
-    .about-card {
-      position: absolute;
-      bottom: 24px;
-      right: -20px;
-      background: rgba(7,17,30,.9);
-      border: 1px solid var(--border-d);
-      border-radius: 12px;
-      padding: 16px 20px;
-      backdrop-filter: blur(20px);
-      min-width: 180px;
-    }
-
-    .ac-val {
-      font-family: var(--sans);
-      font-size: 28px;
-      font-weight: 800;
-      color: white;
-      letter-spacing: -1px;
-    }
-
-    .ac-lbl { font-size: 11px; color: var(--text-dd); }
-
-    .about-content {}
-
-    .about-h1 {
-      font-family: var(--display);
-      font-size: clamp(28px, 3.5vw, 42px);
-      font-weight: 700;
-      letter-spacing: -.5px;
-      line-height: 1.2;
-      margin-bottom: 24px;
-    }
-
-    .about-p {
-      font-size: 15px;
-      color: var(--text-d);
-      line-height: 1.8;
-      font-weight: 400;
-      margin-bottom: 20px;
-    }
-
-    .about-p strong { color: rgba(255,255,255,.85); font-weight: 600; }
-
-    .tsg-card {
-      background: rgba(255,255,255,.02);
-      border: .5px solid var(--border-d);
-      border-radius: 14px;
-      padding: 24px;
-      margin-top: 32px;
-    }
-
-    .tsg-title {
-      font-family: var(--sans);
-      font-size: 14px;
-      font-weight: 700;
-      color: white;
-      margin-bottom: 12px;
-      padding-bottom: 12px;
-      border-bottom: .5px solid var(--border-d);
-    }
-
-    .tsg-stat {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 0;
-      border-bottom: .5px solid rgba(255,255,255,.03);
-      font-size: 13px;
-    }
-
-    .tsg-stat:last-child { border-bottom: none; }
-    .tsg-stat-label { color: var(--text-dd); }
-    .tsg-stat-val { color: white; font-weight: 600; }
-
-    .values-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-top: 56px;
-      padding: 0 48px;
-      max-width: 1100px;
-    }
-
-    .value-card {
-      background: rgba(255,255,255,.02);
-      border: .5px solid var(--border-d);
-      border-radius: 14px;
-      padding: 28px;
-    }
-
-    .value-num {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--mint);
-      margin-bottom: 12px;
-      letter-spacing: .08em;
-    }
-
-    .value-title {
-      font-family: var(--sans);
-      font-size: 15px;
-      font-weight: 700;
-      color: white;
-      letter-spacing: -.03em;
-      margin-bottom: 8px;
-    }
-
-    .value-body { font-size: 13.5px; color: var(--text-d); line-height: 1.7; font-weight: 400; }
-
-    /* ── CONTACT PAGE ─────────────────────────────── */
-    .contact-hero {
-      padding: 40px 48px 60px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
-      max-width: 1200px;
-    }
-
-    .contact-h1 {
-      font-family: var(--display);
-      font-size: clamp(28px, 3.5vw, 42px);
-      font-weight: 700;
-      letter-spacing: -.5px;
-      line-height: 1.2;
-      margin-bottom: 20px;
-    }
-
-    .contact-sub {
-      font-size: 15px;
-      color: var(--text-d);
-      line-height: 1.75;
-      font-weight: 400;
-      margin-bottom: 40px;
-    }
-
-    .contact-info {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .ci-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 14px 0;
-      border-bottom: .5px solid var(--border-d);
-    }
-
-    .ci-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 9px;
-      background: rgba(16,196,138,.08);
-      border: .5px solid rgba(16,196,138,.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .ci-label { font-size: 11px; color: var(--text-dd); margin-bottom: 2px; }
-    .ci-val { font-size: 14px; color: white; font-weight: 500; }
-
-    /* Form */
-    .contact-form-wrap {
-      background: rgba(12,30,53,.6);
-      border: 1px solid var(--border-d);
-      border-radius: 20px;
-      padding: 40px;
-      backdrop-filter: blur(20px);
-    }
-
-    .form-tabs {
-      display: flex;
-      gap: 4px;
-      background: rgba(255,255,255,.04);
-      border-radius: 10px;
-      padding: 4px;
-      margin-bottom: 32px;
-    }
-
-    .form-tab {
-      flex: 1;
-      font-family: var(--sans);
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text-d);
-      background: transparent;
-      border: none;
-      padding: 9px;
-      border-radius: 7px;
-      cursor: pointer;
-      transition: all .2s;
-    }
-
-    .form-tab.active {
-      background: var(--teal);
-      color: white;
-    }
-
-    .form-section { display: none; }
-    .form-section.active { display: block; }
-
-    .form-group { margin-bottom: 20px; }
-
-    .form-label {
-      display: block;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-dd);
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      margin-bottom: 8px;
-    }
-
-    .form-input, .form-select, .form-textarea {
-      width: 100%;
-      font-family: var(--sans);
-      font-size: 14px;
-      color: white;
-      background: rgba(255,255,255,.04);
-      border: 1px solid var(--border-d);
-      border-radius: 9px;
-      padding: 12px 16px;
-      outline: none;
-      transition: border-color .2s, background .2s;
-      -webkit-appearance: none;
-    }
-
-    .form-input::placeholder, .form-textarea::placeholder { color: rgba(255,255,255,.2); }
-    .form-input:focus, .form-select:focus, .form-textarea:focus {
-      border-color: rgba(16,196,138,.4);
-      background: rgba(16,196,138,.04);
-    }
-
-    .form-select option { background: var(--deep); color: white; }
-    .form-textarea { min-height: 100px; resize: vertical; }
-
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-
-    .btn-submit {
-      width: 100%;
-      font-family: var(--sans);
-      font-size: 15px;
-      font-weight: 600;
-      color: white;
-      background: var(--teal);
-      border: none;
-      padding: 14px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background .2s, transform .15s;
-      letter-spacing: -.01em;
-      margin-top: 8px;
-    }
-    .btn-submit:hover { background: #0a7d62; transform: translateY(-1px); }
-
-    .form-fine {
-      font-size: 11px;
-      color: var(--text-dd);
-      text-align: center;
-      margin-top: 12px;
-      line-height: 1.5;
-    }
-
-    .success-msg {
-      display: none;
-      text-align: center;
-      padding: 32px;
-    }
-
-    .success-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: rgba(16,196,138,.1);
-      border: 1px solid rgba(16,196,138,.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 16px;
-    }
-
-    .success-title {
-      font-family: var(--sans);
-      font-size: 20px;
-      font-weight: 700;
-      color: white;
-      margin-bottom: 8px;
-    }
-
-    .success-body { font-size: 13.5px; color: var(--text-d); line-height: 1.6; }
-
-    /* ── CTA SECTION ──────────────────────────────── */
-    .cta-section {
-      padding: 100px 48px;
-      background: var(--deep);
-    }
-
-    .cta-inner {
-      max-width: 780px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    .cta-h2 {
-      font-family: var(--display);
-      font-size: clamp(30px, 3.5vw, 44px);
-      font-weight: 700;
-      letter-spacing: -1px;
-      line-height: 1.15;
-      margin-bottom: 16px;
-    }
-
-    .cta-sub {
-      font-size: 15px;
-      color: var(--text-d);
-      line-height: 1.75;
-      margin-bottom: 40px;
-      font-weight: 400;
-    }
-
-    .cta-form {
-      display: flex;
-      gap: 10px;
-      max-width: 460px;
-      margin: 0 auto 14px;
-    }
-
-    .cta-input {
-      flex: 1;
-      font-family: var(--sans);
-      font-size: 14px;
-      color: white;
-      background: rgba(255,255,255,.05);
-      border: 1px solid var(--border-d);
-      border-radius: 10px;
-      padding: 13px 18px;
-      outline: none;
-      transition: border-color .2s;
-    }
-
-    .cta-input::placeholder { color: rgba(255,255,255,.2); }
-    .cta-input:focus { border-color: rgba(16,196,138,.4); }
-
-    .cta-fine { font-size: 11.5px; color: var(--text-dd); }
-
-    /* ── FOOTER ───────────────────────────────────── */
-    footer {
-      background: var(--midnight);
-      border-top: .5px solid var(--border-d);
-      padding: 48px;
-    }
-
-    .footer-wrap {
-      max-width: 1280px;
-      margin: 0 auto;
-    }
-
-    .footer-top {
-      display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr 1fr;
-      gap: 48px;
-      margin-bottom: 48px;
-      padding-bottom: 48px;
-      border-bottom: .5px solid var(--border-d);
-    }
-
-    .footer-brand-p {
-      font-size: 13px;
-      color: var(--text-dd);
-      line-height: 1.7;
-      margin-top: 14px;
-      font-weight: 400;
-    }
-
-    .footer-col-title {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-d);
-      text-transform: uppercase;
-      letter-spacing: .1em;
-      margin-bottom: 16px;
-    }
-
-    .footer-link {
-      display: block;
-      font-size: 13px;
-      color: var(--text-dd);
-      cursor: pointer;
-      margin-bottom: 10px;
-      transition: color .2s;
-    }
-
-    .footer-link:hover { color: white; }
-
-    .footer-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .footer-copy { font-size: 12px; color: var(--text-dd); }
-
-    .footer-powered {
-      font-size: 11px;
-      color: var(--text-dd);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .footer-powered strong { color: rgba(255,255,255,.3); }
-
-    /* ── SCROLL REVEAL ────────────────────────────── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity .4s ease, transform .4s ease;
-    }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-    /* On non-home pages, show all content immediately */
-    #page-product .reveal,
-    #page-pricing .reveal,
-    #page-about .reveal,
-    #page-contact .reveal { opacity: 1; transform: translateY(0); transition: none; }
-
-    /* ── RESPONSIVE ───────────────────────────────── */
-    @media (max-width: 900px) {
-      nav { padding: 0 20px; }
-      .nav-links { display: none; }
-      section { padding: 64px 20px; }
-      .hero { padding: 100px 20px 48px; }
-      .hero-inner { grid-template-columns: 1fr; min-height: auto; }
-      .hero-h1 { font-size: 44px; letter-spacing: -1px; }
-      .hero-dash { display: none; }
-      .features-header { grid-template-columns: 1fr; gap: 32px; }
-      .feat-grid { grid-template-columns: 1fr; }
-      .how-inner { grid-template-columns: 1fr; }
-      .testimonial-grid { grid-template-columns: 1fr; }
-      .pricing-grid { grid-template-columns: 1fr; padding: 0 20px; }
-      .pricing-hero { padding: 120px 20px 60px; }
-      .addons { padding: 0 20px; }
-      .addon-grid { grid-template-columns: 1fr; }
-      .pilot-banner-section { padding: 0 20px; }
-      .pilot-inner { grid-template-columns: 1fr; }
-      .about-hero { padding: 120px 20px 60px; }
-      .about-grid { grid-template-columns: 1fr; }
-      .contact-hero { grid-template-columns: 1fr; padding: 120px 20px 60px; }
-      .footer-top { grid-template-columns: 1fr 1fr; }
-      .proof { padding: 16px 20px; }
-      .proof-logos { gap: 20px; }
-      .hero-stats { gap: 20px; }
-      .stat { padding-right: 20px; margin-right: 20px; }
-    }
-  
-    .nav-link {
-      font-size: 13.5px;
-      font-weight: 600;
-      color: rgba(255,255,255,.82);
-      text-decoration: none;
-      cursor: pointer;
-      transition: color .2s;
-      letter-spacing: -.01em;
-    }
-    .nav-link:hover { color: white; }
-    .nav-logo { text-decoration: none; }
-    .btn-ghost-sm, .btn-primary-sm { text-decoration: none; }
-
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qomp — Compensation intelligence for mid-size employers</title>
+<meta name="description" content="Live market data from Salary.com. Connected to your HRIS. Interpreted by TSG's comp advisors. Built for mid-size employers who deserve enterprise-grade comp intelligence.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --cream: #F5F1EA;
+    --cream-2: #EDE8DD;
+    --paper: #FBF8F2;
+    --ink: #0F1419;
+    --ink-2: #2A3038;
+    --ink-3: #5C6470;
+    --rule: #D9D3C5;
+    --rule-soft: #E5DFD0;
+    --mint: #0D5942;
+    --mint-2: #0A4734;
+    --mint-light: #E8EFE9;
+    --sienna: #C8623B;
+    --sienna-light: #F5E5DD;
+
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Inter Tight', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  body {
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.55;
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+  /* ─────────────────────────────────────────────
+     LIVE DATA TICKER
+  ───────────────────────────────────────────── */
+  .top-strip {
+    background: var(--ink);
+    color: var(--cream);
+    border-bottom: 1px solid var(--ink-2);
+    overflow: hidden;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+  .ticker {
+    display: flex;
+    gap: 48px;
+    white-space: nowrap;
+    animation: tickerScroll 44s linear infinite;
+    padding-left: 100%;
+  }
+  @keyframes tickerScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .ticker-item { color: rgba(245, 241, 234, 0.7); }
+  .ticker-item strong { color: var(--cream); font-weight: 500; }
+  .ticker-dot { color: #5DCAA5; font-weight: 700; }
+
+  /* ─────────────────────────────────────────────
+     NAV
+  ───────────────────────────────────────────── */
+  nav {
+    border-bottom: 1px solid var(--rule);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(20px);
+    background: rgba(245, 241, 234, 0.92);
+  }
+  .nav-inner {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 18px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo { display: flex; align-items: baseline; gap: 8px; }
+  .logo-mark {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 28px;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    font-style: italic;
+  }
+  .logo-mark::after { content: '.'; color: var(--mint); }
+  .logo-meta {
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-3);
+  }
+
+  .nav-links { display: flex; gap: 36px; align-items: center; }
+  .nav-link {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink-2);
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-link:hover { color: var(--mint); }
+  .nav-link.current { color: var(--ink); }
+  .nav-link.current::after {
+    content: '';
+    position: absolute;
+    bottom: -22px;
+    left: 0; right: 0;
+    height: 2px;
+    background: var(--mint);
+  }
+
+  .nav-actions { display: flex; gap: 12px; align-items: center; }
+  .btn {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 14px;
+    padding: 10px 18px;
+    border-radius: 2px;
+    transition: all 0.18s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+  .btn-ghost { color: var(--ink); border: 1px solid var(--rule); }
+  .btn-ghost:hover { border-color: var(--ink); background: var(--ink); color: var(--cream); }
+  .btn-primary { background: var(--ink); color: var(--cream); border: 1px solid var(--ink); }
+  .btn-primary:hover { background: var(--mint); border-color: var(--mint); }
+  .btn-mint { background: var(--mint); color: var(--cream); border: 1px solid var(--mint); }
+  .btn-mint:hover { background: var(--mint-2); border-color: var(--mint-2); }
+
+  /* ─────────────────────────────────────────────
+     PAGE STRUCTURE
+  ───────────────────────────────────────────── */
+  .container {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--ink-3);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .section-label::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--ink);
+  }
+
+  /* ─────────────────────────────────────────────
+     HERO
+  ───────────────────────────────────────────── */
+  .hero {
+    padding: 64px 0 84px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 72px;
+    align-items: start;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--mint);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-eyebrow .pulse {
+    width: 8px;
+    height: 8px;
+    background: var(--mint);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(13, 89, 66, 0.4); }
+    70% { box-shadow: 0 0 0 12px rgba(13, 89, 66, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(13, 89, 66, 0); }
+  }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(54px, 6vw, 88px);
+    line-height: 0.96;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    margin-bottom: 28px;
+    font-variation-settings: "opsz" 144;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--mint);
+    font-weight: 400;
+  }
+
+  .hero-lede {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    max-width: 560px;
+    margin-bottom: 36px;
+  }
+  .hero-lede strong { font-weight: 600; color: var(--ink); }
+
+  .hero-cta-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 44px;
+    align-items: center;
+  }
+  .hero-cta-row .btn { padding: 13px 22px; font-size: 15px; }
+
+  .hero-trust {
+    border-top: 1px solid var(--rule);
+    padding-top: 24px;
+    display: flex;
+    gap: 48px;
+  }
+  .hero-trust-item small {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-3);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .hero-trust-item .stat {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .hero-trust-item .label {
+    font-size: 12px;
+    color: var(--ink-3);
+    margin-top: 4px;
+  }
+
+  /* HERO CHART — LIGHT VERSION */
+  .hero-viz {
+    background: var(--paper);
+    color: var(--ink);
+    padding: 32px;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    box-shadow: 0 1px 0 rgba(15, 20, 25, 0.04), 0 12px 32px -16px rgba(15, 20, 25, 0.12);
+    position: relative;
+  }
+  .viz-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 22px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .viz-title-block {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-style: italic;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .viz-subtitle {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-3);
+    margin-top: 6px;
+  }
+  .viz-meta {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
+    text-align: right;
+  }
+  .viz-meta .live {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--mint);
+    font-weight: 600;
+  }
+  .viz-meta .live::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--mint);
+    border-radius: 50%;
+    animation: pulseLight 2s infinite;
+  }
+  @keyframes pulseLight {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .viz-row {
+    display: grid;
+    grid-template-columns: 96px 1fr 56px;
+    gap: 14px;
+    align-items: center;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .viz-row:last-of-type { border-bottom: none; }
+
+  .viz-role {
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .viz-bar {
+    position: relative;
+    height: 24px;
+    display: flex;
+    align-items: center;
+  }
+  .viz-bar-track {
+    width: 100%;
+    height: 8px;
+    background: var(--cream-2);
+    border-radius: 1px;
+    position: relative;
+    overflow: visible;
+  }
+  .viz-bar-range {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: var(--mint);
+    opacity: 0.85;
+    border-radius: 1px;
+    transform-origin: left;
+    transform: scaleX(0);
+    animation: drawRange 1.4s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+  }
+  @keyframes drawRange {
+    to { transform: scaleX(1); }
+  }
+  .viz-bar-marker {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: var(--ink);
+    border: 2.5px solid var(--paper);
+    border-radius: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    box-shadow: 0 0 0 1px var(--ink);
+    opacity: 0;
+    animation: markerIn 0.4s ease-out forwards;
+  }
+  .viz-bar-marker.warn {
+    background: var(--sienna);
+    box-shadow: 0 0 0 1px var(--sienna);
+  }
+  @keyframes markerIn {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  }
+
+  .viz-compa {
+    font-family: var(--mono);
+    font-size: 12px;
+    text-align: right;
+    color: var(--ink-2);
+    font-weight: 600;
+  }
+  .viz-compa.warn { color: var(--sienna); }
+  .viz-compa.good { color: var(--mint); }
+
+  .viz-axis {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 96px 1fr 56px;
+    gap: 14px;
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
+  }
+  .viz-axis-scale {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .viz-footer {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-3);
+  }
+  .viz-footer .legend-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .legend-dot.ink { background: var(--ink); }
+  .legend-dot.warn { background: var(--sienna); }
+
+  /* ─────────────────────────────────────────────
+     COMBINED: THESIS + STATS
+     One section, splits into "the thesis" (top) and
+     supporting stats (bottom inline strip)
+  ───────────────────────────────────────────── */
+  .thesis-section {
+    padding: 80px 0 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .editorial-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 80px;
+    margin-bottom: 64px;
+  }
+
+  .editorial-side {
+    position: sticky;
+    top: 120px;
+    align-self: start;
+  }
+
+  .editorial-headline {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 44px;
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 20px;
+    font-variation-settings: "opsz" 144;
+  }
+  .editorial-headline em {
+    font-style: italic;
+    color: var(--mint);
+  }
+
+  .editorial-side p {
+    font-size: 15px;
+    color: var(--ink-3);
+    line-height: 1.6;
+  }
+
+  .reasons {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .reason {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 28px;
+    align-items: start;
+  }
+  .reason:first-child { padding-top: 0; }
+  .reason:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .reason-num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 48px;
+    font-weight: 400;
+    color: var(--mint);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+  }
+
+  .reason-title {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+  }
+  .reason-body {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-2);
+    max-width: 580px;
+  }
+
+  /* SUPPORTING STATS STRIP */
+  .stat-strip {
+    background: var(--ink);
+    color: var(--cream);
+    margin: 0 -40px;
+    padding: 56px 40px;
+    position: relative;
+  }
+  .stat-strip::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--mint);
+  }
+  .stat-strip-inner {
+    max-width: 1320px;
+    margin: 0 auto;
+  }
+  .stat-strip-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: rgba(245, 241, 234, 0.5);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .stat-strip-label::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--cream);
+  }
+
+  .stat-strip-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+
+  .stat-cell {
+    padding-right: 32px;
+    border-right: 1px solid var(--ink-2);
+  }
+  .stat-cell:last-child { border-right: none; padding-right: 0; }
+
+  .stat-num {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 56px;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--cream);
+    font-variation-settings: "opsz" 144;
+    margin-bottom: 12px;
+  }
+  .stat-num small {
+    font-size: 28px;
+    color: rgba(245, 241, 234, 0.55);
+  }
+
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: rgba(245, 241, 234, 0.6);
+    margin-bottom: 10px;
+  }
+
+  .stat-detail {
+    font-size: 13px;
+    color: rgba(245, 241, 234, 0.78);
+    line-height: 1.5;
+  }
+
+  /* ─────────────────────────────────────────────
+     HOW IT WORKS — SINGLE ROW
+  ───────────────────────────────────────────── */
+  .how-section {
+    padding: 84px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .how-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    margin-bottom: 56px;
+    align-items: end;
+  }
+
+  .how-headline {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(40px, 4.5vw, 60px);
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    font-variation-settings: "opsz" 144;
+  }
+  .how-headline em { font-style: italic; color: var(--mint); }
+
+  .how-intro {
+    font-size: 16px;
+    color: var(--ink-2);
+    line-height: 1.6;
+    padding-bottom: 6px;
+  }
+
+  .how-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .how-step {
+    padding: 32px 24px 32px 0;
+    border-right: 1px solid var(--rule);
+    position: relative;
+  }
+  .how-step:last-child {
+    border-right: none;
+    padding-right: 0;
+  }
+  .how-step:not(:first-child) { padding-left: 24px; }
+
+  .how-step-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--mint);
+    letter-spacing: 0.2em;
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  .how-step-title {
+    font-family: var(--serif);
+    font-size: 21px;
+    font-weight: 500;
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  .how-step-body {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+
+  /* ─────────────────────────────────────────────
+     CTA
+  ───────────────────────────────────────────── */
+  .cta-section {
+    padding: 96px 0 110px;
+    background: var(--mint);
+    color: var(--cream);
+    position: relative;
+  }
+
+  .cta-section .section-label { color: rgba(245, 241, 234, 0.6); }
+  .cta-section .section-label::before { background: var(--cream); }
+
+  .cta-headline {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 5vw, 72px);
+    line-height: 1.0;
+    letter-spacing: -0.035em;
+    color: var(--cream);
+    margin-bottom: 36px;
+    max-width: 900px;
+    font-variation-settings: "opsz" 144;
+  }
+  .cta-headline em {
+    font-style: italic;
+    color: rgba(245, 241, 234, 0.7);
+  }
+
+  .cta-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+  .cta-row .btn { padding: 14px 24px; font-size: 15px; }
+  .btn-cream {
+    background: var(--cream);
+    color: var(--ink);
+    border: 1px solid var(--cream);
+  }
+  .btn-cream:hover { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+  .btn-outline {
+    color: var(--cream);
+    border: 1px solid rgba(245, 241, 234, 0.4);
+  }
+  .btn-outline:hover {
+    border-color: var(--cream);
+    background: rgba(245, 241, 234, 0.08);
+  }
+
+  .cta-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(245, 241, 234, 0.2);
+    max-width: 800px;
+  }
+  .cta-meta-item small {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: rgba(245, 241, 234, 0.6);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .cta-meta-item p {
+    font-size: 13px;
+    color: var(--cream);
+    line-height: 1.5;
+  }
+
+  /* ─────────────────────────────────────────────
+     FOOTER
+  ───────────────────────────────────────────── */
+  footer {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 64px 0 32px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--ink-2);
+  }
+
+  .footer-brand .logo-mark {
+    color: var(--cream);
+    font-size: 32px;
+  }
+  .footer-tagline {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 15px;
+    color: rgba(245, 241, 234, 0.7);
+    margin-top: 12px;
+    margin-bottom: 24px;
+    max-width: 320px;
+    line-height: 1.5;
+  }
+  .footer-attribution {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: rgba(245, 241, 234, 0.4);
+    line-height: 1.7;
+  }
+  .footer-attribution strong { color: rgba(245, 241, 234, 0.7); font-weight: 500; }
+
+  .footer-col h4 {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: rgba(245, 241, 234, 0.5);
+    margin-bottom: 18px;
+    font-weight: 500;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 10px; }
+  .footer-col a {
+    font-size: 14px;
+    color: rgba(245, 241, 234, 0.85);
+    transition: color 0.2s;
+  }
+  .footer-col a:hover { color: var(--cream); }
+
+  .footer-base {
+    padding-top: 28px;
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: rgba(245, 241, 234, 0.4);
+    letter-spacing: 0.04em;
+  }
+
+  /* ─────────────────────────────────────────────
+     SCROLL REVEAL
+  ───────────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─────────────────────────────────────────────
+     RESPONSIVE
+  ───────────────────────────────────────────── */
+  @media (max-width: 980px) {
+    .container { padding: 0 24px; }
+    .nav-inner { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero-grid, .editorial-grid, .how-header, .footer-grid { grid-template-columns: 1fr; gap: 48px; }
+    .editorial-side { position: relative; top: 0; }
+    .stat-strip-grid, .how-steps { grid-template-columns: 1fr 1fr; }
+    .how-step { border-right: none; border-bottom: 1px solid var(--rule); padding: 24px 0; }
+    .how-step:nth-child(odd) { border-right: 1px solid var(--rule); padding-right: 24px; }
+    .how-step:nth-child(even) { padding-left: 24px; }
+    .how-step:nth-last-child(-n+2) { border-bottom: none; }
+    .stat-strip { margin: 0 -24px; padding: 40px 24px; }
+    .stat-cell { padding: 0 16px; border-right: none; border-bottom: 1px solid var(--ink-2); padding-bottom: 24px; margin-bottom: 24px; }
+    .stat-cell:nth-last-child(-n+2) { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .hero-trust { flex-wrap: wrap; gap: 24px 36px; }
+    .reason { grid-template-columns: 60px 1fr; gap: 16px; }
+    .reason-num { font-size: 36px; }
+    .cta-meta { grid-template-columns: 1fr; gap: 24px; }
+  }
+  @media (max-width: 600px) {
+    h1.hero-title { font-size: 44px; }
+    .stat-strip-grid, .how-steps { grid-template-columns: 1fr; }
+    .stat-cell { border-right: none; padding: 0 0 24px 0; margin-bottom: 24px; border-bottom: 1px solid var(--ink-2); }
+    .stat-cell:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+    .how-step, .how-step:nth-child(odd), .how-step:nth-child(even) {
+      border-right: none; padding: 24px 0; border-bottom: 1px solid var(--rule);
+    }
+    .how-step:last-child { border-bottom: none; }
+  }
+
+</style>
 </head>
 <body>
 
-<nav id="nav">
+<!-- ═══════════════════════════════════════════════
+     LIVE DATA TICKER
+═══════════════════════════════════════════════ -->
+<div class="top-strip">
+  <div class="ticker">
+    <span class="ticker-item"><span class="ticker-dot">●</span> Live data feed</span>
+    <span class="ticker-item"><strong>8,712</strong> companies in dataset</span>
+    <span class="ticker-item"><strong>247,431</strong> roles benchmarked this quarter</span>
+    <span class="ticker-item"><strong>$4.2B</strong> aggregate payroll under analysis</span>
+    <span class="ticker-item">Market data refreshed <strong>2 hours ago</strong></span>
+    <span class="ticker-item">Powered by <strong>Salary.com CAMD</strong></span>
+    <span class="ticker-item"><strong>11</strong> countries · <strong>340</strong> US cities</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> Live data feed</span>
+    <span class="ticker-item"><strong>8,712</strong> companies in dataset</span>
+    <span class="ticker-item"><strong>247,431</strong> roles benchmarked this quarter</span>
+    <span class="ticker-item"><strong>$4.2B</strong> aggregate payroll under analysis</span>
+    <span class="ticker-item">Market data refreshed <strong>2 hours ago</strong></span>
+    <span class="ticker-item">Powered by <strong>Salary.com CAMD</strong></span>
+    <span class="ticker-item"><strong>11</strong> countries · <strong>340</strong> US cities</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     NAV
+═══════════════════════════════════════════════ -->
+<nav>
   <div class="nav-inner">
-    <a class="nav-logo" href="javascript:void(0)" onclick="showPage('home')">
-      <div class="nav-bars">
-        <div class="nav-bar" style="width:6px;height:11px;background:rgba(255,255,255,.25)"></div>
-        <div class="nav-bar" style="width:6px;height:16px;background:rgba(255,255,255,.4)"></div>
-        <div class="nav-bar" style="width:6px;height:22px;background:var(--mint)"></div>
-        <div class="nav-bar" style="width:6px;height:26px;background:var(--mint)"></div>
-      </div>
-      <div>
-        <div class="logo-wordmark">qomp</div>
-        <div class="logo-tagline">Market data. Expert insight.</div>
-      </div>
+    <a href="index.html" class="logo">
+      <span class="logo-mark">qomp</span>
+      <span class="logo-meta">No. 001 · Phoenix</span>
     </a>
     <div class="nav-links">
-      <a class="nav-link" href="javascript:void(0)" onclick="showPage('home')">Home</a>
-      <a class="nav-link" href="javascript:void(0)" onclick="showPage('product')">Product</a>
-      <a class="nav-link" href="javascript:void(0)" onclick="showPage('pricing')">Pricing</a>
-      <a class="nav-link" href="javascript:void(0)" onclick="showPage('about')">About Qomp</a>
-      <a class="nav-link" href="javascript:void(0)" onclick="showPage('contact')">Contact</a>
+      <a href="index.html" class="nav-link current">Home</a>
+      <a href="product.html" class="nav-link">Product</a>
+      <a href="pricing.html" class="nav-link">Pricing</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="contact.html" class="nav-link">Contact</a>
     </div>
-    <div class="nav-btns">
-      <a class="btn-ghost-sm" href="javascript:void(0)" onclick="showPage('contact'); setFormTab('waitlist')">Join waitlist</a>
-      <a class="btn-ghost-sm" href="qomp-dashboard.html" target="_blank" style="color:var(--mint-l);border-color:rgba(16,196,138,.25)">Client login</a>
-      <a class="btn-primary-sm" href="javascript:void(0)" onclick="showPage('contact'); setFormTab('demo')">Request demo</a>
+    <div class="nav-actions">
+      <a href="qomp-dashboard.html" target="_blank" class="btn btn-ghost">Client login</a>
+      <a href="contact.html" class="btn btn-primary">Request demo →</a>
     </div>
   </div>
 </nav>
 
-<div id="page-home" class="page active">
-<!-- HERO -->
-  <div class="hero">
-    <!-- Background layer — completely outside layout flow -->
-    <div class="hero-bg">
-      <div class="orb orb-1"></div>
-      <div class="orb orb-2"></div>
-      <div class="orb orb-3"></div>
-      <div class="grid-lines"></div>
-    </div>
+<!-- ═══════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
 
-    <!-- Two-column grid wrapper — ONLY this div creates layout -->
-    <div class="hero-inner">
-    <div class="hero-content">
-      <div class="hero-pill">
-        <div class="pill-dot"></div>
-        Powered by Salary.com DaaS &nbsp;·&nbsp; Updated monthly
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="pulse"></span>
+          Vol. I · Compensation Intelligence · 2026
+        </div>
+
+        <h1 class="hero-title">
+          Comp clarity.<br>
+          <em>Finally.</em>
+        </h1>
+
+        <p class="hero-lede">
+          Live market data from Salary.com. Connected to your HRIS.
+          <strong>Interpreted by TSG's comp advisors.</strong>
+          Built specifically for mid-size employers who deserve enterprise-grade
+          compensation intelligence — and have been ignored by the industry that builds it.
+        </p>
+
+        <div class="hero-cta-row">
+          <a href="contact.html" class="btn btn-mint">Request a demo →</a>
+          <a href="product.html" class="btn btn-ghost">How it works</a>
+        </div>
+
+        <div class="hero-trust">
+          <div class="hero-trust-item">
+            <small>Companies</small>
+            <div class="stat" data-count="8712">8,712</div>
+            <div class="label">in dataset</div>
+          </div>
+          <div class="hero-trust-item">
+            <small>Refresh</small>
+            <div class="stat">Monthly</div>
+            <div class="label">market data</div>
+          </div>
+          <div class="hero-trust-item">
+            <small>Onboard</small>
+            <div class="stat">48 hr</div>
+            <div class="label">to live</div>
+          </div>
+          <div class="hero-trust-item">
+            <small>Advisory</small>
+            <div class="stat">TSG</div>
+            <div class="label">included</div>
+          </div>
+        </div>
       </div>
 
-      <h1 class="hero-h1">
-        Comp clarity.
-        <em>Finally.</em>
-      </h1>
+      <!-- HERO VIZ — LIGHT VERSION -->
+      <div class="hero-viz">
+        <div class="viz-header">
+          <div>
+            <div class="viz-title-block">Pay positioning · Q2 2026</div>
+            <div class="viz-subtitle">Sample · 5 of 47 roles</div>
+          </div>
+          <div class="viz-meta">
+            <div class="live">Live</div>
+            <div style="margin-top: 4px;">Updated 2h ago</div>
+          </div>
+        </div>
 
-      <p class="hero-sub">
-        Real-time compensation intelligence for mid-size employers —
-        <strong>benchmarked against live market data</strong>, connected to your HRIS,
-        and <strong>interpreted by TSG's comp advisors</strong>.
+        <div class="viz-row">
+          <div class="viz-role">Sr. SW Eng.</div>
+          <div class="viz-bar">
+            <div class="viz-bar-track">
+              <div class="viz-bar-range" style="left: 12%; width: 76%; animation-delay: 0.1s;"></div>
+              <div class="viz-bar-marker warn" style="left: 22%; animation-delay: 1.4s;"></div>
+            </div>
+          </div>
+          <div class="viz-compa warn">0.62</div>
+        </div>
+
+        <div class="viz-row">
+          <div class="viz-role">Dir. Finance</div>
+          <div class="viz-bar">
+            <div class="viz-bar-track">
+              <div class="viz-bar-range" style="left: 10%; width: 80%; animation-delay: 0.25s;"></div>
+              <div class="viz-bar-marker" style="left: 44%; animation-delay: 1.55s;"></div>
+            </div>
+          </div>
+          <div class="viz-compa">0.88</div>
+        </div>
+
+        <div class="viz-row">
+          <div class="viz-role">HR BP</div>
+          <div class="viz-bar">
+            <div class="viz-bar-track">
+              <div class="viz-bar-range" style="left: 14%; width: 72%; animation-delay: 0.4s;"></div>
+              <div class="viz-bar-marker" style="left: 56%; animation-delay: 1.7s;"></div>
+            </div>
+          </div>
+          <div class="viz-compa good">1.03</div>
+        </div>
+
+        <div class="viz-row">
+          <div class="viz-role">VP Ops</div>
+          <div class="viz-bar">
+            <div class="viz-bar-track">
+              <div class="viz-bar-range" style="left: 8%; width: 84%; animation-delay: 0.55s;"></div>
+              <div class="viz-bar-marker" style="left: 49%; animation-delay: 1.85s;"></div>
+            </div>
+          </div>
+          <div class="viz-compa">0.97</div>
+        </div>
+
+        <div class="viz-row">
+          <div class="viz-role">Data Analyst II</div>
+          <div class="viz-bar">
+            <div class="viz-bar-track">
+              <div class="viz-bar-range" style="left: 14%; width: 74%; animation-delay: 0.7s;"></div>
+              <div class="viz-bar-marker warn" style="left: 28%; animation-delay: 2s;"></div>
+            </div>
+          </div>
+          <div class="viz-compa warn">0.74</div>
+        </div>
+
+        <div class="viz-axis">
+          <div></div>
+          <div class="viz-axis-scale">
+            <span>P10</span>
+            <span>P25</span>
+            <span>P50</span>
+            <span>P75</span>
+            <span>P90</span>
+          </div>
+          <div></div>
+        </div>
+
+        <div class="viz-footer">
+          <div>
+            <span class="legend-dot ink"></span>P50 market &nbsp;
+            <span class="legend-dot warn"></span>At risk
+          </div>
+          <div>Salary.com · CAMD</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     COMBINED THESIS + STATS SECTION
+═══════════════════════════════════════════════ -->
+<section class="thesis-section">
+  <div class="container">
+
+    <div class="section-label">§ 01 — The thesis</div>
+
+    <div class="editorial-grid">
+      <div class="editorial-side">
+        <h2 class="editorial-headline">
+          Built for the<br>
+          <em>middle</em>.
+        </h2>
+        <p>
+          Mercer and Radford serve enterprises. Pave serves VC-backed tech.
+          Payscale crowd-sources data and skips the advisor. Mid-size employers
+          have been left to figure it out alone — until now.
+        </p>
+      </div>
+
+      <div class="reasons">
+        <div class="reason">
+          <div class="reason-num">01</div>
+          <div>
+            <div class="reason-title">Real data, not crowdsourced guesses.</div>
+            <div class="reason-body">
+              Qomp runs on Salary.com's CAMD — 100% HR-reported compensation data
+              from 8,712 companies, validated and refreshed monthly at the city level.
+              The same dataset Fortune 500 comp teams trust.
+            </div>
+          </div>
+        </div>
+
+        <div class="reason">
+          <div class="reason-num">02</div>
+          <div>
+            <div class="reason-title">Advisory included, not extra.</div>
+            <div class="reason-body">
+              Every Qomp plan includes TSG's compensation advisors. We don't just
+              show you the numbers — we tell you which roles to prioritize, where
+              the flight risk is, and what to do before your next merit cycle.
+            </div>
+          </div>
+        </div>
+
+        <div class="reason">
+          <div class="reason-num">03</div>
+          <div>
+            <div class="reason-title">Connected to the systems you already use.</div>
+            <div class="reason-body">
+              No CSV uploads. No manual exports. Connect BambooHR, Rippling, or ADP
+              once, and Qomp keeps your data current automatically. Nightly roster
+              sync, monthly market refresh.
+            </div>
+          </div>
+        </div>
+
+        <div class="reason">
+          <div class="reason-num">04</div>
+          <div>
+            <div class="reason-title">Priced for the company you actually run.</div>
+            <div class="reason-body">
+              Mercer engagements start at $30K. Qomp starts at $999/month flat —
+              dashboard, data, and advisory included. Same intelligence at one-tenth
+              the cost, designed for the budget you can defend to your CFO.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- INLINE DARK STAT STRIP -->
+  <div class="stat-strip">
+    <div class="stat-strip-inner">
+      <div class="stat-strip-label">§ 02 — The data behind it</div>
+
+      <div class="stat-strip-grid">
+        <div class="stat-cell">
+          <div class="stat-label">Companies</div>
+          <div class="stat-num" data-count="8712">8,712</div>
+          <div class="stat-detail">HR-reported, validated, refreshed monthly.</div>
+        </div>
+
+        <div class="stat-cell">
+          <div class="stat-label">Roles</div>
+          <div class="stat-num"><span data-count="247">247</span><small>K</small></div>
+          <div class="stat-detail">Distinct positions across every job family.</div>
+        </div>
+
+        <div class="stat-cell">
+          <div class="stat-label">Geographic precision</div>
+          <div class="stat-num"><span data-count="340">340</span><small>+</small></div>
+          <div class="stat-detail">US metros with city-level pay data.</div>
+        </div>
+
+        <div class="stat-cell">
+          <div class="stat-label">Refresh cadence</div>
+          <div class="stat-num">30<small>d</small></div>
+          <div class="stat-detail">Monthly updates at the Intelligence tier.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     HOW IT WORKS — SINGLE ROW
+═══════════════════════════════════════════════ -->
+<section class="how-section">
+  <div class="container">
+    <div class="section-label">§ 03 — How it works</div>
+
+    <div class="how-header">
+      <h2 class="how-headline">
+        Live in 48 hours.<br>
+        <em>Insightful</em> forever.
+      </h2>
+      <p class="how-intro">
+        Most comp tools take three months to onboard. Qomp connects to your HRIS
+        through an API key, benchmarks every role against Salary.com, and delivers
+        your first dashboard in two days. From there, TSG takes over.
       </p>
-
-      <div class="hero-actions">
-        <button class="btn-hero" onclick="showPage('contact'); setFormTab('demo')">Request a demo</button>
-        <button class="btn-outline" onclick="showPage('pricing')">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M5 8h6M8 5v6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-          See pricing
-        </button>
-      </div>
-
-      <div class="hero-stats">
-        <div class="stat">
-          <div class="stat-val">8,700+</div>
-          <div class="stat-lbl">Companies in dataset</div>
-        </div>
-        <div class="stat">
-          <div class="stat-val">Monthly</div>
-          <div class="stat-lbl">Market data refresh</div>
-        </div>
-        <div class="stat">
-          <div class="stat-val">TSG</div>
-          <div class="stat-lbl">Advisory included</div>
-        </div>
-        <div class="stat">
-          <div class="stat-val">48 hrs</div>
-          <div class="stat-lbl">Onboarding to live</div>
-        </div>
-      </div>
     </div>
 
-    <!-- Dashboard preview -->
-    <div class="hero-dash">
-      <div class="dash-window">
-        <div class="dash-titlebar">
-          <div class="dash-dot" style="background:#FF5F57"></div>
-          <div class="dash-dot" style="background:#FEBC2E"></div>
-          <div class="dash-dot" style="background:#28C840"></div>
-          <span class="dash-title">Pay positioning · Q2 2026</span>
-          <span class="dash-live"><span style="width:5px;height:5px;border-radius:50%;background:var(--mint);display:inline-block;animation:pulse 2s infinite"></span>Live</span>
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="how-step-num">Step 01</div>
+        <div class="how-step-title">Connect your HRIS.</div>
+        <div class="how-step-body">
+          Generate an API key in BambooHR, Rippling, or ADP and paste it into Qomp.
+          Your full roster syncs automatically.
         </div>
-        <div class="dash-body">
-          <div class="dash-label">Market alignment by dept.</div>
-          <div class="dash-bars" style="height:110px;">
-            <div class="dash-bar-col">
-              <div class="dash-bar" style="height:44px;background:#EF4444;opacity:.5"></div>
-              <div class="dash-bar-lbl">Tech</div>
-            </div>
-            <div class="dash-bar-col">
-              <div class="dash-bar" style="height:68px;background:var(--sky);opacity:.6"></div>
-              <div class="dash-bar-lbl">Fin</div>
-            </div>
-            <div class="dash-bar-col">
-              <div class="dash-bar" style="height:92px;background:var(--mint)"></div>
-              <div class="dash-bar-lbl">Ops</div>
-            </div>
-            <div class="dash-bar-col">
-              <div class="dash-bar" style="height:100px;background:var(--mint)"></div>
-              <div class="dash-bar-lbl">HR</div>
-            </div>
-            <div class="dash-bar-col">
-              <div class="dash-bar" style="height:60px;background:#EAB308;opacity:.6"></div>
-              <div class="dash-bar-lbl">Mkt</div>
-            </div>
-          </div>
-          <div class="dash-metrics">
-            <div class="dash-metric">
-              <div class="dm-val">0.94</div>
-              <div class="dm-lbl">Avg compa-ratio</div>
-            </div>
-            <div class="dash-metric">
-              <div class="dm-val">$184k</div>
-              <div class="dm-lbl">To close gaps</div>
-            </div>
-          </div>
-          <div class="dash-alert">
-            <div class="alert-dot"></div>
-            <div class="alert-text">9 roles below 85th compa · TSG review recommended</div>
-          </div>
+      </div>
+
+      <div class="how-step">
+        <div class="how-step-num">Step 02</div>
+        <div class="how-step-title">We benchmark every role.</div>
+        <div class="how-step-body">
+          Qomp matches your job titles to Salary.com's CAMD dataset using city-level
+          geography and industry cuts.
+        </div>
+      </div>
+
+      <div class="how-step">
+        <div class="how-step-num">Step 03</div>
+        <div class="how-step-title">Your dashboard stays current.</div>
+        <div class="how-step-body">
+          Market data refreshes monthly. New hires sync nightly. You always see today's
+          picture — never last year's.
+        </div>
+      </div>
+
+      <div class="how-step">
+        <div class="how-step-num">Step 04</div>
+        <div class="how-step-title">TSG interprets it for you.</div>
+        <div class="how-step-body">
+          Quarterly written insight reports from TSG's advisors. What the data means.
+          What to do next.
         </div>
       </div>
     </div>
-    </div><!-- end hero-inner -->
-  </div><!-- end hero -->
-
-  <!-- PROOF STRIP -->
-  <div class="proof">
-    <div class="proof-inner">
-    <span class="proof-label">Trusted by</span>
-    <div class="proof-sep"></div>
-    <div class="proof-logos">
-      <span class="proof-logo">Meridian Health</span>
-      <span class="proof-logo">Apex Financial</span>
-      <span class="proof-logo">Crestline Partners</span>
-      <span class="proof-logo">Summit Legal</span>
-      <span class="proof-logo">Vela Consulting</span>
-    </div>
-    <div class="proof-powered">Data <strong>Powered by Salary.com</strong></div>
-    </div><!-- end proof-inner -->
   </div>
+</section>
 
-  <!-- FEATURES -->
-  <section class="features">
-    <div class="features-header">
-      <div>
-        <div class="section-label reveal">What Qomp does</div>
-        <h2 class="section-h2 reveal">Everything your comp team needs.<br>Finally in one place.</h2>
-      </div>
-      <div>
-        <p class="section-sub reveal">Built specifically for mid-size employers who don't have a dedicated comp analyst — but need one.</p>
-      </div>
+<!-- ═══════════════════════════════════════════════
+     CTA
+═══════════════════════════════════════════════ -->
+<section class="cta-section">
+  <div class="container">
+    <div class="section-label">§ 04 — Get started</div>
+
+    <h1 class="cta-headline">
+      Your comp data is out there.<br>
+      <em>Now you can see it.</em>
+    </h1>
+
+    <div class="cta-row">
+      <a href="contact.html" class="btn btn-cream">Request a demo →</a>
+      <a href="contact.html" class="btn btn-outline">Join the waitlist</a>
     </div>
 
-    <div class="feat-grid">
-      <div class="feat-card reveal">
-        <div class="feat-icon" style="background:rgba(59,130,196,.1)">
-          <div class="fi-b" style="width:7px;height:10px;background:var(--sky);opacity:.5"></div>
-          <div class="fi-b" style="width:7px;height:16px;background:var(--sky);opacity:.75"></div>
-          <div class="fi-b" style="width:7px;height:22px;background:var(--mint)"></div>
-        </div>
-        <div class="feat-title">Real-time benchmarks</div>
-        <div class="feat-body">P10–P90 salary percentiles for every role, refreshed monthly from Salary.com's HR-reported dataset of 8,700+ companies. No stale 18-month-old survey data.</div>
+    <div class="cta-meta">
+      <div class="cta-meta-item">
+        <small>Pilot pricing</small>
+        <p>Founding clients lock in $750/month forever — five spots remaining.</p>
       </div>
-
-      <div class="feat-card reveal">
-        <div class="feat-icon" style="background:rgba(13,147,115,.1)">
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="margin-bottom:4px">
-            <rect x="3" y="8" width="16" height="2" rx="1" fill="var(--mint)" opacity=".3"/>
-            <rect x="3" y="13" width="12" height="2" rx="1" fill="var(--mint)" opacity=".6"/>
-            <rect x="3" y="3" width="10" height="2" rx="1" fill="var(--mint)"/>
-          </svg>
-        </div>
-        <div class="feat-title">HRIS connected</div>
-        <div class="feat-body">Connects to BambooHR, Rippling, and ADP. Your employee roster stays current automatically. No spreadsheet uploads, no manual work, no stale data.</div>
+      <div class="cta-meta-item">
+        <small>Onboarding</small>
+        <p>Live dashboard in 48 hours. No long contracts, no setup fees.</p>
       </div>
-
-      <div class="feat-card reveal">
-        <div class="feat-icon" style="background:rgba(255,255,255,.04)">
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="margin-bottom:4px">
-            <circle cx="11" cy="8" r="4" stroke="var(--navy)" stroke-width="1.5" fill="none" opacity=".6"/>
-            <path d="M4 20c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="var(--mint)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-          </svg>
-        </div>
-        <div class="feat-title">TSG advisory included</div>
-        <div class="feat-body">Every plan includes a quarterly insight report from TSG's comp advisors. The data shows you the what — TSG tells you what to do about it.</div>
-      </div>
-
-      <div class="feat-card reveal">
-        <div class="feat-icon" style="background:rgba(59,130,196,.08)">
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="margin-bottom:4px">
-            <path d="M4 18 L8 11 L12 14 L16 7 L19 9" stroke="var(--mint)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="19" cy="9" r="2" fill="var(--mint)" opacity=".5"/>
-          </svg>
-        </div>
-        <div class="feat-title">Compa-ratio analysis</div>
-        <div class="feat-body">See exactly how every employee's pay compares to the market median. Instantly identify who's at risk of leaving for a better offer before they start looking.</div>
-      </div>
-
-      <div class="feat-card reveal">
-        <div class="feat-icon" style="background:rgba(13,147,115,.08)">
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="margin-bottom:4px">
-            <rect x="3" y="3" width="7" height="7" rx="2" stroke="var(--mint)" stroke-width="1.2" fill="none"/>
-            <rect x="12" y="3" width="7" height="7" rx="2" stroke="var(--mint)" stroke-width="1.2" fill="none" opacity=".5"/>
-            <rect x="3" y="12" width="7" height="7" rx="2" stroke="var(--mint)" stroke-width="1.2" fill="none" opacity=".5"/>
-            <rect x="12" y="12" width="7" height="7" rx="2" stroke="var(--mint)" stroke-width="1.2" fill="none" opacity=".3"/>
-          </svg>
-        </div>
-        <div class="feat-title">Pay band management</div>
-        <div class="feat-body">Build and manage salary bands tied directly to live market data. Get alerted when a new hire or promotion pushes someone outside their range.</div>
-      </div>
-
-      <div class="feat-card reveal">
-        <div class="feat-icon" style="background:rgba(21,96,168,.08)">
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="margin-bottom:4px">
-            <circle cx="11" cy="11" r="7" stroke="var(--mint)" stroke-width="1.2" fill="none"/>
-            <path d="M8 11l2.5 2.5 4-4" stroke="var(--mint)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div class="feat-title">Pay equity analysis</div>
-        <div class="feat-body">Identify pay gaps by gender, tenure, and department before they become legal or retention problems. Board-ready audit reports included.</div>
+      <div class="cta-meta-item">
+        <small>Cancel anytime</small>
+        <p>Month-to-month or annual. We earn the renewal every quarter.</p>
       </div>
     </div>
-    </div><!-- end section-inner -->
-  </section>
+  </div>
+</section>
 
-  <!-- HOW IT WORKS -->
-  <section class="how">
-    <div class="section-inner">
-    <div class="how-inner">
-      <div>
-        <div class="section-label reveal">How it works</div>
-        <h2 class="section-h2 reveal">Live in 48 hours.<br>Insightful forever.</h2>
-        <div class="steps" style="margin-top:40px">
-          <div class="step reveal">
-            <div class="step-num">01</div>
-            <div class="step-content">
-              <div class="step-title">Connect your HRIS</div>
-              <div class="step-body">Generate an API key in BambooHR, Rippling, or ADP and paste it into Qomp. Your full employee roster, job titles, locations, and current salaries sync automatically — no uploads, no manual work.</div>
-            </div>
-          </div>
-          <div class="step reveal">
-            <div class="step-num">02</div>
-            <div class="step-content">
-              <div class="step-title">We benchmark every role</div>
-              <div class="step-body">Qomp matches each job title to Salary.com's CAMD dataset using city-level geographic precision and industry cuts. Within hours you see a complete picture — P10 through P90 percentiles for every role in your org.</div>
-            </div>
-          </div>
-          <div class="step reveal">
-            <div class="step-num">03</div>
-            <div class="step-content">
-              <div class="step-title">Your dashboard stays current</div>
-              <div class="step-body">Market data refreshes monthly. When an employee changes roles or a new hire joins, Qomp updates automatically. You always see today's picture, not last year's.</div>
-            </div>
-          </div>
-          <div class="step reveal">
-            <div class="step-num">04</div>
-            <div class="step-content">
-              <div class="step-title">TSG interprets the data</div>
-              <div class="step-body">Every quarter, TSG's comp advisors review your dashboard and deliver a written insight report. What the data means, which roles need attention, and what to do before your next merit cycle.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="how-visual reveal">
-        <div class="visual-card">
-          <div class="vc-header">
-            <div class="vc-tab active">Compa-ratio</div>
-            <div class="vc-tab">Pay bands</div>
-            <div class="vc-tab">Equity scan</div>
-          </div>
-          <div class="vc-body">
-            <div style="font-size:10px;font-weight:600;color:var(--text-dd);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">Roles vs. market P50</div>
-            <div class="comp-row-item">
-              <div class="cr-title">Sr. Software Eng.</div>
-              <div class="cr-bar-wrap">
-                <div class="cr-bar-track">
-                  <div class="cr-bar-fill" style="width:62%;background:#EF4444;opacity:.7"></div>
-                </div>
-              </div>
-              <div class="cr-compa" style="color:#EF4444">0.62</div>
-            </div>
-            <div class="comp-row-item">
-              <div class="cr-title">Dir. of Finance</div>
-              <div class="cr-bar-wrap">
-                <div class="cr-bar-track">
-                  <div class="cr-bar-fill" style="width:88%;background:#EAB308;opacity:.8"></div>
-                </div>
-              </div>
-              <div class="cr-compa" style="color:#EAB308">0.88</div>
-            </div>
-            <div class="comp-row-item">
-              <div class="cr-title">HR Business Partner</div>
-              <div class="cr-bar-wrap">
-                <div class="cr-bar-track">
-                  <div class="cr-bar-fill" style="width:103%;background:var(--mint);max-width:100%"></div>
-                </div>
-              </div>
-              <div class="cr-compa" style="color:var(--mint)">1.03</div>
-            </div>
-            <div class="comp-row-item">
-              <div class="cr-title">VP Operations</div>
-              <div class="cr-bar-wrap">
-                <div class="cr-bar-track">
-                  <div class="cr-bar-fill" style="width:97%;background:var(--sky)"></div>
-                </div>
-              </div>
-              <div class="cr-compa" style="color:var(--sky)">0.97</div>
-            </div>
-            <div class="comp-row-item">
-              <div class="cr-title">Data Analyst II</div>
-              <div class="cr-bar-wrap">
-                <div class="cr-bar-track">
-                  <div class="cr-bar-fill" style="width:74%;background:#EAB308;opacity:.7"></div>
-                </div>
-              </div>
-              <div class="cr-compa" style="color:#EAB308">0.74</div>
-            </div>
-            <div style="margin-top:16px;padding-top:14px;border-top:.5px solid var(--border-d);display:flex;justify-content:space-between;align-items:center">
-              <div style="font-size:11px;color:var(--text-dd)">Powered by Salary.com</div>
-              <div style="font-size:11px;color:var(--mint);font-weight:600">Updated Feb 2026</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    </div><!-- end section-inner -->
-  </section>
-
-  <!-- TESTIMONIALS -->
-  <section class="social">
-    <div class="section-inner">
-    <div class="section-label reveal" style="justify-content:center">What clients say</div>
-    <h2 class="section-h2 reveal" style="text-align:center;margin-bottom:8px">Built for HR teams who wear every hat.</h2>
-    <p class="section-sub reveal" style="margin:0 auto;text-align:center">Qomp was designed for the HR director managing compensation for 400 people with a team of two.</p>
-    <div class="testimonial-grid">
-      <div class="testimonial reveal">
-        <div class="quote-mark">"</div>
-        <div class="quote-text">We lost two engineers last quarter to better offers we didn't know about. Qomp showed us we were 38% below market on tech roles. We fixed it before we lost anyone else.</div>
-        <div class="quote-author">
-          <div class="author-avatar" style="background:linear-gradient(135deg,#0D9373,#1560A8)">S</div>
-          <div>
-            <div class="author-name">Sarah M.</div>
-            <div class="author-role">VP Human Resources · Healthcare, 380 employees</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial reveal">
-        <div class="quote-mark">"</div>
-        <div class="quote-text">My board kept asking how our pay compared to the market. I couldn't answer with confidence. Now I walk into every comp discussion with TSG's quarterly report and real data behind me.</div>
-        <div class="quote-author">
-          <div class="author-avatar" style="background:linear-gradient(135deg,#1560A8,#3B82C4)">R</div>
-          <div>
-            <div class="author-name">Robert K.</div>
-            <div class="author-role">CHRO · Financial Services, 520 employees</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial reveal">
-        <div class="quote-mark">"</div>
-        <div class="quote-text">We used to spend three weeks on our merit cycle with spreadsheets. Qomp cut that to three days. The HRIS connection alone saved us more than the subscription costs.</div>
-        <div class="quote-author">
-          <div class="author-avatar" style="background:linear-gradient(135deg,#0D9373,#10C48A)">J</div>
-          <div>
-            <div class="author-name">Jennifer L.</div>
-            <div class="author-role">Director of HR · Professional Services, 210 employees</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    </div><!-- end section-inner -->
-  </section>
-
-  <!-- CTA -->
-  <section class="cta-section">
-    <div class="cta-inner">
-      <div class="section-label reveal" style="justify-content:center">Get started</div>
-      <h2 class="cta-h2 reveal">Your comp data is out there.<br>Now you can see it.</h2>
-      <p class="cta-sub reveal">Join the waitlist for early access, or request a demo to see Qomp live with your org's data.</p>
-      <div class="hero-actions reveal" style="justify-content:center;margin-bottom:16px">
-        <button class="btn-hero" onclick="showPage('contact'); setFormTab('demo')">Request a demo</button>
-        <button class="btn-outline" onclick="showPage('contact'); setFormTab('waitlist')">Join waitlist</button>
-      </div>
-      <p class="cta-fine reveal">No credit card required &nbsp;·&nbsp; Setup in 48 hours &nbsp;·&nbsp; Cancel anytime</p>
-    </div>
-  </section>
-</div>
-
-<!-- ── FOOTER (shared) ─────────────────────────────── -->
+<!-- ═══════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════ -->
 <footer>
-  <div class="footer-wrap">
-  <div class="footer-top">
-    <div>
-      <div class="nav-logo" onclick="showPage('home')" style="margin-bottom:14px">
-        <div class="nav-bars">
-          <div class="nav-bar" style="width:5px;height:9px;background:rgba(255,255,255,.2)"></div>
-          <div class="nav-bar" style="width:5px;height:13px;background:rgba(255,255,255,.35)"></div>
-          <div class="nav-bar" style="width:5px;height:18px;background:var(--mint)"></div>
-          <div class="nav-bar" style="width:5px;height:22px;background:var(--mint)"></div>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="logo-mark">qomp</span>
+        <p class="footer-tagline">
+          Compensation intelligence for mid-size employers — built by TSG.
+        </p>
+        <div class="footer-attribution">
+          Data sources: <strong>Salary.com CAMD</strong><br>
+          Last refreshed: <strong>May 8, 2026</strong><br>
+          Methodology · ISO 27001
         </div>
-        <div class="logo-word" style="font-size:18px">qomp</div>
       </div>
-      <p class="footer-brand-p">Compensation intelligence for mid-size employers. Market data from Salary.com, interpreted by TSG's comp advisors.</p>
+
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="product.html">How it works</a></li>
+          <li><a href="product.html">Features</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="contact.html">Request demo</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Qomp</a></li>
+          <li><a href="about.html">TSG advisory</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy policy</a></li>
+          <li><a href="#">Terms of service</a></li>
+          <li><a href="#">Data processing</a></li>
+        </ul>
+      </div>
     </div>
-    <div>
-      <div class="footer-col-title">Product</div>
-      <span class="footer-link" onclick="showPage('product')">How it works</span>
-      <span class="footer-link" onclick="showPage('product')">Features</span>
-      <span class="footer-link" onclick="showPage('pricing')">Pricing</span>
-      <span class="footer-link" onclick="showPage('contact'); setFormTab('demo')">Request demo</span>
+
+    <div class="footer-base">
+      <div>© 2026 TSG Executive Search & Compensation</div>
+      <div>Phoenix, Arizona · est. 2014</div>
     </div>
-    <div>
-      <div class="footer-col-title">Company</div>
-      <span class="footer-link" onclick="showPage('about')">About Qomp</span>
-      <span class="footer-link" onclick="showPage('contact')">Contact</span>
-      <span class="footer-link" onclick="showPage('contact'); setFormTab('waitlist')">Join waitlist</span>
-    </div>
-    <div>
-      <div class="footer-col-title">Legal</div>
-      <span class="footer-link">Privacy policy</span>
-      <span class="footer-link">Terms of service</span>
-      <span class="footer-link">Data processing</span>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <div class="footer-copy">© 2026 TSG Executive Search & Compensation · All rights reserved</div>
-    <div class="footer-powered">Data <strong>Powered by Salary.com</strong></div>
   </div>
 </footer>
-</div><!-- end page-home -->
-
-<!-- ══════════════════════════════════════════════════
-     PRODUCT PAGE
-══════════════════════════════════════════════════ -->
-</div>
-
-<!-- ═══════════════════════════════════
-     PAGE: PRODUCT
-═══════════════════════════════════ -->
-</div>
-
-<div id="page-product" class="page">
-<!-- PRODUCT HERO -->
-  <section style="padding:48px 48px 60px;background:var(--deep);">
-    <div class="section-inner">
-      <div style="max-width:680px">
-        <div class="section-label">The platform</div>
-        <h1 class="section-h2" style="font-size:clamp(32px,4vw,52px);margin-bottom:20px">Compensation intelligence built for how HR actually works.</h1>
-        <p class="section-sub" style="max-width:560px">Qomp connects your HRIS to Salary.com's market data and surfaces exactly what you need — compa-ratios, pay positioning, at-risk roles, and equity gaps — in a dashboard your whole leadership team can understand.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOW DATA FLOWS -->
-  <section style="padding:80px 48px;background:var(--midnight);">
-    <div class="section-inner">
-      <div style="text-align:center;margin-bottom:56px">
-        <div class="section-label" style="justify-content:center">How it works</div>
-        <h2 class="section-h2" style="text-align:center;font-size:clamp(28px,3vw,40px)">Three sources. One clear picture.</h2>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border-d);border:1px solid var(--border-d);border-radius:16px;overflow:hidden">
-        <div style="background:var(--deep);padding:32px;text-align:center">
-          <div style="width:52px;height:52px;border-radius:50%;background:rgba(13,147,115,.1);border:1px solid rgba(13,147,115,.2);display:flex;align-items:center;justify-content:center;margin:0 auto 20px">
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="7" width="18" height="13" rx="2" stroke="var(--mint)" stroke-width="1.4" fill="none"/><path d="M7 7V5a4 4 0 0 1 8 0v2" stroke="var(--mint)" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>
-          </div>
-          <div style="font-family:var(--sans);font-size:15px;font-weight:700;color:white;margin-bottom:8px">Your HRIS</div>
-          <div style="font-size:13px;color:var(--text-d);line-height:1.65">BambooHR, Rippling, or ADP feeds your live employee roster, job titles, locations, and current salaries into Qomp automatically.</div>
-          <div style="margin-top:16px;font-size:11px;font-weight:600;color:var(--mint);letter-spacing:.04em">BambooHR · Rippling · ADP</div>
-        </div>
-        <div style="background:var(--deep);padding:32px;text-align:center;border-left:1px solid var(--border-d);border-right:1px solid var(--border-d)">
-          <div style="width:52px;height:52px;border-radius:50%;background:rgba(21,96,168,.1);border:1px solid rgba(21,96,168,.2);display:flex;align-items:center;justify-content:center;margin:0 auto 20px">
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8" stroke="var(--sky)" stroke-width="1.4" fill="none"/><path d="M4 8h14M4 14h14M11 3a14 14 0 0 1 0 16M11 3a14 14 0 0 0 0 16" stroke="var(--sky)" stroke-width="1.4" fill="none"/></svg>
-          </div>
-          <div style="font-family:var(--sans);font-size:15px;font-weight:700;color:white;margin-bottom:8px">Salary.com DaaS</div>
-          <div style="font-size:13px;color:var(--text-d);line-height:1.65">100% HR-reported market data from 8,700+ companies. P10–P90 percentiles refreshed monthly at the city level, by industry.</div>
-          <div style="margin-top:16px;font-size:11px;font-weight:600;color:var(--sky);letter-spacing:.04em">8,700+ companies · City-level · Monthly</div>
-        </div>
-        <div style="background:var(--deep);padding:32px;text-align:center">
-          <div style="width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;margin:0 auto 20px">
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="4" stroke="rgba(255,255,255,.6)" stroke-width="1.4" fill="none"/><path d="M4 20c0-3.87 3.13-7 7-7s7 3.13 7 7" stroke="var(--mint)" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>
-          </div>
-          <div style="font-family:var(--sans);font-size:15px;font-weight:700;color:white;margin-bottom:8px">TSG Advisory</div>
-          <div style="font-size:13px;color:var(--text-d);line-height:1.65">Every quarter, TSG's comp advisors interpret the data and deliver a written report — what it means, what to prioritize, and what to do before your next merit cycle.</div>
-          <div style="margin-top:16px;font-size:11px;font-weight:600;color:rgba(255,255,255,.4);letter-spacing:.04em">Quarterly reports · Direct access · Merit prep</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- DASHBOARD MODULES -->
-  <section style="padding:80px 48px;background:var(--deep);">
-    <div class="section-inner">
-      <div style="margin-bottom:56px">
-        <div class="section-label">Dashboard modules</div>
-        <h2 class="section-h2" style="font-size:clamp(28px,3vw,40px);margin-bottom:12px">Six views. Every comp question answered.</h2>
-        <p class="section-sub">Each module in Qomp answers a specific question your leadership team is already asking.</p>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px">
-
-        <div style="background:rgba(255,255,255,.02);border:.5px solid var(--border-d);border-radius:14px;padding:28px;display:flex;gap:20px;align-items:flex-start">
-          <div style="width:44px;height:44px;border-radius:10px;background:rgba(13,147,115,.1);display:flex;align-items:flex-end;justify-content:center;gap:3px;padding-bottom:7px;flex-shrink:0">
-            <div style="width:6px;height:10px;background:var(--mint);opacity:.4;border-radius:2px"></div>
-            <div style="width:6px;height:16px;background:var(--mint);opacity:.7;border-radius:2px"></div>
-            <div style="width:6px;height:24px;background:var(--mint);border-radius:2px"></div>
-          </div>
-          <div>
-            <div style="font-size:15px;font-weight:700;color:white;margin-bottom:6px">Pay positioning</div>
-            <div style="font-size:13px;color:var(--text-d);line-height:1.65"><em style="color:rgba(255,255,255,.5);font-style:normal">"Where does our pay sit vs. the market?"</em> See every department's alignment to Salary.com benchmarks at a glance. Spot the departments that are at risk before people start leaving.</div>
-          </div>
-        </div>
-
-        <div style="background:rgba(255,255,255,.02);border:.5px solid var(--border-d);border-radius:14px;padding:28px;display:flex;gap:20px;align-items:flex-start">
-          <div style="width:44px;height:44px;border-radius:10px;background:rgba(21,96,168,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 15L7 9l4 3 4-6 3 2" stroke="var(--sky)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17" cy="8" r="2" fill="var(--sky)" opacity=".5"/></svg>
-          </div>
-          <div>
-            <div style="font-size:15px;font-weight:700;color:white;margin-bottom:6px">Compa-ratio analysis</div>
-            <div style="font-size:13px;color:var(--text-d);line-height:1.65"><em style="color:rgba(255,255,255,.5);font-style:normal">"Who's underpaid vs. the market midpoint?"</em> Every employee's compa-ratio calculated and ranked. At-risk roles flagged automatically when they drop below the 85th percentile.</div>
-          </div>
-        </div>
-
-        <div style="background:rgba(255,255,255,.02);border:.5px solid var(--border-d);border-radius:14px;padding:28px;display:flex;gap:20px;align-items:flex-start">
-          <div style="width:44px;height:44px;border-radius:10px;background:rgba(124,58,237,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="8" width="14" height="3" rx="1.5" fill="#A78BFA" opacity=".3"/><rect x="3" y="4" width="9" height="3" rx="1.5" fill="#7C3AED" opacity=".6"/><rect x="3" y="12" width="11" height="3" rx="1.5" fill="#7C3AED"/></svg>
-          </div>
-          <div>
-            <div style="font-size:15px;font-weight:700;color:white;margin-bottom:6px">Pay band management</div>
-            <div style="font-size:13px;color:var(--text-d);line-height:1.65"><em style="color:rgba(255,255,255,.5);font-style:normal">"Are our salary ranges still competitive?"</em> Build and manage salary bands tied to live market data. Get alerted when a hire or promotion pushes someone outside their range.</div>
-          </div>
-        </div>
-
-        <div style="background:rgba(255,255,255,.02);border:.5px solid var(--border-d);border-radius:14px;padding:28px;display:flex;gap:20px;align-items:flex-start">
-          <div style="width:44px;height:44px;border-radius:10px;background:rgba(234,179,8,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="#EAB308" stroke-width="1.4" fill="none"/><path d="M10 6v4.5l3 1.5" stroke="#EAB308" stroke-width="1.4" stroke-linecap="round"/></svg>
-          </div>
-          <div>
-            <div style="font-size:15px;font-weight:700;color:white;margin-bottom:6px">Merit cycle planning</div>
-            <div style="font-size:13px;color:var(--text-d);line-height:1.65"><em style="color:rgba(255,255,255,.5);font-style:normal">"How do we allocate this year's merit budget?"</em> Manager workflows, budget pools, and approval chains built in. Approved changes write back to your HRIS automatically.</div>
-          </div>
-        </div>
-
-        <div style="background:rgba(255,255,255,.02);border:.5px solid var(--border-d);border-radius:14px;padding:28px;display:flex;gap:20px;align-items:flex-start">
-          <div style="width:44px;height:44px;border-radius:10px;background:rgba(239,68,68,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="#EF4444" stroke-width="1.4" fill="none" opacity=".6"/><path d="M7 10l2.5 2.5 4-4" stroke="#EF4444" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <div>
-            <div style="font-size:15px;font-weight:700;color:white;margin-bottom:6px">Pay equity analysis</div>
-            <div style="font-size:13px;color:var(--text-d);line-height:1.65"><em style="color:rgba(255,255,255,.5);font-style:normal">"Do we have unexplained pay gaps?"</em> Statistical gap analysis by gender, tenure, and department. Remediation modeling and board-ready audit reports included.</div>
-          </div>
-        </div>
-
-        <div style="background:rgba(255,255,255,.02);border:.5px solid var(--border-d);border-radius:14px;padding:28px;display:flex;gap:20px;align-items:flex-start">
-          <div style="width:44px;height:44px;border-radius:10px;background:rgba(13,147,115,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16V8l6-4 6 4v8" stroke="var(--mint)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity=".6"/><rect x="7" y="11" width="6" height="5" rx="1" stroke="var(--mint)" stroke-width="1.4" fill="none"/></svg>
-          </div>
-          <div>
-            <div style="font-size:15px;font-weight:700;color:white;margin-bottom:6px">TSG quarterly report</div>
-            <div style="font-size:13px;color:var(--text-d);line-height:1.65"><em style="color:rgba(255,255,255,.5);font-style:normal">"What should we actually do about all this?"</em> Written interpretation from TSG's advisors every quarter. Specific recommendations tied to your data, not generic best practices.</div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- HRIS INTEGRATIONS -->
-  <section style="padding:80px 48px;background:var(--midnight);">
-    <div class="section-inner">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center">
-        <div>
-          <div class="section-label">Integrations</div>
-          <h2 class="section-h2" style="font-size:clamp(28px,3vw,38px);margin-bottom:16px">Connects to the HRIS you already use.</h2>
-          <p class="section-sub" style="margin-bottom:28px">No spreadsheet uploads. No manual exports. Connect once and Qomp stays current automatically through a nightly sync.</p>
-          <div style="display:flex;flex-direction:column;gap:10px">
-            <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(255,255,255,.02);border:.5px solid var(--border-d);border-radius:10px">
-              <div style="width:8px;height:8px;border-radius:50%;background:var(--mint);flex-shrink:0"></div>
-              <div style="font-size:13.5px;font-weight:600;color:white;flex:1">BambooHR</div>
-              <div style="font-size:11px;color:var(--mint);background:rgba(13,147,115,.1);padding:2px 8px;border-radius:6px;font-weight:600">Available now</div>
-            </div>
-            <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(255,255,255,.02);border:.5px solid var(--border-d);border-radius:10px">
-              <div style="width:8px;height:8px;border-radius:50%;background:var(--mint);flex-shrink:0"></div>
-              <div style="font-size:13.5px;font-weight:600;color:white;flex:1">Rippling</div>
-              <div style="font-size:11px;color:var(--mint);background:rgba(13,147,115,.1);padding:2px 8px;border-radius:6px;font-weight:600">Available now</div>
-            </div>
-            <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(255,255,255,.02);border:.5px solid var(--border-d);border-radius:10px">
-              <div style="width:8px;height:8px;border-radius:50%;background:var(--sky);flex-shrink:0"></div>
-              <div style="font-size:13.5px;font-weight:600;color:white;flex:1">ADP Workforce Now</div>
-              <div style="font-size:11px;color:var(--sky);background:rgba(21,96,168,.1);padding:2px 8px;border-radius:6px;font-weight:600">Coming soon</div>
-            </div>
-            <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(255,255,255,.02);border:.5px solid var(--border-d);border-radius:10px">
-              <div style="width:8px;height:8px;border-radius:50%;background:var(--sky);flex-shrink:0"></div>
-              <div style="font-size:13.5px;font-weight:600;color:white;flex:1">Paylocity / Paycom</div>
-              <div style="font-size:11px;color:var(--sky);background:rgba(21,96,168,.1);padding:2px 8px;border-radius:6px;font-weight:600">Coming soon</div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div style="background:rgba(12,30,53,.6);border:1px solid var(--border-d);border-radius:16px;padding:28px">
-            <div style="font-size:11px;font-weight:600;color:var(--text-dd);text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px">What syncs automatically</div>
-            <div style="display:flex;flex-direction:column;gap:0">
-              <div style="padding:12px 0;border-bottom:.5px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:rgba(255,255,255,.65)">Employee roster + job titles</span><span style="font-size:11px;color:var(--mint);font-weight:600">Nightly</span></div>
-              <div style="padding:12px 0;border-bottom:.5px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:rgba(255,255,255,.65)">Current salaries + pay type</span><span style="font-size:11px;color:var(--mint);font-weight:600">Nightly</span></div>
-              <div style="padding:12px 0;border-bottom:.5px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:rgba(255,255,255,.65)">Department + location</span><span style="font-size:11px;color:var(--mint);font-weight:600">Nightly</span></div>
-              <div style="padding:12px 0;border-bottom:.5px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:rgba(255,255,255,.65)">Market benchmarks (Salary.com)</span><span style="font-size:11px;color:var(--sky);font-weight:600">Monthly</span></div>
-              <div style="padding:12px 0;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:rgba(255,255,255,.65)">TSG advisory report</span><span style="font-size:11px;color:rgba(255,255,255,.35);font-weight:600">Quarterly</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PRODUCT CTA -->
-  <section style="padding:80px 48px;background:var(--deep);">
-    <div class="section-inner">
-      <div style="max-width:640px;margin:0 auto;text-align:center">
-        <div class="section-label" style="justify-content:center">Get started</div>
-        <h2 class="section-h2" style="font-size:clamp(28px,3vw,40px);margin-bottom:14px;text-align:center">Ready to see your org's data?</h2>
-        <p class="section-sub" style="margin:0 auto 32px;text-align:center">Request a demo and we'll walk you through a live session using your actual job titles and headcount.</p>
-        <div style="display:flex;gap:12px;justify-content:center">
-          <button class="btn-hero" onclick="showPage('contact'); setFormTab('demo')">Request a demo</button>
-          <button class="btn-outline" onclick="showPage('pricing')">See pricing</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- Mini footer -->
-  <div style="padding:24px 48px;border-top:.5px solid var(--border-d);display:flex;align-items:center;justify-content:space-between;background:var(--midnight)">
-    <div style="display:flex;align-items:center;gap:8px;cursor:pointer" onclick="showPage('home')">
-      <div style="display:flex;align-items:flex-end;gap:2px;height:14px">
-        <div style="width:3px;height:6px;background:rgba(255,255,255,.2);border-radius:1px"></div>
-        <div style="width:3px;height:9px;background:rgba(255,255,255,.35);border-radius:1px"></div>
-        <div style="width:3px;height:12px;background:var(--mint);border-radius:1px"></div>
-        <div style="width:3px;height:14px;background:var(--mint);border-radius:1px"></div>
-      </div>
-      <span style="font-size:14px;font-weight:800;color:white;letter-spacing:-.3px">qomp</span>
-      <span style="font-size:9px;font-weight:600;color:var(--mint-l);letter-spacing:.1em;text-transform:uppercase">Market data. Expert insight.</span>
-    </div>
-    <span style="font-size:11px;color:rgba(255,255,255,.2)">© 2026 TSG Executive Search & Compensation</span>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════════════
-     PRICING PAGE
-══════════════════════════════════════════════════ -->
-</div>
-
-<!-- ═══════════════════════════════════
-     PAGE: PRICING
-═══════════════════════════════════ -->
-</div>
-
-<div id="page-pricing" class="page">
-<div class="pricing-hero">
-    <div class="section-label" style="justify-content:center">Pricing</div>
-    <h1 class="section-h2" style="text-align:center;font-size:clamp(40px,5vw,60px)">Simple, transparent pricing.<br>No surprises.</h1>
-    <p class="section-sub" style="margin:16px auto 0;text-align:center">Headcount-based tiers. Flat monthly fee. TSG advisory included in every plan.</p>
-    <div class="pricing-toggle">
-      <div class="toggle-opt active" id="tog-monthly" onclick="toggleBilling('monthly')">Monthly</div>
-      <div class="toggle-opt" id="tog-annual" onclick="toggleBilling('annual')">Annual <span class="save-tag">Save 15%</span></div>
-    </div>
-  </div>
-
-  <div class="pricing-grid">
-    <div class="pricing-card">
-      <div class="pc-head">
-        <div class="pc-tier">Essentials</div>
-        <div class="pc-name">Core</div>
-        <div class="pc-seg">100–250 employees</div>
-      </div>
-      <div class="pc-price-wrap">
-        <div class="pc-price">
-          <div class="pc-num" id="price-core">$999</div>
-          <div class="pc-unit">/mo</div>
-        </div>
-        <div class="pc-annual" id="annual-core">Billed monthly</div>
-      </div>
-      <div class="pc-cta">
-        <button class="btn-pc-ghost" onclick="showPage('contact'); setFormTab('demo')">Request demo</button>
-      </div>
-      <div class="pc-features">
-        <div class="pc-feat">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="var(--mint)" stroke-width="1"/><path d="M4.5 7l2 2 3-3" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          Up to 30 benchmarked roles
-        </div>
-        <div class="pc-feat">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="var(--mint)" stroke-width="1"/><path d="M4.5 7l2 2 3-3" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          Quarterly market data refresh
-        </div>
-        <div class="pc-feat">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="var(--mint)" stroke-width="1"/><path d="M4.5 7l2 2 3-3" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          Pay positioning + compa-ratio dashboard
-        </div>
-        <div class="pc-feat">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="var(--mint)" stroke-width="1"/><path d="M4.5 7l2 2 3-3" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          Department breakdown view
-        </div>
-        <div class="pc-feat">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="var(--mint)" stroke-width="1"/><path d="M4.5 7l2 2 3-3" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          2 user seats
-        </div>
-        <div class="pc-feat">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="var(--mint)" stroke-width="1"/><path d="M4.5 7l2 2 3-3" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          Quarterly TSG insight report
-        </div>
-        <div class="pc-feat">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="var(--mint)" stroke-width="1"/><path d="M4.5 7l2 2 3-3" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          Email support
-        </div>
-        <div class="pc-feat" style="color:rgba(255,255,255,.2)">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(255,255,255,.15)" stroke-width="1"/><path d="M4.5 4.5l5 5M9.5 4.5l-5 5" stroke="rgba(255,255,255,.2)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          HRIS integration
-        </div>
-        <div class="pc-feat" style="color:rgba(255,255,255,.2)">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(255,255,255,.15)" stroke-width="1"/><path d="M4.5 4.5l5 5M9.5 4.5l-5 5" stroke="rgba(255,255,255,.2)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          Pay equity module
-        </div>
-      </div>
-    </div>
-
-    <div class="pricing-card featured">
-      <div class="pc-badge">Most Popular</div>
-      <div class="pc-head">
-        <div class="pc-tier">Intelligence</div>
-        <div class="pc-name">Professional</div>
-        <div class="pc-seg">251–750 employees</div>
-      </div>
-      <div class="pc-price-wrap">
-        <div class="pc-price">
-          <div class="pc-num" id="price-pro">$1,899</div>
-          <div class="pc-unit">/mo</div>
-        </div>
-        <div class="pc-annual" id="annual-pro">Billed monthly</div>
-      </div>
-      <div class="pc-cta">
-        <button class="btn-pc-primary" onclick="showPage('contact'); setFormTab('demo')">Request demo</button>
-      </div>
-      <div class="pc-features">
-        <div class="pc-feat">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="rgba(16,196,138,.15)" stroke="var(--mint)" stroke-width="1"/><path d="M4.5 7l2 2 3-3" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          Up to 75 benchmarked roles
-        </div>
-        <div class="pc-feat">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="rgba(16,196,138,.15)" stroke="var(--mint)" stroke-width="1"/><path d="M4.5 7l2 2 3-3" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          Monthly market data refresh
-        </div>
-        <div class="pc-feat">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="rgba(16,196,138,.15)" stroke="var(--mint)" stroke-width="1"/><path d="M4.5 7l2 2 3-3" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          All Core features
-        </div>
-        <div class="pc-feat">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="rgba(16,196,138,.15)" stroke="var(--mint)" stroke-width="1"/><path d="M4.5 7l2 2 3-3" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          HRIS integration (BambooHR · Rippling)
-        </div>
-        <div class="pc-feat">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="rgba(16,196,138,.15)" stroke="var(--mint)" stroke-width="1"/><path d="M4.5 7l2 2 3-3" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          Pay equity scan module
-        </div>
-        <div class="pc-feat">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="rgba(16,196,138,.15)" stroke="var(--mint)" stroke-width="1"/><path d="M4.5 7l2 2 3-3" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          5 user seats
-        </div>
-        <div class="pc-feat">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="rgba(16,196,138,.15)" stroke="var(--mint)" stroke-width="1"/><path d="M4.5 7l2 2 3-3" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          Monthly TSG insight report
-        </div>
-        <div class="pc-feat">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="rgba(16,196,138,.15)" stroke="var(--mint)" stroke-width="1"/><path d="M4.5 7l2 2 3-3" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          Priority support
-        </div>
-      </div>
-    </div>
-
-    <div class="pricing-card">
-      <div class="pc-head">
-        <div class="pc-tier">Enterprise</div>
-        <div class="pc-name">Premium</div>
-        <div class="pc-seg">751–1,500 employees</div>
-      </div>
-      <div class="pc-price-wrap">
-        <div class="pc-price">
-          <div class="pc-num" id="price-ent">$2,999</div>
-          <div class="pc-unit">/mo</div>
-        </div>
-        <div class="pc-annual" id="annual-ent">Billed monthly</div>
-      </div>
-      <div class="pc-cta">
-        <button class="btn-pc-ghost" onclick="showPage('contact'); setFormTab('demo')">Request demo</button>
-      </div>
-      <div class="pc-features">
-        <div class="pc-feat">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="var(--mint)" stroke-width="1"/><path d="M4.5 7l2 2 3-3" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          Unlimited benchmarked roles
-        </div>
-        <div class="pc-feat">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="var(--mint)" stroke-width="1"/><path d="M4.5 7l2 2 3-3" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          Real-time data
-        </div>
-        <div class="pc-feat">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="var(--mint)" stroke-width="1"/><path d="M4.5 7l2 2 3-3" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          All Professional features
-        </div>
-        <div class="pc-feat">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="var(--mint)" stroke-width="1"/><path d="M4.5 7l2 2 3-3" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          Merit cycle planning module
-        </div>
-        <div class="pc-feat">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="var(--mint)" stroke-width="1"/><path d="M4.5 7l2 2 3-3" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          Pay band design toolkit
-        </div>
-        <div class="pc-feat">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="var(--mint)" stroke-width="1"/><path d="M4.5 7l2 2 3-3" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          All HRIS integrations + write-back
-        </div>
-        <div class="pc-feat">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="var(--mint)" stroke-width="1"/><path d="M4.5 7l2 2 3-3" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          Unlimited seats
-        </div>
-        <div class="pc-feat">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="var(--mint)" stroke-width="1"/><path d="M4.5 7l2 2 3-3" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          Monthly TSG advisory session (1 hr)
-        </div>
-        <div class="pc-feat">
-          <div class="feat-check"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="var(--mint)" stroke-width="1"/><path d="M4.5 7l2 2 3-3" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          Dedicated onboarding + CSM
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PILOT BANNER -->
-  <div class="pilot-banner-section">
-    <div class="pilot-inner">
-      <div>
-        <div class="section-label" style="margin-bottom:12px">Founding client rate</div>
-        <div class="pilot-title">Join the pilot — by invitation only.</div>
-        <p class="pilot-body">We're onboarding a small group of founding clients before the full launch. Pilot clients get a permanent discounted rate, direct access to the TSG advisory team, and real input into the product roadmap. Your rate never increases — even as we raise prices for everyone else.</p>
-        <div style="margin-top:24px">
-          <button class="btn-hero" onclick="showPage('contact'); setFormTab('demo')">Apply for pilot access</button>
-        </div>
-      </div>
-      <div class="pilot-price-block">
-        <div class="pilot-was">$999/mo list</div>
-        <div class="pilot-num">$750</div>
-        <div class="pilot-unit">/month forever</div>
-        <div style="font-size:11px;color:var(--mint-l);background:rgba(16,196,138,.08);border:1px solid rgba(16,196,138,.15);padding:6px 14px;border-radius:100px;font-weight:600">5 spots remaining</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ADDONS -->
-  <div class="addons" style="margin-top:0">
-    <div style="margin-bottom:8px"><span class="section-label">TSG consulting add-ons</span></div>
-    <h2 class="section-h2" style="font-size:28px;margin-bottom:8px">Need more? TSG's advisors are here.</h2>
-    <p class="section-sub" style="margin-bottom:0">Every dashboard client is also a TSG client. Add deeper advisory engagement when you need it.</p>
-    <div class="addon-grid">
-      <div class="addon-card">
-        <div><div class="addon-name">Full comp audit + board report</div><div class="addon-desc">Complete org benchmarking, gap analysis, board-ready presentation</div></div>
-        <div class="addon-price">$4,500</div>
-      </div>
-      <div class="addon-card">
-        <div><div class="addon-name">Pay band design</div><div class="addon-desc">Grade structure, salary ranges, internal equity review</div></div>
-        <div class="addon-price">$6,000–$9,000</div>
-      </div>
-      <div class="addon-card">
-        <div><div class="addon-name">Merit cycle facilitation</div><div class="addon-desc">Budget modeling, manager calibration, comp letter templates</div></div>
-        <div class="addon-price">$3,500</div>
-      </div>
-      <div class="addon-card">
-        <div><div class="addon-name">Pay equity analysis</div><div class="addon-desc">Statistical gap analysis, remediation plan, legal-ready summary</div></div>
-        <div class="addon-price">$5,000–$8,000</div>
-      </div>
-      <div class="addon-card">
-        <div><div class="addon-name">Executive comp review</div><div class="addon-desc">C-suite benchmarking, bonus structure, board presentation</div></div>
-        <div class="addon-price">$7,500+</div>
-      </div>
-      <div class="addon-card">
-        <div><div class="addon-name">Monthly advisory retainer</div><div class="addon-desc">Ongoing TSG access for ad hoc comp questions and reviews</div></div>
-        <div class="addon-price">$1,500/mo</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Mini footer -->
-  <div style="padding:24px 48px;border-top:.5px solid var(--border-d);display:flex;align-items:center;justify-content:space-between;background:var(--midnight)">
-    <div style="display:flex;align-items:center;gap:8px;cursor:pointer" onclick="showPage('home')">
-      <div style="display:flex;align-items:flex-end;gap:2px;height:14px">
-        <div style="width:3px;height:6px;background:rgba(255,255,255,.2);border-radius:1px"></div>
-        <div style="width:3px;height:9px;background:rgba(255,255,255,.35);border-radius:1px"></div>
-        <div style="width:3px;height:12px;background:var(--mint);border-radius:1px"></div>
-        <div style="width:3px;height:14px;background:var(--mint);border-radius:1px"></div>
-      </div>
-      <span style="font-size:14px;font-weight:800;color:white;letter-spacing:-.3px">qomp</span>
-      <span style="font-size:9px;font-weight:600;color:var(--mint-l);letter-spacing:.1em;text-transform:uppercase">Market data. Expert insight.</span>
-    </div>
-    <span style="font-size:11px;color:rgba(255,255,255,.2)">© 2026 TSG Executive Search & Compensation</span>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════════════
-     ABOUT PAGE
-══════════════════════════════════════════════════ -->
-</div>
-
-<!-- ═══════════════════════════════════
-     PAGE: ABOUT
-═══════════════════════════════════ -->
-</div>
-
-<div id="page-about" class="page">
-<div class="about-hero">
-    <div class="about-grid">
-      <div class="about-photo-wrap">
-        <div class="about-photo-placeholder">
-          <div class="photo-icon">
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="10" r="5" stroke="var(--mint)" stroke-width="1.5" fill="none"/><path d="M5 26c0-4.97 4.03-9 9-9s9 4.03 9 9" stroke="var(--mint)" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
-          </div>
-          <div class="photo-label">Add your photo here<br><span style="color:var(--text-dd);font-size:10px">Replace with a professional headshot</span></div>
-        </div>
-        <div class="about-card">
-          <div class="ac-val">10+</div>
-          <div class="ac-lbl">Years using Salary.com data</div>
-        </div>
-      </div>
-
-      <div class="about-content">
-        <div class="section-label" style="margin-bottom:16px">About TSG & Qomp</div>
-        <h1 class="about-h1">Comp expertise, finally in a product.</h1>
-        <p class="about-p">I'm Stuart Reeves, founder of <strong>TSG Executive Search & Compensation</strong>. For over a decade, I've been helping mid-size employers attract, retain, and fairly compensate their people — through executive search, HR consulting, and compensation strategy.</p>
-        <p class="about-p">Every engagement taught me the same lesson: <strong>most mid-size employers are making compensation decisions in the dark.</strong> They can't afford Mercer or Radford. They don't have a dedicated comp analyst. And self-serve tools like CompAnalyst require expertise they don't have in-house.</p>
-        <p class="about-p">Qomp is the product I always wished existed — <strong>Salary.com's trusted market data, wrapped in a dashboard built for non-specialists</strong>, with TSG's advisory layer on top so clients get answers, not just numbers.</p>
-        <p class="about-p">This is not a venture-backed startup. It's a product built by an HR practitioner for HR practitioners — funded by real client relationships and a decade of comp consulting experience.</p>
-
-        <div class="tsg-card">
-          <div class="tsg-title">TSG Executive Search & Compensation</div>
-          <div class="tsg-stat"><span class="tsg-stat-label">Firm founded</span><span class="tsg-stat-val">Phoenix, Arizona</span></div>
-          <div class="tsg-stat"><span class="tsg-stat-label">Salary.com relationship</span><span class="tsg-stat-val">10+ years</span></div>
-          <div class="tsg-stat"><span class="tsg-stat-label">Specialization</span><span class="tsg-stat-val">Executive search · HR consulting · Comp strategy</span></div>
-          <div class="tsg-stat"><span class="tsg-stat-label">Target clients</span><span class="tsg-stat-val">Mid-size employers · 100–1,500 employees</span></div>
-          <div class="tsg-stat"><span class="tsg-stat-label">Data partner</span><span class="tsg-stat-val">Salary.com DaaS — CAMD cube + API</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div style="max-width:1100px;margin-top:80px">
-      <div class="section-label" style="margin-bottom:16px">What we believe</div>
-      <h2 class="section-h2" style="margin-bottom:48px">Four principles behind every Qomp decision.</h2>
-      <div class="values-grid" style="padding:0">
-        <div class="value-card">
-          <div class="value-num">01</div>
-          <div class="value-title">Data without interpretation is just noise.</div>
-          <div class="value-body">Every Qomp plan includes a TSG quarterly insight report because market data without context isn't useful. Knowing you're 15% below market means nothing without understanding which roles to prioritize and what to do about it.</div>
-        </div>
-        <div class="value-card">
-          <div class="value-num">02</div>
-          <div class="value-title">Mid-market employers deserve enterprise-grade comp tools.</div>
-          <div class="value-body">Mercer and Radford are built for companies with 5,000+ employees and dedicated comp teams. The 400-person healthcare company has the same pay decisions to make — and no tools to make them with confidence.</div>
-        </div>
-        <div class="value-card">
-          <div class="value-num">03</div>
-          <div class="value-title">Trusted data is the only data worth building on.</div>
-          <div class="value-body">Qomp runs on Salary.com's CAMD dataset — 100% HR-reported, validated compensation data from 8,700+ companies. We chose it because we've used it for 10 years and trust it. Crowdsourced data doesn't belong in a comp decision.</div>
-        </div>
-        <div class="value-card">
-          <div class="value-num">04</div>
-          <div class="value-title">Fair pay starts with visibility.</div>
-          <div class="value-body">You can't fix pay gaps you can't see. Qomp makes the invisible visible — who's underpaid, which roles are at risk, and what it costs to close the gap. Equity isn't a value statement. It's a data problem that needs a data solution.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Mini footer -->
-  <div style="padding:24px 48px;border-top:.5px solid var(--border-d);display:flex;align-items:center;justify-content:space-between;background:var(--midnight)">
-    <div style="display:flex;align-items:center;gap:8px;cursor:pointer" onclick="showPage('home')">
-      <div style="display:flex;align-items:flex-end;gap:2px;height:14px">
-        <div style="width:3px;height:6px;background:rgba(255,255,255,.2);border-radius:1px"></div>
-        <div style="width:3px;height:9px;background:rgba(255,255,255,.35);border-radius:1px"></div>
-        <div style="width:3px;height:12px;background:var(--mint);border-radius:1px"></div>
-        <div style="width:3px;height:14px;background:var(--mint);border-radius:1px"></div>
-      </div>
-      <span style="font-size:14px;font-weight:800;color:white;letter-spacing:-.3px">qomp</span>
-      <span style="font-size:9px;font-weight:600;color:var(--mint-l);letter-spacing:.1em;text-transform:uppercase">Market data. Expert insight.</span>
-    </div>
-    <span style="font-size:11px;color:rgba(255,255,255,.2)">© 2026 TSG Executive Search & Compensation</span>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════════════
-     CONTACT PAGE
-══════════════════════════════════════════════════ -->
-</div>
-
-<!-- ═══════════════════════════════════
-     PAGE: CONTACT
-═══════════════════════════════════ -->
-</div>
-
-<div id="page-contact" class="page">
-<div class="contact-hero">
-    <div>
-      <div class="section-label" style="margin-bottom:16px">Get in touch</div>
-      <h1 class="contact-h1">Let's talk about your comp strategy.</h1>
-      <p class="contact-sub">Request a live demo with your org's data, join the early access waitlist, or just reach out with questions. We'll get back to you within one business day.</p>
-
-      <div class="contact-info">
-        <div class="ci-item">
-          <div class="ci-icon">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="9" rx="1.5" stroke="var(--mint)" stroke-width="1.2" fill="none"/><path d="M2 6l6 4 6-4" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg>
-          </div>
-          <div>
-            <div class="ci-label">Email</div>
-            <div class="ci-val">hello@qomp.ai</div>
-          </div>
-        </div>
-        <div class="ci-item">
-          <div class="ci-icon">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2C5.79 2 4 3.79 4 6c0 3.25 4 8 4 8s4-4.75 4-8c0-2.21-1.79-4-4-4z" stroke="var(--mint)" stroke-width="1.2" fill="none"/><circle cx="8" cy="6" r="1.5" stroke="var(--mint)" stroke-width="1.2" fill="none"/></svg>
-          </div>
-          <div>
-            <div class="ci-label">Location</div>
-            <div class="ci-val">Phoenix, Arizona</div>
-          </div>
-        </div>
-        <div class="ci-item">
-          <div class="ci-icon">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="var(--mint)" stroke-width="1.2" fill="none"/><path d="M8 5v3.5l2.5 1.5" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg>
-          </div>
-          <div>
-            <div class="ci-label">Response time</div>
-            <div class="ci-val">Within 1 business day</div>
-          </div>
-        </div>
-        <div class="ci-item" style="border-bottom:none">
-          <div class="ci-icon">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="var(--mint)" stroke-width="1.2" fill="none"/><path d="M5 8h6M5 5.5h6M5 10.5h4" stroke="var(--mint)" stroke-width="1.2" stroke-linecap="round"/></svg>
-          </div>
-          <div>
-            <div class="ci-label">Powered by</div>
-            <div class="ci-val">Salary.com DaaS — CAMD data</div>
-          </div>
-        </div>
-      </div>
-
-      <div style="margin-top:40px;padding:24px;background:rgba(16,196,138,.04);border:1px solid rgba(16,196,138,.12);border-radius:14px">
-        <div style="font-family:var(--display);font-size:15px;font-weight:700;color:white;margin-bottom:8px">Pilot spots available</div>
-        <div style="font-size:13px;color:var(--text-d);line-height:1.65">We're onboarding founding clients now at a permanent discounted rate of $750/month. 5 spots remaining. Pilot clients shape the product roadmap and lock in their rate forever.</div>
-      </div>
-    </div>
-
-    <div>
-      <div class="contact-form-wrap">
-        <div class="form-tabs">
-          <button class="form-tab active" id="tab-demo" onclick="setFormTab('demo')">Request a demo</button>
-          <button class="form-tab" id="tab-waitlist" onclick="setFormTab('waitlist')">Join waitlist</button>
-        </div>
-
-        <!-- DEMO FORM -->
-        <div class="form-section active" id="form-demo">
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">First name</label>
-              <input class="form-input" type="text" placeholder="Sarah">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Last name</label>
-              <input class="form-input" type="text" placeholder="Mitchell">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Work email</label>
-            <input class="form-input" type="email" placeholder="sarah@company.com">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Company name</label>
-            <input class="form-input" type="text" placeholder="Meridian Health Systems">
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Employee count</label>
-              <select class="form-select">
-                <option value="">Select range</option>
-                <option>100–250</option>
-                <option>251–500</option>
-                <option>501–750</option>
-                <option>751–1,000</option>
-                <option>1,000–1,500</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">HRIS system</label>
-              <select class="form-select">
-                <option value="">Select HRIS</option>
-                <option>BambooHR</option>
-                <option>Rippling</option>
-                <option>ADP Workforce Now</option>
-                <option>Paylocity</option>
-                <option>Paycom</option>
-                <option>Other</option>
-                <option>None / spreadsheet</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">What's your biggest comp challenge right now?</label>
-            <textarea class="form-textarea" placeholder="e.g. Upcoming merit cycle with no market data, recent regrettable departures, board asking about pay equity..."></textarea>
-          </div>
-          <button class="btn-submit" onclick="submitForm('demo')">Request my demo →</button>
-          <p class="form-fine">We'll reach out within 1 business day to schedule a 30-minute live demo using your org's data.</p>
-        </div>
-
-        <!-- WAITLIST FORM -->
-        <div class="form-section" id="form-waitlist">
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">First name</label>
-              <input class="form-input" type="text" placeholder="Sarah">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Last name</label>
-              <input class="form-input" type="text" placeholder="Mitchell">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Work email</label>
-            <input class="form-input" type="email" placeholder="sarah@company.com">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Company name</label>
-            <input class="form-input" type="text" placeholder="Meridian Health Systems">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Employee count</label>
-            <select class="form-select">
-              <option value="">Select range</option>
-              <option>100–250</option>
-              <option>251–500</option>
-              <option>501–750</option>
-              <option>751–1,000</option>
-              <option>1,000–1,500</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Are you interested in pilot pricing? ($750/mo, founding rate)</label>
-            <select class="form-select">
-              <option value="">Select one</option>
-              <option>Yes — I'd like to apply for a pilot spot</option>
-              <option>Maybe — tell me more</option>
-              <option>No — just keep me updated on launch</option>
-            </select>
-          </div>
-          <button class="btn-submit" onclick="submitForm('waitlist')">Join the waitlist →</button>
-          <p class="form-fine">We'll notify you when Qomp launches and reach out about pilot availability. No spam, ever.</p>
-        </div>
-
-        <!-- SUCCESS -->
-        <div class="success-msg" id="success-msg">
-          <div class="success-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="var(--mint)" stroke-width="1.5"/><path d="M8 12l3 3 5-5" stroke="var(--mint)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <div class="success-title" id="success-title">You're on the list.</div>
-          <div class="success-body" id="success-body">We'll be in touch within one business day. In the meantime, feel free to explore the product or reach out directly at hello@qomp.ai.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Mini footer -->
-  <div style="padding:24px 48px;border-top:.5px solid var(--border-d);display:flex;align-items:center;justify-content:space-between;background:var(--midnight)">
-    <div style="display:flex;align-items:center;gap:8px;cursor:pointer" onclick="showPage('home')">
-      <div style="display:flex;align-items:flex-end;gap:2px;height:14px">
-        <div style="width:3px;height:6px;background:rgba(255,255,255,.2);border-radius:1px"></div>
-        <div style="width:3px;height:9px;background:rgba(255,255,255,.35);border-radius:1px"></div>
-        <div style="width:3px;height:12px;background:var(--mint);border-radius:1px"></div>
-        <div style="width:3px;height:14px;background:var(--mint);border-radius:1px"></div>
-      </div>
-      <span style="font-size:14px;font-weight:800;color:white;letter-spacing:-.3px">qomp</span>
-      <span style="font-size:9px;font-weight:600;color:var(--mint-l);letter-spacing:.1em;text-transform:uppercase">Market data. Expert insight.</span>
-    </div>
-    <span style="font-size:11px;color:rgba(255,255,255,.2)">© 2026 TSG Executive Search & Compensation</span>
-  </div>
-</div>
 
 <script>
-
-  // Page switcher — shows one page, hides others, scrolls to top
-  function showPage(pageId) {
-    document.querySelectorAll('.page').forEach(function(p) {
-      p.classList.remove('active');
-    });
-    var target = document.getElementById('page-' + pageId);
-    if (target) target.classList.add('active');
-    window.scrollTo(0, 0);
-
-    // Update active nav link
-    document.querySelectorAll('.nav-link').forEach(function(link) {
-      link.classList.remove('active');
-    });
-  }
-
-  // Pricing billing toggle
-  var billing = 'monthly';
-  var prices = {
-    monthly: { core: '$999', pro: '$1,899', ent: '$2,999' },
-    annual:  { core: '$849', pro: '$1,616', ent: '$2,549' }
-  };
-  var annualLabels = {
-    monthly: { core: 'Billed monthly', pro: 'Billed monthly', ent: 'Billed monthly' },
-    annual:  { core: '$10,188/yr · save $1,800', pro: '$19,389/yr · save $3,400', ent: '$30,588/yr · save $5,400' }
-  };
-
-  function toggleBilling(mode) {
-    billing = mode;
-    document.getElementById('tog-monthly').classList.toggle('active', mode === 'monthly');
-    document.getElementById('tog-annual').classList.toggle('active', mode === 'annual');
-    ['core','pro','ent'].forEach(function(t) {
-      var el = document.getElementById('price-' + t);
-      var al = document.getElementById('annual-' + t);
-      if (el) el.textContent = prices[mode][t];
-      if (al) al.textContent = annualLabels[mode][t];
-    });
-  }
-
-  // Contact form tabs
-  function setFormTab(tab) {
-    document.querySelectorAll('.form-tab').forEach(function(t) { t.classList.remove('active'); });
-    document.querySelectorAll('.form-section').forEach(function(s) { s.classList.remove('active'); });
-    var tabEl = document.getElementById('tab-' + tab);
-    var formEl = document.getElementById('form-' + tab);
-    if (tabEl) tabEl.classList.add('active');
-    if (formEl) formEl.classList.add('active');
-    var msg = document.getElementById('success-msg');
-    if (msg) msg.style.display = 'none';
-  }
-
-  function submitForm(type) {
-    var titles = { demo: "We'll be in touch soon.", waitlist: "You're on the list." };
-    var bodies = {
-      demo: "Thanks for requesting a demo. Stuart will reach out within one business day.",
-      waitlist: "We'll notify you when Qomp launches. No spam, ever."
-    };
-    document.querySelectorAll('.form-section').forEach(function(s) { s.style.display = 'none'; });
-    var msg = document.getElementById('success-msg');
-    if (msg) {
-      document.getElementById('success-title').textContent = titles[type];
-      document.getElementById('success-body').textContent = bodies[type];
-      msg.style.display = 'block';
-    }
-  }
-
-  // Nav scroll effect
-  window.addEventListener('scroll', function() {
-    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
-  });
-
-  // Reveal animation for home page
-  function initReveal() {
-    var els = document.querySelectorAll('#page-home .reveal');
-    var obs = new IntersectionObserver(function(entries) {
-      entries.forEach(function(e) {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          obs.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.08 });
-    els.forEach(function(el) {
-      if (el.getBoundingClientRect().top < window.innerHeight) {
-        el.classList.add('visible');
-      } else {
-        obs.observe(el);
+  // Scroll-reveal observer
+  var revealObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        revealObs.unobserve(e.target);
       }
     });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reason, .how-step, .stat-cell').forEach(function(el) {
+    el.classList.add('reveal');
+    revealObs.observe(el);
+  });
+
+  // Number counter for stats
+  function animateCount(el) {
+    var target = parseInt(el.getAttribute('data-count'), 10);
+    if (!target) return;
+    var duration = 1400;
+    var start = null;
+    var hasComma = el.textContent.indexOf(',') > -1 || target >= 1000;
+
+    function step(ts) {
+      if (!start) start = ts;
+      var progress = Math.min((ts - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      var current = Math.floor(target * eased);
+      el.textContent = hasComma ? current.toLocaleString() : current;
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
   }
 
-  // Show all content on non-home pages immediately
-  document.querySelectorAll(
-    '#page-product .reveal, #page-pricing .reveal, #page-about .reveal, #page-contact .reveal'
-  ).forEach(function(el) { el.classList.add('visible'); });
+  var countObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        animateCount(e.target);
+        countObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.4 });
 
-  initReveal();
-
+  document.querySelectorAll('[data-count]').forEach(function(el) {
+    countObs.observe(el);
+  });
 </script>
 
 </body>
